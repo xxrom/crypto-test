@@ -1,16 +1,11 @@
+import {AssetListType} from '../pages/Home';
 import {Popover} from './Popover';
 
 export type TableHeaderType = Array<string>;
-export type TableListItemType = {
-  name: string;
-  price: string;
-  icon: string;
-};
-export type TableListType = Array<TableListItemType>;
 
 export type TableProps = {
   header?: TableHeaderType;
-  list?: TableListType;
+  list?: AssetListType;
 };
 
 export const headerDefault: TableHeaderType = [
@@ -21,23 +16,27 @@ export const headerDefault: TableHeaderType = [
   'Actions',
 ];
 
-export const listDefault: TableListType = [
+export const listDefault: AssetListType = [
   {
+    id: '1',
     name: 'Name 1',
     icon: 'icon',
     price: '1234',
   },
   {
+    id: '4',
     name: 'Name 2',
     icon: 'icon 2 h',
     price: '144',
   },
   {
+    id: '2',
     name: 'Name 3',
     icon: 'icon 3',
     price: '4',
   },
   {
+    id: '3',
     name: 'Name 3',
     icon: 'icon 3',
     price: '4',
