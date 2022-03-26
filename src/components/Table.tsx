@@ -1,3 +1,5 @@
+import {Popover} from './Popover';
+
 export type TableHeaderType = Array<string>;
 export type TableListItemType = {
   name: string;
@@ -16,7 +18,7 @@ export const headerDefault: TableHeaderType = [
   'Name',
   'Icon',
   'Price',
-  'Action',
+  'Actions',
 ];
 
 export const listDefault: TableListType = [
@@ -35,6 +37,11 @@ export const listDefault: TableListType = [
     icon: 'icon 3',
     price: '4',
   },
+  {
+    name: 'Name 3',
+    icon: 'icon 3',
+    price: '4',
+  },
 ];
 
 export const Table = ({
@@ -42,7 +49,7 @@ export const Table = ({
   list = listDefault,
 }: TableProps) => {
   return (
-    <div className="relative rounded-xl overflow-auto flex flex-1 w-min-screen">
+    <div className="relative rounded-xl flex flex-1 w-min-screen">
       <table className="min-w-full">
         <thead>
           <tr>
@@ -57,23 +64,25 @@ export const Table = ({
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-              1
-            </td>
-            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              Mark
-            </td>
-            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              Otto
-            </td>
-            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              @mdo
-            </td>
-            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-              @mdo
-            </td>
-          </tr>
+          {list.map(({name, price, icon}, index) => (
+            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {index}
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {name}
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {icon}
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                {price}
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                <Popover />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

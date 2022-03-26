@@ -6,8 +6,9 @@ import {
   LinkProps,
 } from 'react-router-dom';
 import cx from 'classnames';
+import {theme} from '../theme';
 
-const MinLink = ({children, to, ...props}: LinkProps) => {
+export const MinLink = ({children, to, ...props}: LinkProps) => {
   let resolved = useResolvedPath(to);
   let match = useMatch({path: resolved.pathname, end: true});
 
@@ -38,7 +39,7 @@ export const Layout = () => (
 
         <button
           type="button"
-          className="inline-flex justify-center px-4 py-2 text-lg font-medium text-cyan-900 bg-cyan-100 border border-transparent rounded-md hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500"
+          className={theme.button.primary}
           onClick={() => {}}>
           Log-in
         </button>
