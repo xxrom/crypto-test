@@ -29,7 +29,7 @@ export const MinLink = ({children, to, ...props}: LinkProps) => {
 
 export const Layout = () => (
   <div className="min-h-screen flex flex-col">
-    <nav className="sticky top-0 z-40 bg-white text-sm font-medium text-gray-900 py-8 ring-1 ring-gray-900 ring-opacity-5 shadow-sm">
+    <nav className="sticky top-0 z-40 bg-white text-sm font-medium text-gray-900 py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm">
       <ul className="flex mx-auto px-4 sm:px-6 lg:px-8 justify-between space-x-5 sm:space-x-10 lg:space-x-14">
         <div className="flex flex-1 justify-around">
           <MinLink to="/">Home</MinLink>
@@ -39,7 +39,10 @@ export const Layout = () => (
 
         <button
           type="button"
-          className={theme.button.primary}
+          className={cx(
+            'text-cyan-800 bg-cyan-300 hover:bg-cyan-400',
+            theme.button.secondary,
+          )}
           onClick={() => {}}>
           Log-in
         </button>

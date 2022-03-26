@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {AssetListType} from '../pages/Home';
 import {Popover} from './Popover';
 
@@ -47,6 +48,12 @@ export const Table = ({
   header = headerDefault,
   list = listDefault,
 }: TableProps) => {
+  const [shortList, setShortList] = useState<TableProps['list']>();
+
+  useEffect(() => {
+    setShortList(list.slice(0, 10));
+  }, [list]);
+
   return (
     <div className="relative rounded-xl flex flex-1 w-min-screen">
       <table className="min-w-full">
@@ -63,7 +70,7 @@ export const Table = ({
           </tr>
         </thead>
         <tbody>
-          {list.map(({name, price, icon}, index) => (
+          {shortList?.map(({name, price, icon}, index) => (
             <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                 {index}

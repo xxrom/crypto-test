@@ -26,7 +26,7 @@ export const Home = () => {
         id: String(index),
         name: key,
         price: String(index + 100),
-        icon: '',
+        icon: '=)',
       }));
 
       setList(assests);
