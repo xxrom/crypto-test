@@ -4,7 +4,7 @@ import {Table} from '../components';
 export type AssetItemType = {
   id: string;
   name: string;
-  price: string;
+  price: number | string;
   icon: string;
 };
 export type AssetListType = Array<AssetItemType>;
@@ -16,20 +16,31 @@ export const Home = () => {
     const getAssets = async () => {
       const response = await fetch('https://api.exchangerate.host/symbols');
 
-      const data = (await response.json().then((res: any) => {
-        console.log('res', res);
-        return res;
-      })) as {symbols: {}};
+      const data = await response.json();
 
-      const assestList = Object.keys(data?.symbols);
-      const assests = assestList.map((key, index) => ({
-        id: String(index),
-        name: key,
-        price: String(index + 100),
-        icon: '=)',
-      }));
+      const assests = Object.keys(data?.symbols).map(
+        key => data?.symbols[key]?.code,
+      );
 
-      setList(assests);
+      const getSymbol = async (symbol: string, base = 'USD') => {
+        const res = await fetch(
+          `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
+        );
+        const data = await res.json();
+
+        return data?.rates[base];
+      };
+
+      const assestList = await Promise.all(
+        assests.map(async (key, index) => ({
+          id: String(index),
+          name: key,
+          price: await getSymbol(key),
+          icon: '=)',
+        })),
+      );
+
+      setList(assestList);
     };
 
     getAssets();

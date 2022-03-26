@@ -1,5 +1,6 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {AssetListType} from '../pages/Home';
+import {theme} from '../theme';
 import {Popover} from './Popover';
 
 export type TableHeaderType = Array<string>;
@@ -44,53 +45,56 @@ export const listDefault: AssetListType = [
   },
 ];
 
+const cellClass =
+  'px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm font-light text-left text-gray-900';
+const boldCellClass =
+  'px-1 py-1 sm:px-6 sm:py-4 text-sm font-medium text-left text-gray-900 font-light whitespace-nowrap';
+
 export const Table = ({
   header = headerDefault,
   list = listDefault,
 }: TableProps) => {
   const [shortList, setShortList] = useState<TableProps['list']>();
+  const [isShortList, setIsShortList] = useState(true);
 
   useEffect(() => {
-    setShortList(list.slice(0, 10));
+    setShortList(list.slice(0, 30));
   }, [list]);
 
+  const toggleExpand = useCallback(() => setIsShortList(s => !s), []);
+
   return (
-    <div className="relative rounded-xl flex flex-1 w-min-screen">
+    <div className="relative rounded-xl flex flex-1 flex-col w-min-screen">
       <table className="min-w-full">
         <thead>
           <tr>
             {header.map((name, index: number) => (
-              <th
-                key={`${index}${name}`}
-                scope="col"
-                className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+              <th key={`${index}${name}`} scope="col" className={boldCellClass}>
                 {name}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {shortList?.map(({name, price, icon}, index) => (
-            <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                {index}
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {name}
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {icon}
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                {price}
-              </td>
-              <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                <Popover />
-              </td>
-            </tr>
-          ))}
+          {(isShortList ? shortList : list)?.map(
+            ({name, price, icon}, index) => (
+              <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                <td className={boldCellClass}>{index}</td>
+                <td className={cellClass}>{name}</td>
+                <td className={cellClass}>{icon}</td>
+                <td className={cellClass}>{price}</td>
+                <td className={cellClass}>
+                  <Popover />
+                </td>
+              </tr>
+            ),
+          )}
         </tbody>
       </table>
+
+      <div className={theme.button.primary} onClick={toggleExpand}>
+        {isShortList ? 'More' : 'Less'}
+      </div>
     </div>
   );
 };

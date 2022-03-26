@@ -12,7 +12,7 @@ export const Popover = () => {
 
       <HeadlessPopove.Panel className="absolute z-10">
         <div className="relative mt-1 flex rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
-          <div className="flex flex-row p-4">
+          <div className="flex flex-col p-2">
             <MinLink to="/buy">Buy</MinLink>
             <MinLink to="/sell">Sell</MinLink>
           </div>
