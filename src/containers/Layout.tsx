@@ -15,8 +15,8 @@ const MinLink = ({children, to, ...props}: LinkProps) => {
     <li className="flex items-center">
       <Link
         className={cx(
-          'text-lg shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-lg p-2',
-          match && 'text-cyan-700 shadow-cyan-300/50 ',
+          'text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-lg p-2',
+          match && 'text-cyan-700 shadow-lg shadow-cyan-300/50 ',
         )}
         to={to}
         {...props}>
