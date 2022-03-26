@@ -1148,10 +1148,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@headlessui/react@^0.0.0-dev.0ce63d8":
-  version "0.0.0-dev.0ce63d8"
-  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-0.0.0-dev.0ce63d8.tgz#e3ec320669adc3d380774696d7cda5f9d2b65b14"
-  integrity sha512-jocCGaKgQUoVf61BpwJfcv5hemOvhZ2n7UF0HnvSvfq4dazBi+ZWBa365Oirtfh+zNHsJGQITA76lEiQMe4bOw==
+"@headlessui/react@^0.0.0-insiders.79b3015":
+  version "0.0.0-insiders.79b3015"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-0.0.0-insiders.79b3015.tgz#1d4193ac4f19a846dc8d2e1c2764333c53f3b77c"
+  integrity sha512-jHVxiW318zY0Yzv5DoGsyRcGvXpukSo77411iuwpoFkG/oxFnQbu9OouYFNqYcohfEmY43D0CkheCzTLix3i2g==
 
 "@heroicons/react@^1.0.6":
   version "1.0.6"
