@@ -30,9 +30,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
   const [isShortList, setIsShortList] = useState(true);
   const [filteredList, setFilteredList] = useState<TableProps['list']>();
   const [filters, setFilters] = useState<{[key: string]: Array<string>}>({});
-  const [inputValues, setInputValues] = useState<{[key: string]: string}>({
-    name: 'AED',
-  });
+  const [inputValues, setInputValues] = useState<{[key: string]: string}>({});
 
   // Init list
   useEffect(() => {
@@ -66,7 +64,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
   const inputValueName = inputValues?.name || '';
   const inputValuePrice = Number(inputValues?.price) || -1000;
 
-  const forecFilterList = useCallback(
+  const forceFilterList = useCallback(
     (isShort: boolean, innerList: AssetsListType) => {
       setFilteredList(() => {
         const innerFiltered = innerList?.filter(
@@ -87,8 +85,8 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
 
   // Apply filters to the list
   useEffect(() => {
-    forecFilterList(isShortList, list);
-  }, [forecFilterList, list, isShortList]);
+    forceFilterList(isShortList, list);
+  }, [forceFilterList, list, isShortList]);
 
   const toggleExpand = useCallback(() => setIsShortList(s => !s), []);
 
