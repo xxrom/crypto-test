@@ -21,9 +21,14 @@ type OptionsType = Array<OptionType>;
 export type AutocompoleteProps = {
   items: StoreType['assets'];
   initSymbol?: string;
+  setSymbol?: (val: string) => void;
 };
 
-export const Autocompolete = ({items, initSymbol}: AutocompoleteProps) => {
+export const Autocompolete = ({
+  items,
+  initSymbol,
+  setSymbol,
+}: AutocompoleteProps) => {
   const [options, setOptions] = useState<OptionsType>([]);
   const [selected, setSelected] = useState<OptionType>();
   const [search, setSearch] = useState('');
@@ -43,6 +48,12 @@ export const Autocompolete = ({items, initSymbol}: AutocompoleteProps) => {
       }
     });
   }, [items, initSymbol]);
+
+  useEffect(() => {
+    if (selected?.value && setSymbol) {
+      setSymbol(selected?.value);
+    }
+  }, [selected?.value, setSymbol]);
 
   const filteredList =
     search === ''

@@ -16,13 +16,25 @@ export type DataAssestsType = {
   symbols: {[key: string]: {code: string}};
 };
 
+export type TradeAssetsType = {
+  fromAsset: string;
+  toAsset: string;
+};
+
 export interface StoreType {
+  // Home page
   assets: AssetsType;
   assetsMap: AssetsMapType;
   assetsList: AssetsListType;
 
   setAssets: (data: DataAssestsType) => void;
   setAssetsList: (data: AssetsListType) => void;
+
+  // Trade page
+  tradeAssets: TradeAssetsType;
+
+  setFromAsset: (newAsset: string) => void;
+  setToAsset: (newAsset: string) => void;
 }
 
 //const userApiUrl = 'https://randomuser.me/api/';
@@ -41,41 +53,22 @@ export const useStore = create<StoreType>(set => ({
       ...state,
       assetsList,
     })),
-}));
 
-/*
- useQuery
-
- 1) load sybmols
- 2) load prices for symbols
-*/
-export const loadAssets = async () => {
-  const response = await fetch('https://api.exchangerate.host/symbols');
-
-  const data = await response.json();
-
-  const assests = Object.keys(data?.symbols).map(
-    key => data?.symbols[key]?.code,
-  );
-
-  const getSymbol = async (symbol: string, base = 'USD') => {
-    const res = await fetch(
-      `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
-    );
-    const data = await res.json();
-
-    return data?.rates[base];
-  };
-
-  const assestList = await Promise.all(
-    assests.map(async (key, index) => ({
-      id: v4(),
-      index,
-      name: key,
-      price: await getSymbol(key),
-      icon: '=)',
+  tradeAssets: {fromAsset: 'USD', toAsset: 'BTC'},
+  setFromAsset: fromAsset =>
+    set(state => ({
+      ...state,
+      tradeAssets: {
+        ...state.tradeAssets,
+        fromAsset,
+      },
     })),
-  );
-
-  return assestList;
-};
+  setToAsset: toAsset =>
+    set(state => ({
+      ...state,
+      tradeAssets: {
+        ...state.tradeAssets,
+        toAsset,
+      },
+    })),
+}));

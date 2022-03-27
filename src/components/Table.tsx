@@ -1,7 +1,7 @@
 import {memo, useCallback, useEffect, useState} from 'react';
 import {AssetsListType} from '../hooks';
 import {theme} from '../theme';
-import {Popover} from './Popover';
+import {PopoverBuySell} from './Popover';
 
 export type TableHeaderType = Array<string>;
 
@@ -58,7 +58,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
                 <td className={cellClass}>{icon}</td>
                 <td className={cellClass}>{price}</td>
                 <td className={cellClass}>
-                  <Popover />
+                  <PopoverBuySell />
                 </td>
               </tr>
             ),

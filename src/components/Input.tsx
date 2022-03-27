@@ -16,14 +16,14 @@ export const Input = memo(({initValue = '', value: propsValue}: InputType) => {
   const onChange = useCallback(e => setValue(e?.target?.value), []);
 
   return (
-    <div className="mr-5 relative rounded-md shadow-sm">
+    <div className="relative mr-5 rounded-md shadow-sm">
       <input
         type="number"
         name="price"
         id="price"
         value={value}
         onChange={onChange}
-        className="p-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full text-2xl sm:text-3xl border-gray-300 rounded-md"
+        className="block w-full p-1 text-2xl border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 sm:text-3xl rounded-md"
         placeholder="0.00"
       />
     </div>
