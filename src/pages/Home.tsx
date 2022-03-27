@@ -1,39 +1,35 @@
-import {memo, useEffect, useState} from 'react';
-import {useQuery, UseQueryResult} from 'react-query';
+import {memo, useEffect} from 'react';
 import {Table} from '../components';
-import {AssetListType, useStore, DataAssestsType} from '../hooks';
+import {useStore, useAssetsList, useAssets} from '../hooks';
 
 export const Home = memo(() => {
-  const [list, setList] = useState<AssetListType>([]);
-  const {
-    isLoading,
-    error,
-    data,
-  }: UseQueryResult<DataAssestsType, any> = useQuery('symbols', () =>
-    fetch('https://api.exchangerate.host/symbols').then(res => res.json()),
+  console.info('Render: Home');
+
+  const {assets, assetsList, setAssets, setAssetsList} = useStore();
+
+  const {isLoading: isLoadingFirst, data: assetsData} = useAssets();
+  const {isLoading: isLoadingSecond, data: assestListData} = useAssetsList(
+    assets,
   );
-  const {setAssets} = useStore();
 
-  useEffect(() => {
-    console.log('data', data);
-    if (!data) {
-      return;
-    }
+  // First: load all assets
+  useEffect(() => assetsData?.data && setAssets(assetsData.data), [
+    assetsData?.data,
+    setAssets,
+  ]);
+  // Second: load prices for all assets
+  useEffect(() => assestListData?.data && setAssetsList(assestListData.data), [
+    assestListData?.data,
+    setAssetsList,
+  ]);
 
-    setAssets(data);
-  }, [data, setAssets]);
-
-  if (isLoading) return <div>'Loading...'</div>;
-
-  if (error) {
-    return <div>{'An error has occurred: ' + error?.message}</div>;
-  }
+  if (isLoadingFirst || isLoadingSecond) return <div>'Loading...'</div>;
 
   return (
     <div>
       <div>Home</div>
 
-      <Table list={list} />
+      <Table list={assetsList} />
     </div>
   );
 });
