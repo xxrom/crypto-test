@@ -36,7 +36,6 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
 
   // Init list
   useEffect(() => {
-    console.log('UE, 3');
     setFilteredList(list.slice(0, 10));
 
     const initFilterList = Object.keys(list[0] || {}).reduce(
@@ -66,30 +65,29 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
 
   const inputValueName = inputValues?.name || '';
 
+  const forecFilterList = useCallback(
+    (isShort: boolean, innerList: AssetsListType) => {
+      setFilteredList(() => {
+        const innerFiltered = innerList?.filter(
+          ({name}) =>
+            (String(name).match(inputValueName.toUpperCase()) as any)?.index >=
+            0,
+        );
+
+        if (isShort) {
+          return innerFiltered.slice(0, 10);
+        }
+
+        return innerFiltered;
+      });
+    },
+    [inputValueName],
+  );
+
   // Apply filters to the list
   useEffect(() => {
-    setFilteredList(() => {
-      const innerFiltered = list?.filter(
-        ({name}) =>
-          (String(name).match(inputValueName.toUpperCase()) as any)?.index >= 0,
-      );
-
-      if (isShortList) {
-        return innerFiltered.slice(0, 10);
-      }
-
-      return innerFiltered;
-    });
-  }, [inputValueName, isShortList, list]);
-
-  // On toggle short list
-  useEffect(() => {
-    if (isShortList) {
-      setFilteredList(list.slice(0, 10));
-    } else {
-      setFilteredList(list);
-    }
-  }, [isShortList, list]);
+    forecFilterList(isShortList, list);
+  }, [forecFilterList, list, isShortList]);
 
   const toggleExpand = useCallback(() => setIsShortList(s => !s), []);
 
