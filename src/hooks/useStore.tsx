@@ -1,5 +1,4 @@
 import create from 'zustand';
-import {v4} from 'uuid';
 
 export type AssetItemType = {
   id: string;
@@ -35,11 +34,17 @@ export interface StoreType {
 
   setFromAsset: (newAsset: string) => void;
   setToAsset: (newAsset: string) => void;
+
+  toAssetValue: string | number;
+  fromAssetValue: string | number;
+  setToAssetValue: (newValue: string | number) => void;
+  setFromAssetValue: (newValue: string | number) => void;
 }
 
 //const userApiUrl = 'https://randomuser.me/api/';
 
 export const useStore = create<StoreType>(set => ({
+  // Home page
   assets: [],
   assetsMap: {},
   assetsList: [],
@@ -54,6 +59,7 @@ export const useStore = create<StoreType>(set => ({
       assetsList,
     })),
 
+  // Trade page
   tradeAssets: {fromAsset: 'USD', toAsset: 'BTC'},
   setFromAsset: fromAsset =>
     set(state => ({
@@ -70,5 +76,18 @@ export const useStore = create<StoreType>(set => ({
         ...state.tradeAssets,
         toAsset,
       },
+    })),
+
+  toAssetValue: '1.0',
+  fromAssetValue: '1.0',
+  setToAssetValue: toAssetValue =>
+    set(state => ({
+      ...state,
+      toAssetValue,
+    })),
+  setFromAssetValue: fromAssetValue =>
+    set(state => ({
+      ...state,
+      fromAssetValue,
     })),
 }));

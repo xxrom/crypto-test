@@ -1,7 +1,7 @@
 import {theme} from '../theme';
 import cx from 'classnames';
 import {Autocompolete, Input} from '../components';
-import {useStore, StoreType, useAssets} from '../hooks';
+import {useStore, StoreType, useAssets, useFetchAsset} from '../hooks';
 import {memo, useCallback, useEffect} from 'react';
 
 type BoxProps = {
@@ -13,13 +13,22 @@ type BoxProps = {
 };
 
 const Box = memo(({isInput, amount, symbol, setSymbol, assets}: BoxProps) => {
+  const {data, isLoading} = useFetchAsset(symbol, 'USD');
+  const {setFromAssetValue} = useStore();
+
+  console.log('data', data);
+
   return (
     <div className="flex py-1 m-1 sm:py-5 bg-sky-200 rounded-3xl">
       <div>
         <div className="flex flex-col justify-between flex-1 px-4 py-2 m-3 mb-0 sm:px-12 sm:py-3">
           <div className="flex items-center">
             {isInput ? (
-              <Input initValue={amount} />
+              <Input
+                initValue={amount}
+                value={amount}
+                setValue={setFromAssetValue}
+              />
             ) : (
               <div className="w-full pr-2 text-2xl font-medium sm:text-3xl min-w-xs sm:pr-4 text-sky-900 ">
                 {amount}
@@ -33,7 +42,9 @@ const Box = memo(({isInput, amount, symbol, setSymbol, assets}: BoxProps) => {
             />
           </div>
 
-          <div className="flex mt-2 text-sky-800">{symbol}</div>
+          <div className="flex mt-2 text-sky-800">
+            {isLoading ? 'Loading...' : `1.0 ${symbol} = ${data} USD `}
+          </div>
         </div>
       </div>
     </div>
@@ -43,16 +54,40 @@ const Box = memo(({isInput, amount, symbol, setSymbol, assets}: BoxProps) => {
 export const Trade = memo(() => {
   console.log('Render: Trade');
 
-  const {assets, setAssets, tradeAssets, setToAsset, setFromAsset} = useStore();
+  const {
+    assets,
+    setAssets,
+    tradeAssets,
+    setToAsset,
+    setFromAsset,
+    toAssetValue,
+    setToAssetValue,
+    fromAssetValue,
+    setFromAssetValue,
+  } = useStore();
   const {data: assetsData} = useAssets();
 
   const {fromAsset, toAsset} = tradeAssets;
+  const {data: assetData, isLoading: assetIsLoading} = useFetchAsset(
+    fromAsset,
+    toAsset,
+  );
 
   useEffect(() => {
     if (assetsData?.data) {
       setAssets(assetsData?.data);
     }
   }, [assetsData?.data, setAssets]);
+
+  useEffect(() => {
+    if (assetIsLoading) {
+      return;
+    }
+
+    console.log(fromAssetValue, assetData);
+
+    setToAssetValue(String(Number(fromAssetValue) * assetData));
+  }, [assetData, assetIsLoading, fromAssetValue, setToAssetValue]);
 
   const onSwapTradeAssets = useCallback(() => {
     setToAsset(fromAsset);
@@ -78,13 +113,13 @@ export const Trade = memo(() => {
 
           <Box
             isInput
-            amount="1234.02"
+            amount={fromAssetValue}
             symbol={fromAsset}
             assets={assets}
             setSymbol={setFromAsset}
           />
           <Box
-            amount="44"
+            amount={toAssetValue}
             symbol={toAsset}
             assets={assets}
             setSymbol={setToAsset}
