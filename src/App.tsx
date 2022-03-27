@@ -4,6 +4,9 @@ import './App.css';
 
 import {Home, Trade} from './pages';
 import {Layout} from './containers';
+import {QueryClient, QueryClientProvider} from 'react-query';
+
+const queryClient = new QueryClient();
 
 export const App = () => {
   return (
@@ -14,14 +17,16 @@ export const App = () => {
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </Helmet>
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="trade" element={<Trade />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="trade" element={<Trade />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
     </div>
   );
 };

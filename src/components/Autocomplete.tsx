@@ -1,8 +1,9 @@
-import {Fragment, useState} from 'react';
+import {Fragment, useEffect, useState} from 'react';
 import {Combobox, Transition} from '@headlessui/react';
 import {CheckIcon, SelectorIcon} from '@heroicons/react/solid';
+import {StoreType} from '../hooks';
 
-const defaultItems: AutocompoleteProps['items'] = [
+const defaultItems: OptionsType = [
   {id: 1, value: 'Wade Cooper'},
   {id: 2, value: 'Arlene Mccoy'},
   {id: 3, value: 'Devon Webb'},
@@ -11,42 +12,67 @@ const defaultItems: AutocompoleteProps['items'] = [
   {id: 6, value: 'Hellen Schmidt'},
 ];
 
-type ItemType = {
+type OptionType = {
   id: number;
   value: string;
 };
+type OptionsType = Array<OptionType>;
 
 export type AutocompoleteProps = {
-  items: Array<ItemType>;
+  items: StoreType['assets'];
+  initSymbol?: string;
 };
 
-export const Autocompolete = ({items = defaultItems}) => {
-  const [selected, setSelected] = useState<ItemType>(items[0] || '');
-  const [query, setQuery] = useState('');
+export const Autocompolete = ({items, initSymbol}: AutocompoleteProps) => {
+  const [options, setOptions] = useState<OptionsType>([]);
+  const [selected, setSelected] = useState<OptionType>();
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (!items) {
+      return;
+    }
+
+    const newOptions = items?.map((value, index) => ({id: index, value}));
+
+    setOptions(newOptions);
+
+    newOptions.forEach(option => {
+      if (option.value === initSymbol) {
+        setSelected(option);
+      }
+    });
+  }, [items, initSymbol]);
 
   const filteredList =
-    query === ''
-      ? items
-      : items.filter(item =>
+    search === ''
+      ? options
+      : options?.filter(item =>
           item.value
             .toLowerCase()
             .replace(/\s+/g, '')
-            .includes(query.toLowerCase().replace(/\s+/g, '')),
+            .includes(search.toLowerCase().replace(/\s+/g, '')),
         );
 
   return (
     <div className="relative">
       <Combobox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
-          <div className="relative w-full text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 sm:text-sm overflow-hidden">
+          <div
+            className={`
+              relative w-full 
+              text-left bg-sky-400 rounded-lg shadow-md 
+              cursor-default focus:outline-none focus-visible:ring-2 
+              focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 
+              sm:text-sm overflow-hidden`}>
             <Combobox.Input
-              className="w-full border-none focus:ring-0 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900"
-              displayValue={(person: any) => person.value}
-              onChange={event => setQuery(event.target.value)}
+              className="w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-2xl sm:text-3xl font-medium leading-5 text-sky-900"
+              displayValue={(person: OptionType) => person?.value}
+              onChange={event => setSearch(event?.target?.value)}
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
               <SelectorIcon
-                className="w-5 h-5 text-gray-400"
+                className="w-8 h-8 text-sky-500"
                 aria-hidden="true"
               />
             </Combobox.Button>
@@ -57,25 +83,25 @@ export const Autocompolete = ({items = defaultItems}) => {
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            afterLeave={() => setQuery('')}>
+            afterLeave={() => setSearch('')}>
             <Combobox.Options
-              className={`absolute z-40 w-full 
+              className={`absolute z-40
               py-1 mt-1 overflow-auto 
               text-base bg-white rounded-md shadow-lg shadow-cyan-400 max-h-60 
-              ring-2 ring-cyan-800
+              ring-1 ring-cyan-800
               focus:outline-none 
               sm:text-sm`}>
-              {filteredList.length === 0 && query !== '' ? (
-                <div className="cursor-default select-none relative py-2 px-4 text-gray-700">
+              {filteredList.length === 0 && search !== '' ? (
+                <div className="cursor-default select-none ring-1 ring-black relative py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
               ) : (
-                filteredList.map(item => (
+                filteredList?.map(item => (
                   <Combobox.Option
-                    key={item.id}
+                    key={item?.id}
                     className={({active}) =>
                       `cursor-default select-none relative py-2 pl-10 pr-4 ${
-                        active ? 'text-white bg-teal-600' : 'text-gray-900'
+                        active ? 'text-white bg-cyan-600' : 'text-gray-900'
                       }`
                     }
                     value={item}>
@@ -85,12 +111,12 @@ export const Autocompolete = ({items = defaultItems}) => {
                           className={`block truncate ${
                             selected ? 'font-medium' : 'font-normal'
                           }`}>
-                          {item.value}
+                          {item?.value}
                         </span>
                         {selected ? (
                           <span
                             className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                              active ? 'text-white' : 'text-teal-600'
+                              active ? 'text-white' : 'text-cyan-600'
                             }`}>
                             <CheckIcon className="w-5 h-5" aria-hidden="true" />
                           </span>

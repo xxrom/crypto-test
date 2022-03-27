@@ -1,50 +1,33 @@
-import {useEffect, useState} from 'react';
+import {memo, useEffect, useState} from 'react';
+import {useQuery, UseQueryResult} from 'react-query';
 import {Table} from '../components';
+import {AssetListType, useStore, DataAssestsType} from '../hooks';
 
-export type AssetItemType = {
-  id: string;
-  name: string;
-  price: number | string;
-  icon: string;
-};
-export type AssetListType = Array<AssetItemType>;
-
-export const Home = () => {
-  const [list, setList] = useState<AssetListType>();
+export const Home = memo(() => {
+  const [list, setList] = useState<AssetListType>([]);
+  const {
+    isLoading,
+    error,
+    data,
+  }: UseQueryResult<DataAssestsType, any> = useQuery('symbols', () =>
+    fetch('https://api.exchangerate.host/symbols').then(res => res.json()),
+  );
+  const {setAssets} = useStore();
 
   useEffect(() => {
-    const getAssets = async () => {
-      const response = await fetch('https://api.exchangerate.host/symbols');
+    console.log('data', data);
+    if (!data) {
+      return;
+    }
 
-      const data = await response.json();
+    setAssets(data);
+  }, [data, setAssets]);
 
-      const assests = Object.keys(data?.symbols).map(
-        key => data?.symbols[key]?.code,
-      );
+  if (isLoading) return <div>'Loading...'</div>;
 
-      const getSymbol = async (symbol: string, base = 'USD') => {
-        const res = await fetch(
-          `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
-        );
-        const data = await res.json();
-
-        return data?.rates[base];
-      };
-
-      const assestList = await Promise.all(
-        assests.map(async (key, index) => ({
-          id: String(index),
-          name: key,
-          price: await getSymbol(key),
-          icon: '=)',
-        })),
-      );
-
-      setList(assestList);
-    };
-
-    getAssets();
-  }, []);
+  if (error) {
+    return <div>{'An error has occurred: ' + error?.message}</div>;
+  }
 
   return (
     <div>
@@ -53,4 +36,4 @@ export const Home = () => {
       <Table list={list} />
     </div>
   );
-};
+});
