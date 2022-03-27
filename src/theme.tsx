@@ -7,7 +7,7 @@ export const theme = {
   },
   table: {
     cell:
-      'px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm font-light text-left text-gray-900',
+      'px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm sm:text-md font-light sm:font-medium text-left text-gray-900',
 
     bold:
       'px-1 py-1 sm:px-6 sm:py-4 text-sm font-medium text-left align-start text-gray-900 font-light whitespace-nowrap',

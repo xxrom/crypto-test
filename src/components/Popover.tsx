@@ -1,10 +1,25 @@
 import {Popover as HeadlessPopove} from '@headlessui/react';
 import {ChevronDownIcon} from '@heroicons/react/solid';
-import {memo} from 'react';
+import {memo, useCallback} from 'react';
 import {MinLink} from '../containers/Layout';
+import {useStore} from '../hooks';
 import {theme} from '../theme';
 
-export const PopoverBuySell = memo(() => {
+export type PopoverBuySellProps = {
+  symbol: string;
+};
+export const PopoverBuySell = memo(({symbol}: PopoverBuySellProps) => {
+  const {setToAsset, setFromAsset} = useStore();
+
+  const onClickBuy = useCallback(() => setToAsset(symbol), [
+    setToAsset,
+    symbol,
+  ]);
+  const onClickSell = useCallback(() => setFromAsset(symbol), [
+    setFromAsset,
+    symbol,
+  ]);
+
   return (
     <HeadlessPopove className="relative">
       <HeadlessPopove.Button className={theme.button.secondary}>
@@ -15,8 +30,12 @@ export const PopoverBuySell = memo(() => {
       <HeadlessPopove.Panel className="absolute z-50 -ml-5">
         <div className="relative mt-1 flex rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white">
           <div className="flex flex-col p-2">
-            <MinLink to="/trade">Buy</MinLink>
-            <MinLink to="/trade">Sell</MinLink>
+            <MinLink onClick={onClickBuy} to="/trade">
+              Buy
+            </MinLink>
+            <MinLink onClick={onClickSell} to="/trade">
+              Sell
+            </MinLink>
           </div>
         </div>
       </HeadlessPopove.Panel>

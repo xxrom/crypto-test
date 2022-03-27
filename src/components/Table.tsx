@@ -146,7 +146,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
               <td className={theme.table.cell}>{icon}</td>
               <td className={theme.table.cell}>{price}</td>
               <td className={theme.table.cell}>
-                <PopoverBuySell />
+                <PopoverBuySell symbol={name} />
               </td>
             </tr>
           ))}
