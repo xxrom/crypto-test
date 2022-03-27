@@ -3,8 +3,13 @@ import {AssetsListType} from '../hooks';
 import {theme} from '../theme';
 import {Autocompolete} from './Autocomplete';
 import {PopoverBuySell} from './Popover';
+import cx from 'classnames';
 
-export type TableHeaderType = Array<{name: string; filterId?: string}>;
+export type TableHeaderType = Array<{
+  name: string;
+  filterId?: string;
+  info?: string;
+}>;
 
 export type TableProps = {
   header?: TableHeaderType;
@@ -13,16 +18,11 @@ export type TableProps = {
 
 export const headerDefault: TableHeaderType = [
   {name: '#'},
-  {name: 'Name', filterId: 'name'},
-  {name: 'Icon', filterId: 'icon'},
-  {name: 'Price', filterId: 'price'},
+  {name: 'Name', filterId: 'name', info: 'Match:'},
+  {name: 'Icon'},
+  {name: 'Price', filterId: 'price', info: 'More equal:'},
   {name: 'Actions'},
 ];
-
-const cellClass =
-  'px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm font-light text-left text-gray-900';
-const boldCellClass =
-  'px-1 py-1 sm:px-6 sm:py-4 text-sm font-medium text-left text-gray-900 font-light whitespace-nowrap';
 
 export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
   console.info('Render: Table');
@@ -64,14 +64,15 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
   }, [list]);
 
   const inputValueName = inputValues?.name || '';
+  const inputValuePrice = Number(inputValues?.price) || -1000;
 
   const forecFilterList = useCallback(
     (isShort: boolean, innerList: AssetsListType) => {
       setFilteredList(() => {
         const innerFiltered = innerList?.filter(
-          ({name}) =>
+          ({name, price}) =>
             (String(name).match(inputValueName.toUpperCase()) as any)?.index >=
-            0,
+              0 && price >= inputValuePrice,
         );
 
         if (isShort) {
@@ -81,7 +82,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
         return innerFiltered;
       });
     },
-    [inputValueName],
+    [inputValueName, inputValuePrice],
   );
 
   // Apply filters to the list
@@ -110,18 +111,29 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
       <table className="min-w-full">
         <thead>
           <tr>
-            {header.map(({name, filterId}, index: number) => (
-              <th key={`${index}${name}`} scope="col" className={boldCellClass}>
-                {name}
+            {header.map(({name, filterId, info}, index: number) => (
+              <th
+                key={`${index}${name}`}
+                scope="col"
+                className={cx(
+                  theme.table.bold,
+                  'border-b-4 justify-items-end',
+                )}>
+                <div className="flex flex-col">
+                  {name}
 
-                {filterId && (
-                  <Autocompolete
-                    isAlwaysSearching
-                    initSymbol={inputValues[filterId]}
-                    setSymbol={onChangeFilterValue(filterId)}
-                    items={filters[filterId]}
-                  />
-                )}
+                  {filterId && (
+                    <div>
+                      <div className="font-medium mt-1">{info}</div>
+                      <Autocompolete
+                        isAlwaysSearching
+                        initSymbol={inputValues[filterId]}
+                        setSymbol={onChangeFilterValue(filterId)}
+                        items={filters[filterId]}
+                      />
+                    </div>
+                  )}
+                </div>
               </th>
             ))}
           </tr>
@@ -131,11 +143,11 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
             <tr
               key={`${index}${name}`}
               className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-              <td className={boldCellClass}>{index}</td>
-              <td className={cellClass}>{name}</td>
-              <td className={cellClass}>{icon}</td>
-              <td className={cellClass}>{price}</td>
-              <td className={cellClass}>
+              <td className={theme.table.cell}>{index}</td>
+              <td className={theme.table.cell}>{name}</td>
+              <td className={theme.table.cell}>{icon}</td>
+              <td className={theme.table.cell}>{price}</td>
+              <td className={theme.table.cell}>
                 <PopoverBuySell />
               </td>
             </tr>
@@ -143,7 +155,9 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
         </tbody>
       </table>
 
-      <div className={theme.button.primary} onClick={toggleExpand}>
+      <div
+        className={cx(theme.button.secondary, 'mt-4')}
+        onClick={toggleExpand}>
         {isShortList ? 'More' : 'Less'}
       </div>
     </div>

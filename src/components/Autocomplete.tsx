@@ -28,8 +28,6 @@ export const Autocompolete = memo(
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-      console.log('initSymbol', initSymbol);
-
       if (initSymbol) {
         setSearch(initSymbol);
       }
@@ -52,18 +50,30 @@ export const Autocompolete = memo(
     }, [items, initSymbol]);
 
     useEffect(() => {
-      if (selected?.value && setSymbol) {
+      if (selected?.value && setSymbol && !isAlwaysSearching) {
         setSymbol(selected?.value);
       }
-    }, [selected?.value, setSymbol]);
+    }, [isAlwaysSearching, selected?.value, setSymbol]);
 
     const onSearchChange = useCallback(
       event => {
         const val = event?.target?.value;
 
         setSearch(val);
+
         if (isAlwaysSearching && setSymbol) {
           setSymbol(val);
+        }
+      },
+      [isAlwaysSearching, setSymbol],
+    );
+
+    const onChangeSelected = useCallback(
+      (selected: OptionType) => {
+        setSelected(selected);
+
+        if (isAlwaysSearching && setSymbol && selected.value) {
+          setSymbol(selected.value);
         }
       },
       [isAlwaysSearching, setSymbol],
@@ -81,7 +91,7 @@ export const Autocompolete = memo(
 
     return (
       <div className="relative">
-        <Combobox value={selected} onChange={setSelected}>
+        <Combobox value={selected} onChange={onChangeSelected}>
           <div className="relative mt-1">
             <div
               className={`
@@ -92,8 +102,8 @@ export const Autocompolete = memo(
               sm:text-sm overflow-hidden`}>
               <Combobox.Input
                 className="w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-2xl sm:text-3xl font-medium leading-5 text-sky-900"
-                displayValue={(person: OptionType) =>
-                  isAlwaysSearching ? search : person?.value
+                displayValue={(obj: OptionType) =>
+                  isAlwaysSearching ? search : obj?.value
                 }
                 onChange={onSearchChange}
               />

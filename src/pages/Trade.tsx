@@ -138,7 +138,7 @@ export const Trade = memo(() => {
           <button
             className={cx(
               theme.button.primary,
-              'mt-1 text-2xl sx:text-3xl rounded-3xl w-full py-3 sm:py-5',
+              'mt-2 text-2xl sx:text-3xl rounded-3xl w-full py-3 sm:py-5',
             )}>
             Connect wallet
           </button>
