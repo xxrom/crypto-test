@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import cx from 'classnames';
 import {theme} from '../theme';
+import {PopoverLogin} from '../components';
 
 export const MinLink = ({children, to, ...props}: LinkProps) => {
   let resolved = useResolvedPath(to);
@@ -37,15 +38,16 @@ export const Layout = () => (
           <MinLink to="/trade">Trade</MinLink>
         </div>
 
-        <button
-          type="button"
-          className={cx(
-            'font-medium text-cyan-800 bg-cyan-300 hover:bg-cyan-400',
-            theme.button.secondary,
-          )}
-          onClick={() => {}}>
-          Log-in
-        </button>
+        <PopoverLogin>
+          <button
+            type="button"
+            className={cx(
+              'font-medium text-cyan-800 bg-cyan-300 hover:bg-cyan-400',
+              theme.button.secondary,
+            )}>
+            Log-in
+          </button>
+        </PopoverLogin>
       </ul>
     </nav>
 
