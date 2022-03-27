@@ -85,7 +85,7 @@ export const Autocompolete = ({items, initSymbol}: AutocompoleteProps) => {
             leaveTo="opacity-0"
             afterLeave={() => setSearch('')}>
             <Combobox.Options
-              className={`absolute z-40
+              className={`absolute z-40 w-full
               py-1 mt-1 overflow-auto 
               text-base bg-white rounded-md shadow-lg shadow-cyan-400 max-h-60 
               ring-1 ring-cyan-800

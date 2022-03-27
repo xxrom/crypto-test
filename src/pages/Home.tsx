@@ -23,7 +23,8 @@ export const Home = memo(() => {
     setAssetsList,
   ]);
 
-  if (isLoadingFirst || isLoadingSecond) return <div>'Loading...'</div>;
+  if (isLoadingFirst || isLoadingSecond)
+    return <div className="flex flex-1 text-3xl">Loading...</div>;
 
   return (
     <div>
