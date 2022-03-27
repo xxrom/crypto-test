@@ -31,6 +31,8 @@ export const MyRoutes = memo(() => {
   useEffect(() => {
     if (data?.accessToken) {
       setIsAuthorized(true);
+    } else {
+      setIsAuthorized(false);
     }
   }, [data?.accessToken, setIsAuthorized]);
 

@@ -41,8 +41,8 @@ export const Layout = memo(() => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <nav className="sticky top-0 z-40 py-2 text-sm font-medium text-gray-500 bg-white sm:py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm">
-        <ul className="flex justify-between px-4 mx-auto sm:px-6 lg:px-8 space-x-5 sm:space-x-10 lg:space-x-14">
+      <nav className="sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 bg-white sm:py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm">
+        <ul className="flex justify-between px-4 mx-auto sm:px-6 lg:px-8 space-x-0 sm:space-x-10 lg:space-x-14">
           <div className="flex justify-around flex-1">
             <MinLink to="/">Home</MinLink>
 
@@ -52,9 +52,11 @@ export const Layout = memo(() => {
           </div>
 
           {isAuthorized ? (
-            <div className="flex flex-col justify-end items-center cursor-default">
+            <div className="flex flex-col pl-2 overflow-x-auto justify-end items-center cursor-default">
               <div className="font-medium text-cyan-800">User info:</div>
-              <div className="font-medium text-cyan-900">{user?.email}</div>
+              <div className="font-medium overflow-scrollX text-cyan-900">
+                {user?.email}
+              </div>
             </div>
           ) : (
             <PopoverLogin>

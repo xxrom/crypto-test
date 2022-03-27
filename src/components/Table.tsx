@@ -1,5 +1,5 @@
 import {memo, useCallback, useEffect, useState} from 'react';
-import {AssetsListType} from '../hooks';
+import {AssetsListType, useStore} from '../hooks';
 import {theme} from '../theme';
 import {Autocompolete} from './Autocomplete';
 import {PopoverBuySell} from './Popover';
@@ -27,6 +27,7 @@ export const headerDefault: TableHeaderType = [
 export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
   console.info('Render: Table');
 
+  const {isAuthorized} = useStore();
   const [isShortList, setIsShortList] = useState(true);
   const [filteredList, setFilteredList] = useState<TableProps['list']>();
   const [filters, setFilters] = useState<{[key: string]: Array<string>}>({});
@@ -146,7 +147,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
               <td className={theme.table.cell}>{icon}</td>
               <td className={theme.table.cell}>{price}</td>
               <td className={theme.table.cell}>
-                <PopoverBuySell symbol={name} />
+                {isAuthorized ? <PopoverBuySell symbol={name} /> : <span />}
               </td>
             </tr>
           ))}

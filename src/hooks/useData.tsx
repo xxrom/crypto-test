@@ -11,13 +11,17 @@ const fetchSymbol = async (symbol: string, base = 'USD') => {
   return data?.rates[base];
 };
 
-export const useUser = ({email, password}: UserDataType) =>
-  useQuery(`user${email}${password}`, () =>
-    fetch('http://localhost:4444', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email, password}),
-    }).then(res => res.json()),
+const serverIP = '192.168.3.3';
+//const serverIP = '192.168.3.3';
+export const useUser = ({email = '', password = ''}: UserDataType) =>
+  useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
+    `user${email}${password}`,
+    () =>
+      fetch(`http://${serverIP}:4444`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email, password}),
+      }).then(res => res.json()),
   );
 
 export const useAssets = () =>

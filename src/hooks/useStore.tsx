@@ -47,6 +47,9 @@ export interface StoreType {
 
   // User
   user: UserDataType;
+  setUser: (val: UserDataType) => void;
+  setUserEmail: (val: string) => void;
+  setUserPassword: (val: string) => void;
   isAuthorized: boolean;
   setIsAuthorized: (val: boolean) => void;
 }
@@ -88,8 +91,8 @@ export const useStore = create<StoreType>(set => ({
       },
     })),
 
-  toAssetValue: '1.0',
-  fromAssetValue: '1.0',
+  toAssetValue: '0.5',
+  fromAssetValue: '0.5',
   setToAssetValue: toAssetValue =>
     set(state => ({
       ...state,
@@ -102,8 +105,13 @@ export const useStore = create<StoreType>(set => ({
     })),
 
   // User
-  user: {email: 'admin333@gmail.com', password: 'adminadmin'}, // correct auth data
-  //user: {username: 'admin2', password: 'adminadmin'},
+  //user: {email: 'admin@gmail.com', password: 'adminadmin'}, // correct auth data
+  user: {email: 'admin2', password: 'adminadmin'},
+  setUser: user => set(state => ({...state, user})),
+  setUserEmail: email =>
+    set(state => ({...state, user: {...state.user, email}})),
+  setUserPassword: password =>
+    set(state => ({...state, user: {...state.user, password}})),
   isAuthorized: false,
   setIsAuthorized: isAuthorized => set(state => ({...state, isAuthorized})),
 }));
