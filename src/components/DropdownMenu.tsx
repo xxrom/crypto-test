@@ -1,7 +1,7 @@
 import {Menu} from '@headlessui/react';
 import {ChevronDownIcon} from '@heroicons/react/solid';
-import {theme} from '../../theme';
 import cx from 'classnames';
+import {theme} from '../theme';
 
 export const DropdownMenu = () => {
   return (

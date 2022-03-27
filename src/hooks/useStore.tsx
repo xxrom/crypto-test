@@ -20,6 +20,8 @@ export type TradeAssetsType = {
   toAsset: string;
 };
 
+export type UserDataType = {username: string; password: string};
+
 export interface StoreType {
   // .toFixed(accuracy)
   accuracy: number;
@@ -42,6 +44,11 @@ export interface StoreType {
   fromAssetValue: string | number;
   setToAssetValue: (newValue: string | number) => void;
   setFromAssetValue: (newValue: string | number) => void;
+
+  // User
+  user: UserDataType;
+  isAuthorized: boolean;
+  setIsAuthorized: (val: boolean) => void;
 }
 
 export const useStore = create<StoreType>(set => ({
@@ -93,4 +100,9 @@ export const useStore = create<StoreType>(set => ({
       ...state,
       fromAssetValue,
     })),
+
+  // User
+  user: {username: 'admin2', password: 'adminadmin'},
+  isAuthorized: false,
+  setIsAuthorized: isAuthorized => set(state => ({...state, isAuthorized})),
 }));

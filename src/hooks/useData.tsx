@@ -1,16 +1,24 @@
 import {useQuery} from 'react-query';
 import {v4} from 'uuid';
-import {AssetsListType, AssetsType} from './useStore';
+import {AssetsListType, AssetsType, UserDataType} from './useStore';
 
 const fetchSymbol = async (symbol: string, base = 'USD') => {
   const res = await fetch(
     `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
   );
   const data = await res.json();
-  console.log('fetchSymbol', data, data?.rates[base]);
 
   return data?.rates[base];
 };
+
+export const useUser = ({username, password}: UserDataType) =>
+  useQuery(`user${username}${password}`, () =>
+    fetch('http://localhost:4444', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username, password}),
+    }).then(res => res.json()),
+  );
 
 export const useAssets = () =>
   useQuery('symbols', () =>
