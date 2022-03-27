@@ -11,12 +11,12 @@ const fetchSymbol = async (symbol: string, base = 'USD') => {
   return data?.rates[base];
 };
 
-export const useUser = ({username, password}: UserDataType) =>
-  useQuery(`user${username}${password}`, () =>
+export const useUser = ({email, password}: UserDataType) =>
+  useQuery(`user${email}${password}`, () =>
     fetch('http://localhost:4444', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({username, password}),
+      body: JSON.stringify({email, password}),
     }).then(res => res.json()),
   );
 

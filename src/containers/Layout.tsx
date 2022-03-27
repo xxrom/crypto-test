@@ -51,17 +51,20 @@ export const Layout = memo(() => {
             </MinLink>
           </div>
 
-          <PopoverLogin>
-            {isAuthorized ? (
-              <div>{user?.username}</div>
-            ) : (
+          {isAuthorized ? (
+            <div className="flex flex-col justify-end items-center cursor-default">
+              <div className="font-medium text-cyan-800">User info:</div>
+              <div className="font-medium text-cyan-900">{user?.email}</div>
+            </div>
+          ) : (
+            <PopoverLogin>
               <button
                 type="button"
                 className={cx('font-medium text-lg', theme.button.primary)}>
                 Log-in
               </button>
-            )}
-          </PopoverLogin>
+            </PopoverLogin>
+          )}
         </ul>
       </nav>
 

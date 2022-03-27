@@ -20,7 +20,7 @@ export type TradeAssetsType = {
   toAsset: string;
 };
 
-export type UserDataType = {username: string; password: string};
+export type UserDataType = {email: string; password: string};
 
 export interface StoreType {
   // .toFixed(accuracy)
@@ -102,7 +102,8 @@ export const useStore = create<StoreType>(set => ({
     })),
 
   // User
-  user: {username: 'admin2', password: 'adminadmin'},
+  user: {email: 'admin333@gmail.com', password: 'adminadmin'}, // correct auth data
+  //user: {username: 'admin2', password: 'adminadmin'},
   isAuthorized: false,
   setIsAuthorized: isAuthorized => set(state => ({...state, isAuthorized})),
 }));
