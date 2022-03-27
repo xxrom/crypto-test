@@ -11,8 +11,9 @@ const fetchSymbol = async (symbol: string, base = 'USD') => {
   return data?.rates[base];
 };
 
-const serverIP = '192.168.3.3';
 //const serverIP = '192.168.3.3';
+const serverIP = 'localhost';
+
 export const useUser = ({email = '', password = ''}: UserDataType) =>
   useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
     `user${email}${password}`,
