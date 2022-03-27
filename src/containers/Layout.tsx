@@ -17,7 +17,7 @@ export const MinLink = ({children, to, ...props}: LinkProps) => {
     <li className="flex items-center">
       <Link
         className={cx(
-          'text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-lg px-5 py-2 sm:px-6',
+          'text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6',
           match && 'text-cyan-700 shadow-lg shadow-cyan-300/50 ',
         )}
         to={to}
@@ -41,10 +41,7 @@ export const Layout = () => (
         <PopoverLogin>
           <button
             type="button"
-            className={cx(
-              'font-medium text-cyan-800 bg-cyan-300 hover:bg-cyan-400',
-              theme.button.secondary,
-            )}>
+            className={cx('font-medium text-lg', theme.button.primary)}>
             Log-in
           </button>
         </PopoverLogin>

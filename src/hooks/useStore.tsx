@@ -21,6 +21,9 @@ export type TradeAssetsType = {
 };
 
 export interface StoreType {
+  // .toFixed(accuracy)
+  accuracy: number;
+
   // Home page
   assets: AssetsType;
   assetsMap: AssetsMapType;
@@ -41,9 +44,9 @@ export interface StoreType {
   setFromAssetValue: (newValue: string | number) => void;
 }
 
-//const userApiUrl = 'https://randomuser.me/api/';
-
 export const useStore = create<StoreType>(set => ({
+  accuracy: 4,
+
   // Home page
   assets: [],
   assetsMap: {},

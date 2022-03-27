@@ -7,6 +7,7 @@ const fetchSymbol = async (symbol: string, base = 'USD') => {
     `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
   );
   const data = await res.json();
+  console.log('fetchSymbol', data, data?.rates[base]);
 
   return data?.rates[base];
 };

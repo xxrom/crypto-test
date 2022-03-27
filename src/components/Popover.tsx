@@ -8,7 +8,7 @@ export const PopoverBuySell = memo(() => {
   return (
     <HeadlessPopove className="relative">
       <HeadlessPopove.Button className={theme.button.secondary}>
-        <ChevronDownIcon className="w-5 h-5 text-cyan-800" aria-hidden="true" />
+        <ChevronDownIcon className="w-5 h-5 text-cyan-100" aria-hidden="true" />
       </HeadlessPopove.Button>
       <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
 
@@ -33,9 +33,7 @@ type PopoverPriceProps = {
 export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
   return (
     <HeadlessPopove className="relative">
-      <HeadlessPopove.Button className={theme.button.secondary}>
-        {children}
-      </HeadlessPopove.Button>
+      <HeadlessPopove.Button>{children}</HeadlessPopove.Button>
       <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
 
       <HeadlessPopove.Panel className="absolute z-50">
