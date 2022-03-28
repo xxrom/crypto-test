@@ -3,8 +3,6 @@ import {Table} from '../components';
 import {useStore, useAssetsList, useAssets} from '../hooks';
 
 export const Home = memo(() => {
-  console.info('Render: Home');
-
   const {assetsList, setAssets, setAssetsList} = useStore();
 
   const {isLoading: isLoadingFirst, data: assetsData} = useAssets();

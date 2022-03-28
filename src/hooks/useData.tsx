@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 import {v4} from 'uuid';
-import {AssetsListType, AssetsType, UserDataType, useStore} from './useStore';
+import {AssetsListType, UserDataType, useStore} from './useStore';
 
 // Fetch symbol without cashing, getting real data
 const fetchSymbol = async (symbol: string, base = 'USD') => {
@@ -44,7 +44,6 @@ export const useAssetsList = () => {
   const {assets} = useStore();
 
   return useQuery(`assestList${assets.length}`, async () => {
-    console.log('assets', assets?.length);
     // TODO: fetch real asset icon
     const icon = await fetchIcon();
 

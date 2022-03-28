@@ -73,11 +73,9 @@ export const Layout = memo(() => {
             </div>
           ) : (
             <PopoverLogin>
-              <button
-                type="button"
-                className={cx('font-medium text-lg', theme.button.primary)}>
+              <span className={cx('font-medium text-lg', theme.button.primary)}>
                 Log-in
-              </button>
+              </span>
             </PopoverLogin>
           )}
         </ul>

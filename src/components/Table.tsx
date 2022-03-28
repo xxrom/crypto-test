@@ -25,8 +25,6 @@ export const headerDefault: TableHeaderType = [
 ];
 
 export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
-  console.info('Render: Table');
-
   const {isAuthorized} = useStore();
   const [isShortList, setIsShortList] = useState(true);
   const [filteredList, setFilteredList] = useState<TableProps['list']>();

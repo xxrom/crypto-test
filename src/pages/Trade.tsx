@@ -5,8 +5,6 @@ import {useStore, useAssets, useFetchAsset} from '../hooks';
 import {memo, useCallback, useEffect} from 'react';
 
 export const Trade = memo(() => {
-  console.info('Render: Trade');
-
   const {
     assets,
     setAssets,

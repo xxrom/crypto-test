@@ -14,8 +14,6 @@ export type BoxProps = {
 
 export const Box = memo(
   ({isInput, amount, symbol, setSymbol, assets}: BoxProps) => {
-    console.info('Render: Box');
-
     const {data, isLoading} = useFetchAsset(symbol, 'USD');
     const {setFromAssetValue, accuracy} = useStore();
 
