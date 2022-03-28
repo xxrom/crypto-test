@@ -6,5 +6,12 @@ Public-TODO-list: [link](https://waiting-columnist-390.notion.site/CoinMena-todo
 
 ### Run: `yarn && yarn start`
 
+Auth with local server (localhost:4444):
+Login user email: `admin@gmail.com`
+Login user password: `adminadmin`
+
+Auth without local server (for testing):
+User can force login/logout via footer link: `ForceLogIn` or `ForceLogOut`
+
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
