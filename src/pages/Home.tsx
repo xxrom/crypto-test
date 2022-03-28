@@ -5,12 +5,10 @@ import {useStore, useAssetsList, useAssets} from '../hooks';
 export const Home = memo(() => {
   console.info('Render: Home');
 
-  const {assets, assetsList, setAssets, setAssetsList} = useStore();
+  const {assetsList, setAssets, setAssetsList} = useStore();
 
   const {isLoading: isLoadingFirst, data: assetsData} = useAssets();
-  const {isLoading: isLoadingSecond, data: assestListData} = useAssetsList(
-    assets,
-  );
+  const {isLoading: isLoadingSecond, data: assestListData} = useAssetsList();
 
   // First: load all assets
   useEffect(() => assetsData?.data && setAssets(assetsData.data), [

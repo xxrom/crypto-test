@@ -12,30 +12,32 @@ import {useStore} from '../hooks';
 import {memo, useCallback} from 'react';
 import {correctUserAuth} from '../hooks/useStore';
 
-export const MinLink = ({
-  children,
-  to,
-  disabled = false,
-  ...props
-}: LinkProps & {disabled?: boolean}) => {
-  let resolved = useResolvedPath(to);
-  let match = useMatch({path: resolved.pathname, end: true});
+export const MinLink = memo(
+  ({
+    children,
+    to,
+    disabled = false,
+    ...props
+  }: LinkProps & {disabled?: boolean}) => {
+    let resolved = useResolvedPath(to);
+    let match = useMatch({path: resolved.pathname, end: true});
 
-  return (
-    <li className="flex items-center">
-      <Link
-        className={cx(
-          'text-lg hover:shadow-lg hover:shadow-cyan-400/50 hover:shadow-inner  backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6',
-          match && 'text-cyan-700 shadow-lg shadow-cyan-300/50 bg-sky-100',
-          disabled && 'text-neutral-400 hover:shadow-none cursor-default',
-        )}
-        to={disabled ? '#' : to}
-        {...props}>
-        {children}
-      </Link>
-    </li>
-  );
-};
+    return (
+      <li className="flex items-center">
+        <Link
+          className={cx(
+            'text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6',
+            match && 'text-cyan-700 shadow-lg shadow-cyan-300/50 bg-sky-100',
+            disabled && 'text-neutral-400 hover:shadow-none cursor-default',
+          )}
+          to={disabled ? '#' : to}
+          {...props}>
+          {children}
+        </Link>
+      </li>
+    );
+  },
+);
 
 export const Layout = memo(() => {
   const {isAuthorized, setIsAuthorized, user, setUser} = useStore();

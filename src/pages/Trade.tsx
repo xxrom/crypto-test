@@ -60,7 +60,7 @@ export const Trade = memo(() => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col max-w-xl p-2 sm:p-5 py-4 sm:py-6 m-0 bg-sky-500 rounded-3xl">
+      <div className="flex flex-col max-w-xl p-3 sm:p-5 py-4 sm:py-6 m-0 bg-sky-500 rounded-3xl">
         <div>
           <button
             onClick={onSwapTradeAssets}

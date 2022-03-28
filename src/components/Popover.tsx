@@ -25,7 +25,10 @@ export const PopoverBuySell = memo(({symbol}: PopoverBuySellProps) => {
   return (
     <HeadlessPopove className="relative">
       <HeadlessPopove.Button className={theme.button.secondary}>
-        <ChevronDownIcon className="w-5 h-5 text-cyan-100" aria-hidden="true" />
+        <ChevronDownIcon
+          className="w-3 h-3 sm:w-5 sm:h-5 text-cyan-100"
+          aria-hidden="true"
+        />
       </HeadlessPopove.Button>
       <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
 

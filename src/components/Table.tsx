@@ -67,7 +67,6 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
 
   const forceFilterList = useCallback(
     (isShort: boolean, innerList: AssetsListType) => {
-      console.log('innerList', innerList);
       setFilteredList(() => {
         const innerFiltered = innerList?.filter(
           ({name, price}) =>
@@ -145,7 +144,15 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
               className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
               <td className={theme.table.cell}>{index}</td>
               <td className={theme.table.cell}>{name}</td>
-              <td className={theme.table.cell}>{icon}</td>
+              <td className={theme.table.cell}>
+                <picture>
+                  <img
+                    className="w-5 h-5 sm:w-8 sm:h-8 rounded-2xl"
+                    src={icon}
+                    alt=""
+                  />
+                </picture>
+              </td>
               <td className={theme.table.cell}>{price}</td>
               <td className={theme.table.cell}>
                 {isAuthorized ? <PopoverBuySell symbol={name} /> : <span />}

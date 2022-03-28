@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 import {v4} from 'uuid';
-import {AssetsListType, AssetsType, UserDataType} from './useStore';
+import {AssetsListType, AssetsType, UserDataType, useStore} from './useStore';
 
 // Fetch symbol without cashing, getting real data
 const fetchSymbol = async (symbol: string, base = 'USD') => {
@@ -10,6 +10,13 @@ const fetchSymbol = async (symbol: string, base = 'USD') => {
   const data = await res.json();
 
   return data?.rates[base];
+};
+
+const fetchIcon = async () => {
+  const res = await fetch('https://randomuser.me/api/');
+  const data = await res.json();
+
+  return data?.results[0]?.picture?.thumbnail;
 };
 
 //const serverIP = '192.168.3.3';
@@ -33,23 +40,27 @@ export const useAssets = () =>
       .then(res => ({data: res})),
   );
 
-export const useAssetsList = (assets: AssetsType) =>
-  useQuery(
-    `assestList${assets?.length > 0 ? assets[0] : assets?.length}`,
-    async () => {
-      const assestList: AssetsListType = await Promise.all(
-        assets.map(async (key, index) => ({
-          id: v4(),
-          index,
-          name: key,
-          price: await fetchSymbol(key),
-          icon: '=)',
-        })),
-      );
+export const useAssetsList = () => {
+  const {assets} = useStore();
 
-      return {data: assestList};
-    },
-  );
+  return useQuery(`assestList${assets.length}`, async () => {
+    console.log('assets', assets?.length);
+    // TODO: fetch real asset icon
+    const icon = await fetchIcon();
+
+    const assestList: AssetsListType = await Promise.all(
+      assets.map(async (key, index) => ({
+        id: v4(),
+        index,
+        name: key,
+        price: await fetchSymbol(key),
+        icon,
+      })),
+    );
+
+    return {data: assestList};
+  });
+};
 
 export const useFetchAsset = (symbol: string, base: string) =>
   useQuery(

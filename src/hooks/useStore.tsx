@@ -91,8 +91,8 @@ export const useStore = create<StoreType>(set => ({
       },
     })),
 
-  toAssetValue: '0.5',
-  fromAssetValue: '0.5',
+  toAssetValue: '30.5',
+  fromAssetValue: '300.5',
   setToAssetValue: toAssetValue =>
     set(state => ({
       ...state,
