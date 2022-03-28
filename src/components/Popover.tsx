@@ -3,7 +3,9 @@ import {ChevronDownIcon} from '@heroicons/react/solid';
 import {memo, useCallback, useEffect, useState} from 'react';
 import {MinLink} from '../containers/Layout';
 import {useStore, useUser} from '../hooks';
+import {correctUserAuth} from '../hooks/useStore';
 import {theme} from '../theme';
+import cx from 'classnames';
 
 export type PopoverBuySellProps = {
   symbol: string;
@@ -43,35 +45,6 @@ export const PopoverBuySell = memo(({symbol}: PopoverBuySellProps) => {
   );
 });
 
-/*
- 
-<button type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancel</button>
-      
-
-                    <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
-                      id="modal-title">
-                      Create new user
-                    </h3>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Email and password:
-                      </p>
-                    </div>
-                    <div className="mt-2">
-                      <label className="sr-only">Email address</label>
-                      <input
-                        id="email-address"
-                        name="email"
-                        type="email"
-                        required
-                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                        placeholder="Email address"
-                      />
-                    </div>
-
- */
-
 type PopoverPriceProps = {
   asset?: string;
   price?: string | number;
@@ -96,16 +69,14 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
   );
 
   useEffect(() => {
-    console.log('error2:', error, data);
-
     if (isLoading) {
       return setInfo('Loading...');
     }
-    if (error && error?.message) {
-      return setInfo(`Error: ${error?.message}`);
+    if (error) {
+      return setInfo(`Error ${error?.message}`);
     }
     if (data?.err?.message) {
-      return setInfo(`Error: ${data?.err?.message}`);
+      return setInfo(`Error ${data?.err?.message}`);
     }
 
     if (!isAuthorized) {
@@ -149,35 +120,19 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
 
               <div className="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <svg
-                        className="h-6 w-6 text-red-600"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                    </div>
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                  <div className="flex">
+                    <div className="mt-3 text-center sm:mt-0 sm:text-left">
                       <h3
                         className="text-lg leading-6 font-medium text-gray-900"
                         id="modal-title">
-                        Create new user:
+                        {`Create new user:`}
                       </h3>
 
                       <div>{info ? `Info: ${info}` : '...'}</div>
 
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          Email and password:
+                          {`Email and password (${correctUserAuth.email}/${correctUserAuth.password}):`}
                         </p>
                       </div>
                       <div className="mt-2">
@@ -209,14 +164,26 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 flex sm:flex-row-reverse justify-between">
+                  <button
+                    onClick={() => close()}
+                    type="submit"
+                    className={cx(
+                      'group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium',
+                      theme.button.secondary,
+                    )}>
+                    Close
+                  </button>
                   <button
                     onClick={onRegister(close)}
                     type="submit"
-                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    className={cx(
+                      'group relative w-1/2 sm:w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium',
+                      theme.button.primary,
+                    )}>
                     <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                       <svg
-                        className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                        className="h-5 w-5 text-purple-900 group-hover:text-indigo-400"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -224,7 +191,6 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
                         <path
                           fill-rule="evenodd"
                           d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                          clip-rule="evenodd"
                         />
                       </svg>
                     </span>

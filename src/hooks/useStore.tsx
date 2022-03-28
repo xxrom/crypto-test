@@ -105,8 +105,7 @@ export const useStore = create<StoreType>(set => ({
     })),
 
   // User
-  //user: {email: 'admin@gmail.com', password: 'adminadmin'}, // correct auth data
-  user: {email: 'admin2', password: 'adminadmin'},
+  user: {email: 'admin@gmail.co', password: 'adminadmin'},
   setUser: user => set(state => ({...state, user})),
   setUserEmail: email =>
     set(state => ({...state, user: {...state.user, email}})),
@@ -115,3 +114,8 @@ export const useStore = create<StoreType>(set => ({
   isAuthorized: false,
   setIsAuthorized: isAuthorized => set(state => ({...state, isAuthorized})),
 }));
+
+export const correctUserAuth: UserDataType = {
+  email: 'admin@gmail.com',
+  password: 'adminadmin',
+};

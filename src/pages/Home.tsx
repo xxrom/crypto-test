@@ -23,8 +23,13 @@ export const Home = memo(() => {
     setAssetsList,
   ]);
 
-  if (isLoadingFirst || isLoadingSecond)
-    return <div className="flex flex-1 text-3xl">Loading...</div>;
+  if (isLoadingFirst || isLoadingSecond) {
+    return (
+      <div className="flex flex-1 justify-center items-center h-36 text-3xl text-neutral-500">
+        Loading...
+      </div>
+    );
+  }
 
   return <Table list={assetsList} />;
 });

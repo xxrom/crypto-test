@@ -18,9 +18,9 @@ export type TableProps = {
 
 export const headerDefault: TableHeaderType = [
   {name: '#'},
-  {name: 'Name', filterId: 'name', info: 'Match:'},
+  {name: 'Name', filterId: 'name', info: 'MatchStr:'},
   {name: 'Icon'},
-  {name: 'Price', filterId: 'price', info: 'More equal:'},
+  {name: 'Price', filterId: 'price', info: 'MoreEqual:'},
   {name: 'Actions'},
 ];
 
@@ -35,7 +35,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
 
   // Init list
   useEffect(() => {
-    setFilteredList(list.slice(0, 10));
+    //setFilteredList(list.slice(0, 10));
 
     const initFilterList = Object.keys(list[0] || {}).reduce(
       (accum, key) => ({...accum, [key]: []}),
@@ -67,6 +67,7 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
 
   const forceFilterList = useCallback(
     (isShort: boolean, innerList: AssetsListType) => {
+      console.log('innerList', innerList);
       setFilteredList(() => {
         const innerFiltered = innerList?.filter(
           ({name, price}) =>

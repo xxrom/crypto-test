@@ -9,7 +9,8 @@ import cx from 'classnames';
 import {theme} from '../theme';
 import {PopoverLogin} from '../components';
 import {useStore} from '../hooks';
-import {memo} from 'react';
+import {memo, useCallback} from 'react';
+import {correctUserAuth} from '../hooks/useStore';
 
 export const MinLink = ({
   children,
@@ -24,8 +25,8 @@ export const MinLink = ({
     <li className="flex items-center">
       <Link
         className={cx(
-          'text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6',
-          match && 'text-cyan-700 shadow-lg shadow-cyan-300/50 ',
+          'text-lg hover:shadow-lg hover:shadow-cyan-400/50 hover:shadow-inner  backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6',
+          match && 'text-cyan-700 shadow-lg shadow-cyan-300/50 bg-sky-100',
           disabled && 'text-neutral-400 hover:shadow-none cursor-default',
         )}
         to={disabled ? '#' : to}
@@ -37,7 +38,17 @@ export const MinLink = ({
 };
 
 export const Layout = memo(() => {
-  const {isAuthorized, user} = useStore();
+  const {isAuthorized, setIsAuthorized, user, setUser} = useStore();
+
+  const onForceLogOut = useCallback(() => {
+    setIsAuthorized(false);
+    setUser({email: 'none', password: 'none'});
+  }, [setIsAuthorized, setUser]);
+
+  const onForceLogIn = useCallback(() => {
+    setIsAuthorized(true);
+    setUser(correctUserAuth);
+  }, [setIsAuthorized, setUser]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -75,7 +86,18 @@ export const Layout = memo(() => {
       </main>
 
       <footer className="w-full py-5 mx-auto text-sm text-center text-gray-500 border-t max-w-container sm:py-8 sm:flex sm:items-center sm:justify-center">
-        Footer
+        <div>Footer</div>
+        <div>
+          {isAuthorized ? (
+            <button onClick={onForceLogOut} className="mx-4 text-purple-500">
+              ForceLogOut
+            </button>
+          ) : (
+            <button onClick={onForceLogIn} className="mx-4 text-purple-500">
+              ForceLogIn
+            </button>
+          )}
+        </div>
       </footer>
     </div>
   );

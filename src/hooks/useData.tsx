@@ -2,6 +2,7 @@ import {useQuery} from 'react-query';
 import {v4} from 'uuid';
 import {AssetsListType, AssetsType, UserDataType} from './useStore';
 
+// Fetch symbol without cashing, getting real data
 const fetchSymbol = async (symbol: string, base = 'USD') => {
   const res = await fetch(
     `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
@@ -33,19 +34,22 @@ export const useAssets = () =>
   );
 
 export const useAssetsList = (assets: AssetsType) =>
-  useQuery('assestList', async () => {
-    const assestList: AssetsListType = await Promise.all(
-      assets.map(async (key, index) => ({
-        id: v4(),
-        index,
-        name: key,
-        price: await fetchSymbol(key),
-        icon: '=)',
-      })),
-    );
+  useQuery(
+    `assestList${assets?.length > 0 ? assets[0] : assets?.length}`,
+    async () => {
+      const assestList: AssetsListType = await Promise.all(
+        assets.map(async (key, index) => ({
+          id: v4(),
+          index,
+          name: key,
+          price: await fetchSymbol(key),
+          icon: '=)',
+        })),
+      );
 
-    return {data: assestList};
-  });
+      return {data: assestList};
+    },
+  );
 
 export const useFetchAsset = (symbol: string, base: string) =>
   useQuery(
