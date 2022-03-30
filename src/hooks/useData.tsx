@@ -19,8 +19,9 @@ const fetchIcon = async () => {
   return data?.results[0]?.picture?.thumbnail;
 };
 
-//const serverIP = '192.168.3.3';
-const serverIP = 'localhost';
+//const serverIP = 'http://192.168.3.3:4444';
+const serverIP = 'http://localhost:4444';
+//const serverIP = 'https://api.nomics.com/v1';
 
 export const useUser = ({email = '', password = ''}: UserDataType) =>
   useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
@@ -35,7 +36,7 @@ export const useUser = ({email = '', password = ''}: UserDataType) =>
 
 export const useAssets = () =>
   useQuery('symbols', () =>
-    fetch('https://api.exchangerate.host/symbols')
+    fetch(`${serverIP}/currencies/ticket`)
       .then(res => res.json())
       .then(res => ({data: res})),
   );
@@ -48,7 +49,7 @@ export const useAssetsList = () => {
     const icon = await fetchIcon();
 
     const assestList: AssetsListType = await Promise.all(
-      assets.map(async (key, index) => ({
+      assets.map(async (key: string, index: any) => ({
         id: v4(),
         index,
         name: key,
@@ -66,3 +67,44 @@ export const useFetchAsset = (symbol: string, base: string) =>
     `assest${symbol}${base}`,
     async () => await fetchSymbol(symbol, base),
   );
+
+export type AllAssetsType = {
+  id: string;
+  symbol: string;
+  price: string;
+  logo_url: string;
+};
+export type AllAssetsListType = Array<AllAssetsType>;
+export const useAllAssets = () => {
+  const {
+    isLoading,
+    data,
+  }: {isLoading?: boolean; data?: {data: AllAssetsListType}} = useAssets();
+  const {setAssets, setAssetsList} = useStore();
+
+  if (isLoading) {
+    return {isLoading};
+  }
+
+  const assets = data?.data?.map(({symbol}) => symbol) || [];
+
+  const assetsList = data?.data?.map(
+    ({id, symbol, logo_url, price}, index) => ({
+      id,
+      index,
+      price,
+      name: symbol,
+      icon: logo_url,
+    }),
+  );
+
+  if (assets) {
+    setAssets(assets);
+  }
+
+  if (assetsList) {
+    setAssetsList(assetsList);
+  }
+
+  return {assets, assetsList};
+};

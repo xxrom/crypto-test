@@ -31,7 +31,7 @@ export interface StoreType {
   assetsMap: AssetsMapType;
   assetsList: AssetsListType;
 
-  setAssets: (data: DataAssestsType) => void;
+  setAssets: (data: AssetsType) => void;
   setAssetsList: (data: AssetsListType) => void;
 
   // Trade page
@@ -61,12 +61,12 @@ export const useStore = create<StoreType>(set => ({
   assets: [],
   assetsMap: {},
   assetsList: [],
-  setAssets: ({symbols}: DataAssestsType) =>
+  setAssets: assets =>
     set(state => ({
       ...state,
-      assets: Object.keys(symbols).map((key: string) => symbols[key]?.code),
+      assets,
     })),
-  setAssetsList: (assetsList: AssetsListType) =>
+  setAssetsList: assetsList =>
     set(state => ({
       ...state,
       assetsList,
@@ -92,7 +92,7 @@ export const useStore = create<StoreType>(set => ({
     })),
 
   toAssetValue: '30.5',
-  fromAssetValue: '300.5',
+  fromAssetValue: '30.5',
   setToAssetValue: toAssetValue =>
     set(state => ({
       ...state,
@@ -114,6 +114,15 @@ export const useStore = create<StoreType>(set => ({
   isAuthorized: false,
   setIsAuthorized: isAuthorized => set(state => ({...state, isAuthorized})),
 }));
+
+type ConvertAssetsDataToAssetsTypeType = {
+  data?: Array<any>;
+};
+
+export const convertAssetsDataToAssetsType = (
+  box?: ConvertAssetsDataToAssetsTypeType,
+) =>
+  box?.data ? box?.data?.map(({symbol}, index: any) => symbol || index) : [];
 
 export const correctUserAuth: UserDataType = {
   email: 'admin@gmail.com',

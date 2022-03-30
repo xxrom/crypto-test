@@ -1,6 +1,7 @@
 import {memo, useEffect} from 'react';
 import {Table} from '../components';
 import {useStore, useAssetsList, useAssets} from '../hooks';
+import {convertAssetsDataToAssetsType} from '../hooks/useStore';
 
 export const Home = memo(() => {
   const {assetsList, setAssets, setAssetsList} = useStore();
@@ -8,11 +9,18 @@ export const Home = memo(() => {
   const {isLoading: isLoadingFirst, data: assetsData} = useAssets();
   const {isLoading: isLoadingSecond, data: assestListData} = useAssetsList();
 
+  console.log('assetsData', assetsData);
+
   // First: load all assets
-  useEffect(() => assetsData?.data && setAssets(assetsData.data), [
-    assetsData?.data,
-    setAssets,
-  ]);
+  useEffect(() => {
+    const assets = convertAssetsDataToAssetsType(assetsData);
+
+    console.log(assets);
+
+    if (assets) {
+      setAssets(assets);
+    }
+  }, [assetsData, setAssets]);
   // Second: load prices for all assets
   useEffect(() => assestListData?.data && setAssetsList(assestListData.data), [
     assestListData?.data,

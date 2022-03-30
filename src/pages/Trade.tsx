@@ -3,6 +3,7 @@ import cx from 'classnames';
 import {Box} from '../components';
 import {useStore, useAssets, useFetchAsset} from '../hooks';
 import {memo, useCallback, useEffect} from 'react';
+import {convertAssetsDataToAssetsType} from '../hooks/useStore';
 
 export const Trade = memo(() => {
   const {
@@ -26,10 +27,12 @@ export const Trade = memo(() => {
   );
 
   useEffect(() => {
-    if (assetsData?.data) {
-      setAssets(assetsData?.data);
+    const assets = convertAssetsDataToAssetsType(assetsData);
+
+    if (assets) {
+      setAssets(assets);
     }
-  }, [assetsData?.data, setAssets]);
+  }, [assetsData, setAssets]);
 
   useEffect(() => {
     if (assetIsLoading) {
