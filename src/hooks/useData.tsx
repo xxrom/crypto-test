@@ -27,7 +27,7 @@ export const useUser = ({email = '', password = ''}: UserDataType) =>
   useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
     `user${email}${password}`,
     () =>
-      fetch(`http://${serverIP}:4444`, {
+      fetch(serverIP, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({email, password}),
@@ -75,6 +75,34 @@ export type AllAssetsType = {
   logo_url: string;
 };
 export type AllAssetsListType = Array<AllAssetsType>;
+
+/*
+export const useAllAssets = () =>
+  useAssets().then((res?: {data: AllAssetsListType}) => {
+    const {setAssets, setAssetsList} = useStore();
+
+    const assets = data?.data?.map(({symbol}) => symbol) || [];
+
+    const assetsList = data?.data?.map(
+      ({id, symbol, logo_url, price}, index) => ({
+        id,
+        index,
+        price,
+        name: symbol,
+        icon: logo_url,
+      }),
+    );
+
+    if (assets) {
+      setAssets(assets);
+    }
+
+    if (assetsList) {
+      setAssetsList(assetsList);
+    }
+  });
+ */
+
 export const useAllAssets = () => {
   const {
     isLoading,
