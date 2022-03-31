@@ -73,7 +73,7 @@ export const useStore = create<StoreType>(set => ({
     })),
 
   // Trade page
-  tradeAssets: {fromAsset: 'USD', toAsset: 'BTC'},
+  tradeAssets: {fromAsset: 'USDT', toAsset: 'BTC'},
   setFromAsset: fromAsset =>
     set(state => ({
       ...state,

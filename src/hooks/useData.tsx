@@ -2,7 +2,21 @@ import {useQuery} from 'react-query';
 import {v4} from 'uuid';
 import {AssetsListType, UserDataType, useStore} from './useStore';
 
+//const serverIP = 'http://192.168.3.3:4444';
+const serverIP = 'http://192.168.3.150:4444';
+//const serverIP = 'http://localhost:4444';
+//const serverIP = 'https://api.nomics.com/v1';
+
 // Fetch symbol without cashing, getting real data
+const fetchSymbol = async (symbol: string, base = 'USDT') => {
+  const res = await fetch(`${serverIP}/currencies/convert/${base}/${symbol}`);
+  const data = await res.json();
+
+  console.log('data', data);
+
+  return data;
+};
+/*
 const fetchSymbol = async (symbol: string, base = 'USD') => {
   const res = await fetch(
     `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
@@ -11,6 +25,7 @@ const fetchSymbol = async (symbol: string, base = 'USD') => {
 
   return data?.rates[base];
 };
+ */
 
 const fetchIcon = async () => {
   const res = await fetch('https://randomuser.me/api/');
@@ -18,10 +33,6 @@ const fetchIcon = async () => {
 
   return data?.results[0]?.picture?.thumbnail;
 };
-
-//const serverIP = 'http://192.168.3.3:4444';
-const serverIP = 'http://localhost:4444';
-//const serverIP = 'https://api.nomics.com/v1';
 
 export const useUser = ({email = '', password = ''}: UserDataType) =>
   useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
@@ -75,33 +86,6 @@ export type AllAssetsType = {
   logo_url: string;
 };
 export type AllAssetsListType = Array<AllAssetsType>;
-
-/*
-export const useAllAssets = () =>
-  useAssets().then((res?: {data: AllAssetsListType}) => {
-    const {setAssets, setAssetsList} = useStore();
-
-    const assets = data?.data?.map(({symbol}) => symbol) || [];
-
-    const assetsList = data?.data?.map(
-      ({id, symbol, logo_url, price}, index) => ({
-        id,
-        index,
-        price,
-        name: symbol,
-        icon: logo_url,
-      }),
-    );
-
-    if (assets) {
-      setAssets(assets);
-    }
-
-    if (assetsList) {
-      setAssetsList(assetsList);
-    }
-  });
- */
 
 export const useAllAssets = () => {
   const {
