@@ -58,9 +58,30 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
   const {isAuthorized, user, setUser} = useStore();
   const [email, setEmail] = useState(user?.email || '');
   const [password, setPassword] = useState(user?.password || '');
-
-  const {error, isLoading, data} = useUser(user);
+  const {
+    error,
+    isLoading: isLoadingUser,
+    data: userData,
+    refetch: refetchUser,
+    remove: removeCashe,
+  } = useUser();
   const [info, setInfo] = useState('');
+
+  useEffect(() => {
+    if (isLoadingUser) {
+      return setInfo('Loading...');
+    }
+    if (error) {
+      return setInfo(`Error ${error?.message}`);
+    }
+    if (userData?.err?.message) {
+      return setInfo(`Error ${userData?.err?.message}`);
+    }
+
+    if (!isAuthorized) {
+      setInfo('Something wrong... =)');
+    }
+  }, [userData, error, isAuthorized, isLoadingUser]);
 
   const onChangeEmail = useCallback(
     event => setEmail(event?.target?.value),
@@ -70,32 +91,21 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
     event => setPassword(event?.target?.value),
     [],
   );
-
-  useEffect(() => {
-    if (isLoading) {
-      return setInfo('Loading...');
-    }
-    if (error) {
-      return setInfo(`Error ${error?.message}`);
-    }
-    if (data?.err?.message) {
-      return setInfo(`Error ${data?.err?.message}`);
-    }
-
-    if (!isAuthorized) {
-      setInfo('Something wrong... =)');
-    }
-  }, [data, error, isAuthorized, isLoading]);
+  const onClosePopover = useCallback(closeFn => () => closeFn(), []);
 
   const onRegister = useCallback(
     closeFn => () => {
       setUser({email, password});
+      setInfo('');
 
       if (isAuthorized) {
         closeFn();
+      } else {
+        removeCashe();
+        new Promise((resolve: any) => resolve()).then(() => refetchUser());
       }
     },
-    [email, isAuthorized, password, setUser],
+    [email, isAuthorized, password, refetchUser, removeCashe, setUser],
   );
 
   return (
@@ -169,7 +179,7 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 flex sm:flex-row-reverse justify-between">
                   <button
-                    onClick={() => close()}
+                    onClick={onClosePopover(close)}
                     type="submit"
                     className={cx(
                       'group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium',
@@ -180,9 +190,12 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
                   <button
                     onClick={onRegister(close)}
                     type="submit"
+                    disabled={isLoadingUser}
                     className={cx(
                       'group relative w-1/2 sm:w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium',
                       theme.button.primary,
+                      isLoadingUser &&
+                        'text-black bg-neutral-400 hover:bg-neutral-300',
                     )}>
                     <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                       <svg
@@ -197,7 +210,7 @@ export const PopoverLogin = memo(({children}: PopoverPriceProps) => {
                         />
                       </svg>
                     </span>
-                    Sign in
+                    {isLoadingUser ? 'Loading' : 'Sign in'}
                   </button>
                 </div>
               </div>

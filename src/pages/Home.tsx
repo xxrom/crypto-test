@@ -1,12 +1,9 @@
 import {memo, useEffect} from 'react';
 import {Table} from '../components';
-import {useStore, useAssets, AllAssetsListType} from '../hooks';
+import {useStore, useAssets} from '../hooks';
 
 export const Home = memo(() => {
-  const {
-    isLoading,
-    data,
-  }: {isLoading?: boolean; data?: {data: AllAssetsListType}} = useAssets();
+  const {isLoading, data} = useAssets();
 
   const {assetsList, setAssets, setAssetsList} = useStore();
   console.log('Render: Home', isLoading, data, assetsList);

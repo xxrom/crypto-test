@@ -1,6 +1,5 @@
 import {useQuery} from 'react-query';
-import {v4} from 'uuid';
-import {AssetsListType, UserDataType, useStore} from './useStore';
+import {UserDataType, useStore} from './useStore';
 
 //const serverIP = 'http://192.168.3.3:4444';
 const serverIP = 'http://192.168.3.150:4444';
@@ -8,71 +7,36 @@ const serverIP = 'http://192.168.3.150:4444';
 //const serverIP = 'https://api.nomics.com/v1';
 
 // Fetch symbol without cashing, getting real data
-const fetchSymbol = async (symbol: string, base = 'USDT') => {
-  const res = await fetch(`${serverIP}/currencies/convert/${base}/${symbol}`);
-  const data = await res.json();
-
-  console.log('data', data);
-
-  return data;
-};
-
-/*
-const fetchSymbol = async (symbol: string, base = 'USD') => {
-  const res = await fetch(
-    `https://api.exchangerate.host/latest?base=${symbol}&symbols=${base}`,
-  );
-  const data = await res.json();
-
-  return data?.rates[base];
-};
- */
-
-const fetchIcon = async () => {
-  const res = await fetch('https://randomuser.me/api/');
-  const data = await res.json();
-
-  return data?.results[0]?.picture?.thumbnail;
-};
-
-export const useUser = ({email = '', password = ''}: UserDataType) =>
-  useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
-    `user${email}${password}`,
-    () =>
-      fetch(`${serverIP}/auth`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email, password}),
-      }).then(res => res.json()),
+const fetchSymbol = async (symbol: string, base = 'USDT') =>
+  await fetch(`${serverIP}/currencies/convert/${base}/${symbol}`).then(res =>
+    res.json(),
   );
 
-export const useAssets = () =>
+export const useUser = () => {
+  const {user} = useStore();
+  const {email = '', password = ''} = user;
+
+  return useQuery<
+    UserDataType & {accessToken: string; err?: {message: string}},
+    any
+  >(`user${email}${password}`, () =>
+    fetch(`${serverIP}/user/auth`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password}),
+    }).then(res => res.json()),
+  );
+};
+
+export const useAssets = (): {
+  isLoading?: boolean;
+  data?: {data: AllAssetsListType};
+} =>
   useQuery('symbols', () =>
-    fetch(`${serverIP}/currencies/ticket`)
+    fetch(`${serverIP}/currencies/ticker`)
       .then(res => res.json())
       .then(res => ({data: res})),
   );
-
-export const useAssetsList = () => {
-  const {assets} = useStore();
-
-  return useQuery(`assestList${assets.length}`, async () => {
-    // TODO: fetch real asset icon
-    const icon = await fetchIcon();
-
-    const assestList: AssetsListType = await Promise.all(
-      assets.map(async (key: string, index: any) => ({
-        id: v4(),
-        index,
-        name: key,
-        price: await fetchSymbol(key),
-        icon,
-      })),
-    );
-
-    return {data: assestList};
-  });
-};
 
 export const useFetchAsset = (symbol: string, base: string) =>
   useQuery(
