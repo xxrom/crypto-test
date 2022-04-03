@@ -16,6 +16,7 @@ const fetchSymbol = async (symbol: string, base = 'USDT') => {
 
   return data;
 };
+
 /*
 const fetchSymbol = async (symbol: string, base = 'USD') => {
   const res = await fetch(
@@ -38,7 +39,7 @@ export const useUser = ({email = '', password = ''}: UserDataType) =>
   useQuery<UserDataType & {accessToken: string; err?: {message: string}}, any>(
     `user${email}${password}`,
     () =>
-      fetch(serverIP, {
+      fetch(`${serverIP}/auth`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({email, password}),

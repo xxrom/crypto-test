@@ -3,6 +3,7 @@ import {StoreType, useFetchAsset, useStore} from '../hooks';
 import cx from 'classnames';
 import {Input} from './Input';
 import {Autocompolete} from './Autocomplete';
+import {toFixedNumber} from '../tools/convert';
 
 export type BoxProps = {
   isInput?: boolean;
@@ -34,7 +35,7 @@ export const Box = memo(
                 />
               ) : (
                 <div className="w-full cursor-default pr-5 text-2xl font-medium sm:text-3xl min-w-xs sm:pr-4 text-sky-900 ">
-                  {Number(amount).toFixed(accuracy)}
+                  {toFixedNumber(amount, accuracy)}
                 </div>
               )}
 
@@ -46,7 +47,9 @@ export const Box = memo(
             </div>
 
             <div className="flex cursor-default mt-2 text-sky-800">
-              {isLoading ? 'Loading...' : `1.0 ${symbol} = ${data} USD `}
+              {isLoading
+                ? 'Loading...'
+                : `1.0 ${symbol} = ~${toFixedNumber(data, accuracy)} USDT `}
             </div>
           </div>
         </div>
