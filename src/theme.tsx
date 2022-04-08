@@ -1,9 +1,48 @@
+const buttonCommon = `inline-flex justify-center items-center px-2 py-1 sm:px-4 sm:py-2 text-lg font-medium `;
+const getButtonStyle = ({
+  textColor,
+  bgColor,
+  hoverBg,
+  hoverRing,
+  custom,
+}: any) => `
+${buttonCommon}
+
+text-${textColor} bg-${bgColor}
+
+border-0 rounded-xl 
+hover:bg-${hoverBg} 
+focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
+
+focus-visible:ring-${hoverRing} 
+active:ring-2 ring-${hoverRing}
+
+${custom}
+`;
+
 export const theme = {
   button: {
-    primary:
-      'inline-flex justify-center items-center px-2 py-1 sm:px-4 sm:py-2 text-lg font-medium text-white bg-purple-600 border border-transparent rounded-xl hover:bg-purple-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 active:ring-2 ring-cyan-800',
-    secondary:
-      'inline-flex justify-center items-center px-2 py-2 sm:px-4 sm:py-2 text-sm font-small text-blue-900 bg-sky-400 border border-transparent rounded-xl hover:bg-sky-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500 active:ring-2 ring-cyan-800',
+    primary: getButtonStyle({
+      textColor: 'white',
+      bgColor: 'purple-600',
+      hoverBg: 'purple-500',
+      hoverRing: 'cyan-800',
+    }),
+    secondary: getButtonStyle({
+      textColor: 'blue-900',
+      bgColor: 'sky-400',
+      hoverBg: 'sky-300',
+      hoverRing: 'cyan-800',
+    }),
+    ghost: getButtonStyle({
+      textColor: 'slate-900',
+      bgColor: 'slate-100',
+      hoverBg: 'slate-400',
+      hoverRing: 'slate-800',
+      custom: `
+      shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]
+      active:outline outline-offset-0 active:outline-slate-500`,
+    }),
   },
   table: {
     cell:

@@ -12,15 +12,30 @@ const fetchSymbol = async (symbol: string, base = 'USDT') =>
     res.json(),
   );
 
-export const useUser = () => {
+export const useUserLogin = () => {
   const {user} = useStore();
   const {email = '', password = ''} = user;
 
   return useQuery<
     UserDataType & {accessToken: string; err?: {message: string}},
     any
-  >(`user${email}${password}`, () =>
+  >(`userLogin_${email}${password}`, () =>
     fetch(`${serverIP}/user/auth`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password}),
+    }).then(res => res.json()),
+  );
+};
+export const useUserSingup = () => {
+  const {user} = useStore();
+  const {email = '', password = ''} = user;
+
+  return useQuery<
+    UserDataType & {accessToken: string; err?: {message: string}},
+    any
+  >(`userSingup_${email}${password}`, () =>
+    fetch(`${serverIP}/user/post-data`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({email, password}),

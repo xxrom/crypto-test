@@ -6,11 +6,11 @@ import {
   LinkProps,
 } from 'react-router-dom';
 import cx from 'classnames';
-import {theme} from '../theme';
 import {PopoverLogin} from '../components';
 import {useStore} from '../hooks';
 import {memo, useCallback} from 'react';
 import {correctUserAuth} from '../hooks/useStore';
+import {PopoverSingUp} from '../components/Popover';
 
 export const MinLink = memo(
   ({
@@ -72,11 +72,10 @@ export const Layout = memo(() => {
               </div>
             </div>
           ) : (
-            <PopoverLogin>
-              <span className={cx('font-medium text-lg', theme.button.primary)}>
-                Log-in
-              </span>
-            </PopoverLogin>
+            <div className="flex flex-row">
+              <PopoverLogin />
+              <PopoverSingUp />
+            </div>
           )}
         </ul>
       </nav>
