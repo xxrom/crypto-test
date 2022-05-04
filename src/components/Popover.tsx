@@ -3,7 +3,6 @@ import {ChevronDownIcon} from '@heroicons/react/solid';
 import {memo, useCallback, useEffect, useState} from 'react';
 import {MinLink} from '../containers/Layout';
 import {useStore} from '../hooks';
-import {correctUserAuth} from '../hooks/useStore';
 import {theme} from '../theme';
 import cx from 'classnames';
 import {useUserLogin, useUserSingup} from '../hooks/useData';
@@ -194,7 +193,7 @@ export const PopoverLogin = memo(() => {
                       'group relative w-1/2 sm:w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium',
                       theme.button.primary,
                       isLoadingUser &&
-                        'text-black bg-neutral-400 hover:bg-neutral-300',
+                        'text-neutral-400 bg-neutral-400 hover:bg-neutral-300',
                     )}>
                     <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                       <svg
@@ -396,6 +395,7 @@ export const PopoverSingUp = memo(() => {
                         />
                       </svg>
                     </span>
+
                     {isLoadingUser ? 'Loading' : 'Sign-up'}
                   </button>
                 </div>

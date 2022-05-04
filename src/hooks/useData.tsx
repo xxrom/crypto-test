@@ -20,7 +20,7 @@ export const useUserLogin = () => {
     UserDataType & {accessToken: string; err?: {message: string}},
     any
   >(`userLogin_${email}${password}`, () =>
-    fetch(`${serverIP}/user/auth`, {
+    fetch(`${serverIP}/auth`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({email, password}),

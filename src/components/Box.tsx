@@ -1,29 +1,31 @@
-import {memo} from 'react';
-import {StoreType, useFetchAsset, useStore} from '../hooks';
-import cx from 'classnames';
-import {Input} from './Input';
-import {Autocompolete} from './Autocomplete';
-import {toFixedNumber} from '../tools/convert';
+import { memo } from "react";
+import { StoreType, useFetchAsset, useStore } from "../hooks";
+import cx from "classnames";
+import { Input } from "./Input";
+import { Autocompolete } from "./Autocomplete";
+import { toFixedNumber } from "../tools/convert";
+import { colors, theme } from "../theme";
 
 export type BoxProps = {
   isInput?: boolean;
   amount: string | number;
   symbol: string;
-  assets: StoreType['assets'];
+  assets: StoreType["assets"];
   setSymbol: (val: string) => void;
 };
 
 export const Box = memo(
-  ({isInput, amount, symbol, setSymbol, assets}: BoxProps) => {
-    const {data, isLoading} = useFetchAsset(symbol, 'USDT');
-    const {setFromAssetValue, accuracy} = useStore();
+  ({ isInput, amount, symbol, setSymbol, assets }: BoxProps) => {
+    const { data, isLoading } = useFetchAsset(symbol, "USDT");
+    const { setFromAssetValue, accuracy } = useStore();
 
     return (
       <div
         className={cx(
-          isInput ? 'bg-white' : 'bg-slate-200',
-          'flex mb-2 py-1 sm:py-5 rounded-3xl',
-        )}>
+          isInput ? theme.global.bg : `bg-${colors.disabled}`,
+          "flex mb-2 py-1 sm:py-5 rounded-3xl bg-netural-400"
+        )}
+      >
         <div>
           <div className="flex flex-col justify-between flex-1 px-1 sm:px-4 py-2 m-3 my-3 sm:px-6 sm:py-3">
             <div className="flex items-center">
@@ -48,12 +50,12 @@ export const Box = memo(
 
             <div className="flex cursor-default mt-2 text-sky-800">
               {isLoading
-                ? 'Loading...'
+                ? "Loading..."
                 : `1.0 ${symbol} = ~${toFixedNumber(data, accuracy)} USDT `}
             </div>
           </div>
         </div>
       </div>
     );
-  },
+  }
 );
