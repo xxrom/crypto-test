@@ -6,11 +6,10 @@ import {
   LinkProps,
 } from "react-router-dom";
 import cx from "classnames";
-import { PopoverLogin } from "../components";
+import { PopoverLogin, PopoverSingUp } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
 import { correctUserAuth } from "../hooks/useStore";
-import { PopoverSingUp } from "../components/Popover";
 import { theme } from "../theme";
 
 export const MinLink = memo(

@@ -107,7 +107,6 @@ export const Autocompolete = memo(
                 className={cx(
                   "w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-2xl sm:text-3xl font-medium leading-5",
                   theme.font.primary,
-                  "bg-slate-800",
                   theme.global.bgSecondary
                 )}
                 displayValue={(obj: OptionType) =>
