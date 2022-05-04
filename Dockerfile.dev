@@ -1,0 +1,16 @@
+# Dockerfile.dev
+# run only in development mode
+FROM node:alpine
+
+WORKDIR '/app'
+
+COPY package.json .
+RUN yarn
+
+COPY . .
+# можно удалить для dev режима
+# (так как в docker-compose мапится вся папка из
+# контейнера на папку в компьютере), но лучше оставить
+# чтобы потом не забыть перенести код в контейнер
+
+CMD ["yarn", "start"]

@@ -3,6 +3,8 @@ import cx from 'classnames';
 import {Box} from '../components';
 import {useStore, useAssets, useFetchAsset} from '../hooks';
 import {memo, useCallback, useEffect} from 'react';
+import {convertAssetsDataToAssetsType} from '../hooks/useStore';
+import {toFixedNumber} from '../tools/convert';
 
 export const Trade = memo(() => {
   const {
@@ -26,10 +28,12 @@ export const Trade = memo(() => {
   );
 
   useEffect(() => {
-    if (assetsData?.data) {
-      setAssets(assetsData?.data);
+    const assets = convertAssetsDataToAssetsType(assetsData);
+
+    if (assets) {
+      setAssets(assets);
     }
-  }, [assetsData?.data, setAssets]);
+  }, [assetsData, setAssets]);
 
   useEffect(() => {
     if (assetIsLoading) {
@@ -42,8 +46,8 @@ export const Trade = memo(() => {
   const onSwapTradeAssets = useCallback(() => {
     setToAsset(fromAsset);
     setFromAsset(toAsset);
-    setToAssetValue(Number(fromAssetValue).toFixed(accuracy));
-    setFromAssetValue(Number(toAssetValue).toFixed(accuracy));
+    setToAssetValue(toFixedNumber(fromAssetValue, accuracy));
+    setFromAssetValue(toFixedNumber(toAssetValue, accuracy));
   }, [
     accuracy,
     fromAsset,
@@ -94,7 +98,3 @@ export const Trade = memo(() => {
     </div>
   );
 });
-
-/*
-   TODO: bug with 'USD' to "VEF", wrong response without 'VEF' data
-*/

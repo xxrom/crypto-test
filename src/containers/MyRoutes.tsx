@@ -2,7 +2,7 @@ import {Home, Trade} from '../pages';
 import {Layout} from '../containers';
 import {memo, useEffect} from 'react';
 import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
-import {useStore, useUser} from '../hooks';
+import {useStore, useUserLogin} from '../hooks';
 
 export type ProtectedRouteProps = {
   redirectPath?: string;
@@ -24,14 +24,14 @@ const ProtectedRoute = memo(
 );
 
 export const MyRoutes = memo(() => {
-  const {setIsAuthorized, user} = useStore();
-  const {data} = useUser(user);
+  const {setIsAuthorized} = useStore();
+  const {data: dataUser} = useUserLogin();
 
   useEffect(() => {
-    if (data?.accessToken) {
+    if (dataUser?.accessToken) {
       setIsAuthorized(true);
     }
-  }, [data?.accessToken, setIsAuthorized]);
+  }, [dataUser?.accessToken, setIsAuthorized]);
 
   return (
     <BrowserRouter>

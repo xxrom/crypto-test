@@ -1,6 +1,6 @@
 import {memo, useCallback, useEffect, useState} from 'react';
 import {AssetsListType, useStore} from '../hooks';
-import {theme} from '../theme';
+import {colors, theme} from '../theme';
 import {Autocompolete} from './Autocomplete';
 import {PopoverBuySell} from './Popover';
 import cx from 'classnames';
@@ -107,15 +107,15 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
     <div className="relative rounded-xl flex flex-1 flex-col w-min-screen">
       <table className="min-w-full">
         <thead>
-          <tr>
+          <tr
+            className={`border-b-4 
+                    border-${colors.bgSecondary} 
+                    justify-items-end`}>
             {header.map(({name, filterId, info}, index: number) => (
               <th
                 key={`${index}${name}`}
                 scope="col"
-                className={cx(
-                  theme.table.bold,
-                  'border-b-4 justify-items-end',
-                )}>
+                className={theme.table.bold}>
                 <div className="flex flex-col">
                   {name}
 
@@ -139,7 +139,10 @@ export const Table = memo(({header = headerDefault, list = []}: TableProps) => {
           {filteredList?.map(({name, price, icon}, index) => (
             <tr
               key={`${index}${name}`}
-              className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+              className={`border-b 
+                ${theme.global.bgSecondary} 
+                transition duration-300 ease-in-out cursor-pointer
+                hover:${theme.global.bgHover}`}>
               <td className={theme.table.cell}>{index}</td>
               <td className={theme.table.cell}>{name}</td>
               <td className={theme.table.cell}>
