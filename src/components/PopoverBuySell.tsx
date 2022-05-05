@@ -1,13 +1,15 @@
 import { Popover as HeadlessPopove } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { memo, useCallback } from "react";
-import { MinLink } from "../containers/Layout";
+import { MiniLink } from ".";
 import { useStore } from "../hooks";
 import { theme } from "../theme";
+import cx from "classnames";
 
 export type PopoverBuySellProps = {
   symbol: string;
 };
+
 export const PopoverBuySell = memo(({ symbol }: PopoverBuySellProps) => {
   const { setToAsset, setFromAsset } = useStore();
 
@@ -28,20 +30,24 @@ export const PopoverBuySell = memo(({ symbol }: PopoverBuySellProps) => {
           aria-hidden="true"
         />
       </HeadlessPopove.Button>
+
       <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
 
       <HeadlessPopove.Panel className="absolute z-50 -ml-5">
         <div
-          className={`relative mt-1 flex rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 ${theme.global.bgSecondary}`}
+          className={cx(
+            `relative mt-1 flex rounded-lg shadow-lg ring-1 ring-black ring-opacity-5`,
+            theme.global.bgSecondary
+          )}
         >
           <div className="flex flex-col p-2">
-            <MinLink onClick={onClickBuy} to="/trade">
+            <MiniLink onClick={onClickBuy} to="/trade">
               Buy
-            </MinLink>
+            </MiniLink>
 
-            <MinLink onClick={onClickSell} to="/trade">
+            <MiniLink onClick={onClickSell} to="/trade">
               Sell
-            </MinLink>
+            </MiniLink>
           </div>
         </div>
       </HeadlessPopove.Panel>

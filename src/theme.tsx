@@ -32,7 +32,7 @@ ${custom}
 `;
 
 export const colors = {
-  primary: "sky-800",
+  primary: "sky-500",
   secondary: "gray-500",
   bgPrimary: "slate-900",
   bgSecondary: "slate-800",

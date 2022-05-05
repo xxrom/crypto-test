@@ -108,6 +108,12 @@ export const Table = memo(
       []
     );
 
+    const getActionCell = useCallback(
+      (name: string) =>
+        isAuthorized ? <PopoverBuySell symbol={name} /> : <span />,
+      [isAuthorized]
+    );
+
     return (
       <div className="relative rounded-xl flex flex-1 flex-col w-min-screen">
         <table className="min-w-full">
@@ -159,9 +165,7 @@ export const Table = memo(
                   </picture>
                 </td>
                 <td className={theme.table.cell}>{price}</td>
-                <td className={theme.table.cell}>
-                  {isAuthorized ? <PopoverBuySell symbol={name} /> : <span />}
-                </td>
+                <td className={theme.table.cell}>{getActionCell(name)}</td>
               </tr>
             ))}
           </tbody>

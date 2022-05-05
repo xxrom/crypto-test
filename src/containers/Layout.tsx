@@ -1,46 +1,10 @@
-import {
-  Outlet,
-  Link,
-  useMatch,
-  useResolvedPath,
-  LinkProps,
-} from "react-router-dom";
 import cx from "classnames";
-import { PopoverLogin, PopoverSingUp } from "../components";
+import { MiniLink, PopoverLogin, PopoverSingUp } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
 import { correctUserAuth } from "../hooks/useStore";
-import { bg, theme } from "../theme";
-
-export const MinLink = memo(
-  ({
-    children,
-    to,
-    disabled = false,
-    ...props
-  }: LinkProps & { disabled?: boolean }) => {
-    let resolved = useResolvedPath(to);
-    let match = useMatch({ path: resolved.pathname, end: true });
-
-    return (
-      <li className="flex items-center p-1">
-        <Link
-          className={cx(
-            theme.button.link,
-
-            match && "shadow-lg hover:shadow-cyan-300/50 bg-sky-300",
-            disabled &&
-              `!text-white !bg-neutral-100 hover:${bg.bgHover} hover:shadow-none cursor-default`
-          )}
-          to={disabled ? "#" : to}
-          {...props}
-        >
-          {children}
-        </Link>
-      </li>
-    );
-  }
-);
+import { theme } from "../theme";
+import { Outlet } from "react-router-dom";
 
 export const Layout = memo(() => {
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
@@ -65,11 +29,11 @@ export const Layout = memo(() => {
       >
         <ul className="flex justify-between px-4 mx-auto sm:px-6 lg:px-8 space-x-0 sm:space-x-10 lg:space-x-14">
           <div className="flex justify-around flex-1">
-            <MinLink to="/">Home</MinLink>
+            <MiniLink to="/">Home</MiniLink>
 
-            <MinLink to="/trade" disabled={!isAuthorized}>
+            <MiniLink to="/trade" disabled={!isAuthorized}>
               Trade
-            </MinLink>
+            </MiniLink>
           </div>
 
           {isAuthorized ? (

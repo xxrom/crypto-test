@@ -6,3 +6,4 @@ export { Table } from "./Table";
 export { Autocompolete } from "./Autocomplete";
 export { Input } from "./Input";
 export { Box } from "./Box";
+export { MiniLink } from "./MiniLink";
