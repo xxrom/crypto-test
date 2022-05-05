@@ -105,7 +105,7 @@ export const Autocompolete = memo(
             >
               <Combobox.Input
                 className={cx(
-                  "w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-2xl sm:text-3xl font-medium leading-5",
+                  "w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-sm sm:text-3xl font-medium leading-5",
                   theme.font.primary,
                   theme.global.bgSecondary
                 )}
@@ -154,7 +154,7 @@ export const Autocompolete = memo(
                     <Combobox.Option
                       key={item?.id}
                       className={({ active }) =>
-                        `cursor-default select-none relative py-2 pl-10 pr-4 
+                        `cursor-default select-none text-sm relative py-2 pl-10 pr-4 
                           ${theme.font.secondary}
                           ${active ? theme.global.bgSecondary : theme.global.bg}
                         `
@@ -164,7 +164,7 @@ export const Autocompolete = memo(
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
+                            className={`block truncate text-sm ${
                               selected ? "font-medium" : "font-normal"
                             }`}
                           >

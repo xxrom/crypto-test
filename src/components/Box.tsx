@@ -4,7 +4,6 @@ import cx from "classnames";
 import { Input } from "./Input";
 import { Autocompolete } from "./Autocomplete";
 import { toFixedNumber } from "../tools/convert";
-import { colors, theme } from "../theme";
 
 export type BoxProps = {
   isInput?: boolean;
@@ -22,7 +21,7 @@ export const Box = memo(
     return (
       <div
         className={cx(
-          isInput ? theme.global.bg : `bg-${colors.disabled}`,
+          isInput ? "bg-sky-300" : "bg-sky-400",
           "flex mb-2 py-1 sm:py-5 rounded-3xl bg-netural-400"
         )}
       >
@@ -36,7 +35,7 @@ export const Box = memo(
                   setValue={setFromAssetValue}
                 />
               ) : (
-                <div className="w-full cursor-default pr-5 text-2xl font-medium sm:text-3xl min-w-xs sm:pr-4 text-sky-900 ">
+                <div className="w-full cursor-default pr-5 text-xl font-medium sm:text-3xl min-w-xs sm:pr-4 text-sky-900 ">
                   {toFixedNumber(amount, accuracy)}
                 </div>
               )}

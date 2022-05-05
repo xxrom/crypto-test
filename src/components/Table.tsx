@@ -118,11 +118,7 @@ export const Table = memo(
                     justify-items-end`}
             >
               {header.map(({ name, filterId, info }, index: number) => (
-                <th
-                  key={`${index}${name}`}
-                  scope="col"
-                  className={theme.table.bold}
-                >
+                <th key={name} scope="col" className={theme.table.bold}>
                   <div className="flex flex-col">
                     {name}
 
@@ -145,7 +141,7 @@ export const Table = memo(
           <tbody>
             {filteredList?.map(({ name, price, icon }, index) => (
               <tr
-                key={`${index}${name}`}
+                key={name}
                 className={`border-b 
                 ${theme.global.bgSecondary} 
                 transition duration-300 ease-in-out cursor-pointer

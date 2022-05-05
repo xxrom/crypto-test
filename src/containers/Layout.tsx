@@ -10,7 +10,7 @@ import { PopoverLogin, PopoverSingUp } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
 import { correctUserAuth } from "../hooks/useStore";
-import { theme } from "../theme";
+import { bg, theme } from "../theme";
 
 export const MinLink = memo(
   ({
@@ -23,12 +23,14 @@ export const MinLink = memo(
     let match = useMatch({ path: resolved.pathname, end: true });
 
     return (
-      <li className="flex items-center">
+      <li className="flex items-center p-1">
         <Link
           className={cx(
-            "text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6",
-            match && "text-cyan-700 shadow-lg shadow-cyan-300/50 bg-sky-100",
-            disabled && "text-neutral-400 hover:shadow-none cursor-default"
+            theme.button.link,
+
+            match && "shadow-lg hover:shadow-cyan-300/50 bg-sky-300",
+            disabled &&
+              `!text-white !bg-neutral-100 hover:${bg.bgHover} hover:shadow-none cursor-default`
           )}
           to={disabled ? "#" : to}
           {...props}
@@ -57,7 +59,7 @@ export const Layout = memo(() => {
     <div className={cx("flex flex-col min-h-screen ", theme.global.bg)}>
       <nav
         className={cx(
-          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 bg- sm:py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm",
+          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 sm:py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm",
           theme.global.bgSecondary
         )}
       >
@@ -72,8 +74,8 @@ export const Layout = memo(() => {
 
           {isAuthorized ? (
             <div className="flex flex-col pl-2 overflow-x-auto justify-end items-center cursor-default">
-              <div className="font-medium text-cyan-800">User info:</div>
-              <div className="font-medium overflow-scrollX text-cyan-900">
+              <div className="font-medium text-cyan-600">User info:</div>
+              <div className="font-medium overflow-scrollX text-cyan-500">
                 {user?.email}
               </div>
             </div>
