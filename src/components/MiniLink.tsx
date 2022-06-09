@@ -1,6 +1,6 @@
-import { Link, useMatch, useResolvedPath, LinkProps } from "react-router-dom";
 import cx from "classnames";
 import { memo } from "react";
+import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
 import { theme } from "../theme";
 
 export interface MiniLinkProps extends LinkProps {

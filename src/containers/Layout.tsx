@@ -2,9 +2,9 @@ import cx from "classnames";
 import { MiniLink, PopoverLogin, PopoverSingUp } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
-import { correctUserAuth } from "../hooks/useStore";
 import { theme } from "../theme";
 import { Outlet } from "react-router-dom";
+import { correctUserAuth } from "../tools/convert";
 
 export const Layout = memo(() => {
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
@@ -63,6 +63,7 @@ export const Layout = memo(() => {
         )}
       >
         <div>Footer</div>
+
         <div>
           {isAuthorized ? (
             <button onClick={onForceLogOut} className="mx-4 text-purple-500">

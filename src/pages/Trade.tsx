@@ -3,8 +3,7 @@ import cx from "classnames";
 import { Box } from "../components";
 import { useStore, useAssets, useFetchAsset } from "../hooks";
 import { memo, useCallback, useEffect } from "react";
-import { convertAssetsDataToAssetsType } from "../hooks/useStore";
-import { toFixedNumber } from "../tools/convert";
+import { convertAssetsDataToAssetsType, toFixedNumber } from "../tools/convert";
 
 export const Trade = memo(() => {
   const {

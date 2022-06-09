@@ -3,21 +3,32 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { useStore } from "../hooks";
 import { theme } from "../theme";
 import cx from "classnames";
-import { useUserSingup } from "../hooks/useData";
+import { serverIP } from "../hooks/useData";
+import { useQuery } from "react-query";
+import { UserDataType } from "../hooks/useStore";
 
 export const PopoverSingUp = memo(() => {
-  const { setUser, isAuthorized } = useStore();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { user, setUser, isAuthorized } = useStore();
   const [passwordTwo, setPasswordTwo] = useState("");
+  const { email, password } = user;
 
   const {
     error,
     isLoading: isLoadingUser,
     data: userData,
     refetch: refetchUser,
-    remove: removeCashe,
-  } = useUserSingup();
+    //remove: removeCashe,
+  } = useQuery<
+    UserDataType & { accessToken: string; err?: { message: string } },
+    any
+  >(`userSingup_${email}_${password}`, () =>
+    fetch(`${serverIP}/user/post-data`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    }).then((res) => res.json())
+  );
+
   const [info, setInfo] = useState("");
 
   useEffect(() => {
@@ -25,20 +36,27 @@ export const PopoverSingUp = memo(() => {
       return setInfo("Loading...");
     }
     if (error) {
-      return setInfo(`Error ${error?.message}`);
+      return setInfo(`Error: ${error?.message}`);
     }
     if (userData?.err?.message) {
-      return setInfo(`Error ${userData?.err?.message}`);
+      return setInfo(`ServerError: ${userData?.err?.message}`);
     }
   }, [userData, error, isLoadingUser]);
 
+  useEffect(() => {
+    if (user?.email && user?.password) {
+      setInfo("");
+      refetchUser();
+    }
+  }, [refetchUser, user?.email, user?.password]);
+
   const onChangeEmail = useCallback(
-    (event) => setEmail(event?.target?.value),
-    []
+    (event) => setUser({ ...user, email: event?.target?.value }),
+    [setUser, user]
   );
   const onChangePassword = useCallback(
-    (event) => setPassword(event?.target?.value),
-    []
+    (event) => setUser({ ...user, password: event?.target?.value }),
+    [setUser, user]
   );
   const onChangePasswordTwo = useCallback(
     (event) => setPasswordTwo(event?.target?.value),
@@ -48,17 +66,11 @@ export const PopoverSingUp = memo(() => {
 
   const onRegister = useCallback(
     (closeFn) => () => {
-      setUser({ email, password });
-      setInfo("");
-
       if (isAuthorized) {
         closeFn();
-      } else {
-        removeCashe();
-        new Promise((resolve: any) => resolve()).then(() => refetchUser());
       }
     },
-    [email, isAuthorized, password, refetchUser, removeCashe, setUser]
+    [isAuthorized]
   );
 
   return (
@@ -169,7 +181,7 @@ export const PopoverSingUp = memo(() => {
                     className={cx(
                       "group relative w-1/2 sm:w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium",
                       theme.button.primary,
-                      isLoadingUser &&
+                      (passwordTwo !== password || isLoadingUser) &&
                         "text-black bg-neutral-400 hover:bg-neutral-300"
                     )}
                   >
