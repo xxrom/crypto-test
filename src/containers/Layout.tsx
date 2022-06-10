@@ -5,6 +5,7 @@ import { memo, useCallback } from "react";
 import { theme } from "../theme";
 import { Outlet } from "react-router-dom";
 import { correctUserAuth } from "../tools/convert";
+import { Button } from "../components/Button";
 
 export const Layout = memo(() => {
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
@@ -34,6 +35,10 @@ export const Layout = memo(() => {
             <MiniLink to="/trade" disabled={!isAuthorized}>
               Trade
             </MiniLink>
+
+            <Button loading={false} size="compact" variant="secondary">
+              Hello
+            </Button>
           </div>
 
           {isAuthorized ? (

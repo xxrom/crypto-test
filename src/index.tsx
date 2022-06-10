@@ -11,10 +11,6 @@ ReactDOM.render(
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Crypto</title>
-
-        <script src="https://cdn.tailwindcss.com"></script>
-
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
       </Helmet>
 
       <App />
@@ -23,3 +19,9 @@ ReactDOM.render(
 
   document.getElementById("root")
 );
+
+/*
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+  * */
