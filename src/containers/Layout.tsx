@@ -36,7 +36,7 @@ export const Layout = memo(() => {
               Trade
             </MiniLink>
 
-            <Button loading={false} size="compact" variant="secondary">
+            <Button to="/trade" size="compact" variant="secondary">
               Hello
             </Button>
           </div>

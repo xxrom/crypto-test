@@ -28,13 +28,16 @@ export const Table = memo(
   ({ header = headerDefault, list = [] }: TableProps) => {
     const { isAuthorized } = useStore();
     const [isShortList, setIsShortList] = useState(true);
+    const [inputValues, setInputValues] = useState<{ [key: string]: string }>(
+      {}
+    );
     const [filteredList, setFilteredList] = useState<TableProps["list"]>();
     const [filters, setFilters] = useState<{ [key: string]: Array<string> }>(
       {}
     );
-    const [inputValues, setInputValues] = useState<{ [key: string]: string }>(
-      {}
-    );
+
+    const inputValueName = inputValues?.name || "";
+    const inputValuePrice = Number(inputValues?.price) || -1000;
 
     // Init list
     useEffect(() => {
@@ -65,10 +68,7 @@ export const Table = memo(
       setInputValues(initFilterInputs);
     }, [list]);
 
-    const inputValueName = inputValues?.name || "";
-    const inputValuePrice = Number(inputValues?.price) || -1000;
-
-    const forceFilterList = useCallback(
+    const updateFilterList = useCallback(
       (isShort: boolean, innerList: AssetsListType) => {
         setFilteredList(() => {
           const innerFiltered = innerList?.filter(
@@ -89,8 +89,8 @@ export const Table = memo(
 
     // Apply filters to the list
     useEffect(() => {
-      forceFilterList(isShortList, list);
-    }, [forceFilterList, list, isShortList]);
+      updateFilterList(isShortList, list);
+    }, [updateFilterList, list, isShortList]);
 
     const toggleExpand = useCallback(() => setIsShortList((s) => !s), []);
 
@@ -123,7 +123,7 @@ export const Table = memo(
                     border-${colors.bgSecondary} 
                     justify-items-end`}
             >
-              {header.map(({ name, filterId, info }, index: number) => (
+              {header.map(({ name, filterId, info }) => (
                 <th key={name} scope="col" className={theme.table.bold}>
                   <div className="flex flex-col">
                     {name}

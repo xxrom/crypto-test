@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { StoreType, useFetchAsset, useStore } from "../hooks";
+import { AssetsSlice, useFetchAsset, useStore } from "../hooks";
 import cx from "classnames";
 import { Input } from "./Input";
 import { Autocompolete } from "./Autocomplete";
@@ -9,7 +9,7 @@ export type BoxProps = {
   isInput?: boolean;
   amount: string | number;
   symbol: string;
-  assets: StoreType["assets"];
+  assets: AssetsSlice["assets"];
   setSymbol: (val: string) => void;
 };
 

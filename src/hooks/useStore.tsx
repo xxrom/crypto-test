@@ -1,4 +1,4 @@
-import create from "zustand";
+import create, { StateCreator } from "zustand";
 
 export type AssetItemType = {
   id: string;
@@ -26,32 +26,34 @@ export interface StoreType {
   // .toFixed(accuracy)
   accuracy: number;
 
-  // Home page
-  assets: AssetsType;
-  assetsMap: AssetsMapType;
-  assetsList: AssetsListType;
+  //<<< Home page >>>
+  //assets: AssetsType;
+  //assetsMap: AssetsMapType;
+  //setAssets: (data: AssetsType) => void;
 
-  setAssets: (data: AssetsType) => void;
-  setAssetsList: (data: AssetsListType) => void;
+  //assetsList: AssetsListType;
+  //setAssetsList: (data: AssetsListType) => void;
 
-  // Trade page
-  tradeAssets: TradeAssetsType;
+  //<<< Trade page >>>
 
-  setFromAsset: (newAsset: string) => void;
-  setToAsset: (newAsset: string) => void;
+  // TradeAssetsSlice
+  //tradeAssets: TradeAssetsType;
+  //setFromAsset: (newAsset: string) => void;
+  //setToAsset: (newAsset: string) => void;
 
-  toAssetValue: string | number;
-  fromAssetValue: string | number;
-  setToAssetValue: (newValue: string | number) => void;
-  setFromAssetValue: (newValue: string | number) => void;
+  // ToFromAssetValueSlice
+  //toAssetValue: string | number;
+  //fromAssetValue: string | number;
+  //setToAssetValue: (newValue: string | number) => void;
+  //setFromAssetValue: (newValue: string | number) => void;
 
-  // User
-  user: UserDataType;
-  setUser: (val: UserDataType) => void;
-  setUserEmail: (val: string) => void;
-  setUserPassword: (val: string) => void;
-  isAuthorized: boolean;
-  setIsAuthorized: (val: boolean) => void;
+  // UserSlice
+  //user: UserDataType;
+  //setUser: (val: UserDataType) => void;
+  //setUserEmail: (val: string) => void;
+  //setUserPassword: (val: string) => void;
+  //isAuthorized: boolean;
+  //setIsAuthorized: (val: boolean) => void;
 }
 
 /* TODO: https://github.com/pmndrs/zustand/wiki/Splitting-the-store-into-separate-slices
@@ -63,68 +65,192 @@ const createRootSlice = (set: SetState<any>, get: GetState<any>) => ({
 const useStore = create(createRootSlice);
  */
 
-export const useStore = create<StoreType>((set) => {
+export interface AssetsSlice {
+  assets: AssetsType;
+  assetsMap: AssetsMapType;
+  setAssets: (data: AssetsType) => void;
+}
+
+export interface AssetsListSlice {
+  assetsList: AssetsListType;
+  setAssetsList: (data: AssetsListType) => void;
+}
+
+export interface TradeAssetsSlice {
+  tradeAssets: TradeAssetsType;
+  setFromAsset: (newAsset: string) => void;
+  setToAsset: (newAsset: string) => void;
+}
+
+export interface ToFromAssetValueSlice {
+  toAssetValue: string | number;
+  fromAssetValue: string | number;
+  setToAssetValue: (newValue: string | number) => void;
+  setFromAssetValue: (newValue: string | number) => void;
+}
+
+export interface UserSlice {
+  user: UserDataType;
+  setUser: (val: UserDataType) => void;
+  setUserEmail: (val: string) => void;
+  setUserPassword: (val: string) => void;
+  isAuthorized: boolean;
+  setIsAuthorized: (val: boolean) => void;
+}
+
+//const creatTradeAssetSlice: StateCreator<T, [], []> = (set) => ({})
+
+const createAssetsSlice: StateCreator<AssetsSlice, [], []> = (set) => ({
+  assets: [],
+  assetsMap: {},
+  setAssets: (assets) =>
+    set((state) => ({
+      ...state,
+      assets,
+    })),
+});
+
+const createAssetsListSlice: StateCreator<AssetsListSlice, [], []> = (set) => ({
+  assetsList: [],
+  setAssetsList: (assetsList) =>
+    set((state) => ({
+      ...state,
+      assetsList,
+    })),
+});
+
+const createTradeAssetSlice: StateCreator<TradeAssetsSlice, [], []> = (
+  set
+) => ({
+  tradeAssets: { fromAsset: "USDT", toAsset: "BTC" },
+  setFromAsset: (fromAsset) =>
+    set((state) => ({
+      ...state,
+      tradeAssets: {
+        ...state.tradeAssets,
+        fromAsset,
+      },
+    })),
+  setToAsset: (toAsset) =>
+    set((state) => ({
+      ...state,
+      tradeAssets: {
+        ...state.tradeAssets,
+        toAsset,
+      },
+    })),
+});
+
+const createToFromAssetValueSlice: StateCreator<
+  ToFromAssetValueSlice,
+  [],
+  []
+> = (set) => ({
+  toAssetValue: "30.5",
+  fromAssetValue: "30.5",
+  setToAssetValue: (toAssetValue) =>
+    set((state) => ({
+      ...state,
+      toAssetValue:
+        typeof Number(toAssetValue) === "number" ? toAssetValue : "0.0",
+    })),
+  setFromAssetValue: (fromAssetValue) =>
+    set((state) => ({
+      ...state,
+      fromAssetValue:
+        typeof Number(fromAssetValue) === "number" ? fromAssetValue : "0.0",
+    })),
+});
+
+const createUserSlice: StateCreator<UserSlice, [], []> = (set) => ({
+  user: { email: "admin@gmail.co", password: "adminadmin" },
+  setUser: (user) => set((state) => ({ ...state, user })),
+  setUserEmail: (email) =>
+    set((state) => ({ ...state, user: { ...state.user, email } })),
+  setUserPassword: (password) =>
+    set((state) => ({ ...state, user: { ...state.user, password } })),
+
+  isAuthorized: false,
+  setIsAuthorized: (isAuthorized) =>
+    set((state) => ({ ...state, isAuthorized })),
+});
+
+export const useStore = create<
+  StoreType &
+    AssetsSlice &
+    AssetsListSlice &
+    TradeAssetsSlice &
+    ToFromAssetValueSlice &
+    UserSlice
+>((...rest) => {
   return {
     accuracy: 4,
 
     // Home page
-    assets: [],
-    assetsMap: {},
-    assetsList: [],
-    setAssets: (assets) =>
-      set((state) => ({
-        ...state,
-        assets,
-      })),
-    setAssetsList: (assetsList) =>
-      set((state) => ({
-        ...state,
-        assetsList,
-      })),
+    ...createAssetsSlice(...rest),
+    //assets: [],
+    //assetsMap: {},
+    //setAssets: (assets) =>
+    //set((state) => ({
+    //...state,
+    //assets,
+    //})),
+
+    ...createAssetsListSlice(...rest),
+    //assetsList: [],
+    //setAssetsList: (assetsList) =>
+    //set((state) => ({
+    //...state,
+    //assetsList,
+    //})),
 
     // Trade page
-    tradeAssets: { fromAsset: "USDT", toAsset: "BTC" },
-    setFromAsset: (fromAsset) =>
-      set((state) => ({
-        ...state,
-        tradeAssets: {
-          ...state.tradeAssets,
-          fromAsset,
-        },
-      })),
-    setToAsset: (toAsset) =>
-      set((state) => ({
-        ...state,
-        tradeAssets: {
-          ...state.tradeAssets,
-          toAsset,
-        },
-      })),
+    ...createTradeAssetSlice(...rest),
+    //tradeAssets: { fromAsset: "USDT", toAsset: "BTC" },
+    //setFromAsset: (fromAsset) =>
+    //set((state) => ({
+    //...state,
+    //tradeAssets: {
+    //...state.tradeAssets,
+    //fromAsset,
+    //},
+    //})),
+    //setToAsset: (toAsset) =>
+    //set((state) => ({
+    //...state,
+    //tradeAssets: {
+    //...state.tradeAssets,
+    //toAsset,
+    //},
+    //})),
 
-    toAssetValue: "30.5",
-    fromAssetValue: "30.5",
-    setToAssetValue: (toAssetValue) =>
-      set((state) => ({
-        ...state,
-        toAssetValue:
-          typeof Number(toAssetValue) === "number" ? toAssetValue : "0.0",
-      })),
-    setFromAssetValue: (fromAssetValue) =>
-      set((state) => ({
-        ...state,
-        fromAssetValue:
-          typeof Number(fromAssetValue) === "number" ? fromAssetValue : "0.0",
-      })),
+    // toFromAssetValue
+    ...createToFromAssetValueSlice(...rest),
+    //toAssetValue: "30.5",
+    //fromAssetValue: "30.5",
+    //setToAssetValue: (toAssetValue) =>
+    //set((state) => ({
+    //...state,
+    //toAssetValue:
+    //typeof Number(toAssetValue) === "number" ? toAssetValue : "0.0",
+    //})),
+    //setFromAssetValue: (fromAssetValue) =>
+    //set((state) => ({
+    //...state,
+    //fromAssetValue:
+    //typeof Number(fromAssetValue) === "number" ? fromAssetValue : "0.0",
+    //})),
 
     // User
-    user: { email: "admin@gmail.co", password: "adminadmin" },
-    setUser: (user) => set((state) => ({ ...state, user })),
-    setUserEmail: (email) =>
-      set((state) => ({ ...state, user: { ...state.user, email } })),
-    setUserPassword: (password) =>
-      set((state) => ({ ...state, user: { ...state.user, password } })),
-    isAuthorized: false,
-    setIsAuthorized: (isAuthorized) =>
-      set((state) => ({ ...state, isAuthorized })),
+    ...createUserSlice(...rest),
+    //user: { email: "admin@gmail.co", password: "adminadmin" },
+    //setUser: (user) => set((state) => ({ ...state, user })),
+    //setUserEmail: (email) =>
+    //set((state) => ({ ...state, user: { ...state.user, email } })),
+    //setUserPassword: (password) =>
+    //set((state) => ({ ...state, user: { ...state.user, password } })),
+    //isAuthorized: false,
+    //setIsAuthorized: (isAuthorized) =>
+    //set((state) => ({ ...state, isAuthorized })),
   };
 });
