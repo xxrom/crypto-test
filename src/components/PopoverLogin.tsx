@@ -10,11 +10,11 @@ export const PopoverLogin = memo(() => {
   const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState(user?.password || "");
   const {
-    error,
+    error: errorUser,
     isLoading: isLoadingUser,
-    data: userData,
+    data: dataUser,
     refetch: refetchUser,
-    remove: removeCashe,
+    remove: removeUser,
   } = useUserLogin();
   const [info, setInfo] = useState("");
 
@@ -22,17 +22,17 @@ export const PopoverLogin = memo(() => {
     if (isLoadingUser) {
       return setInfo("Loading...");
     }
-    if (error) {
-      return setInfo(`Error ${error?.message}`);
+    if (errorUser) {
+      return setInfo(`Error ${errorUser?.message}`);
     }
-    if (userData?.err?.message) {
-      return setInfo(`Error ${userData?.err?.message}`);
+    if (dataUser?.err?.message) {
+      return setInfo(`Error ${dataUser?.err?.message}`);
     }
 
     if (!isAuthorized) {
       setInfo("Something wrong... =)");
     }
-  }, [userData, error, isAuthorized, isLoadingUser]);
+  }, [dataUser, errorUser, isAuthorized, isLoadingUser]);
 
   const onChangeEmail = useCallback(
     (event) => setEmail(event?.target?.value),
@@ -52,11 +52,11 @@ export const PopoverLogin = memo(() => {
       if (isAuthorized) {
         closeFn();
       } else {
-        removeCashe();
+        removeUser();
         new Promise((resolve: any) => resolve()).then(() => refetchUser());
       }
     },
-    [email, isAuthorized, password, refetchUser, removeCashe, setUser]
+    [email, isAuthorized, password, refetchUser, removeUser, setUser]
   );
 
   return (

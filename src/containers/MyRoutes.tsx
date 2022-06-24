@@ -40,6 +40,7 @@ export const MyRoutes = memo(() => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+
             <Route
               path="trade"
               element={

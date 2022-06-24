@@ -1,10 +1,7 @@
 import { useQuery } from "react-query";
 import { UserDataType, useStore } from "./useStore";
 
-//const serverIP = 'http://192.168.3.3:4444';
-//const serverIP = "http://192.168.3.150:4444";
 const serverIP = "http://192.168.3.15:4444";
-//const serverIP = 'http://localhost:4444';
 //const serverIP = 'https://api.nomics.com/v1';
 
 // Fetch symbol without cashing, getting real data

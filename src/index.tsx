@@ -8,9 +8,17 @@ ReactDOM.render(
   <React.StrictMode>
     <div>
       <Helmet>
+        <title>CryptoPortal</title>
+
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Crypto</title>
+
+        <link
+          ref="icon"
+          type="image/svg+xml"
+          href="https://s3.us-east-2.amazonaws.com/nomics-api/static/images/currencies/UNISWAP.svg"
+          sizes="16x16"
+        />
       </Helmet>
 
       <App />
