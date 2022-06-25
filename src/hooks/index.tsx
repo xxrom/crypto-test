@@ -1,9 +1,5 @@
 export { useStore } from "./useStore";
-export type {
-  StoreType,
-  // General types
-  DataAssestsType,
-} from "./useStore";
+export type { StoreType } from "./useStore";
 export {
   useAssets,
   useAllAssets,
