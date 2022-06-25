@@ -1,9 +1,10 @@
 import { memo, useCallback, useEffect, useState } from "react";
-import { AssetsListType, useStore } from "../hooks";
+import { useStore } from "../hooks";
 import { colors, theme } from "../theme";
 import { Autocompolete } from "./Autocomplete";
 import cx from "classnames";
 import { PopoverBuySell } from "./PopoverBuySell";
+import { AssetsListType } from "../slices";
 
 export type TableHeaderType = Array<{
   name: string;

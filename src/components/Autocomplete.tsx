@@ -3,12 +3,13 @@ import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import { theme } from "../theme";
 import cx from "classnames";
-import { AssetsSlice } from "../hooks";
+import { AssetsSlice } from "../slices";
 
 type OptionType = {
-  id: number;
+  id: string;
   value: string;
 };
+
 type OptionsType = Array<OptionType>;
 
 export type AutocompoleteProps = {
@@ -18,13 +19,8 @@ export type AutocompoleteProps = {
   isAlwaysSearching?: boolean;
 };
 
-export const Autocompolete = memo(
-  ({
-    items,
-    initSymbol,
-    setSymbol,
-    isAlwaysSearching = false,
-  }: AutocompoleteProps) => {
+export const Autocompolete = memo<AutocompoleteProps>(
+  ({ items, initSymbol, setSymbol, isAlwaysSearching = false }) => {
     const [options, setOptions] = useState<OptionsType>([]);
     const [selected, setSelected] = useState<OptionType>();
     const [search, setSearch] = useState("");
@@ -40,7 +36,7 @@ export const Autocompolete = memo(
         return;
       }
 
-      const newOptions = items?.map((value, index) => ({ id: index, value }));
+      const newOptions = items.map((value) => ({ id: value, value }));
 
       setOptions(newOptions);
 

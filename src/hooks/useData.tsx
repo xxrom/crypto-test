@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
-import { UserDataType, useStore } from "./useStore";
+import { useStore } from "./useStore";
+import { UserDataType } from "../slices";
 
 const serverIP = "http://192.168.3.15:4444";
 //const serverIP = 'https://api.nomics.com/v1';

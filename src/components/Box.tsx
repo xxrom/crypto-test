@@ -1,9 +1,10 @@
 import { memo } from "react";
-import { AssetsSlice, useFetchAsset, useStore } from "../hooks";
+import { useFetchAsset, useStore } from "../hooks";
 import cx from "classnames";
 import { Input } from "./Input";
 import { Autocompolete } from "./Autocomplete";
 import { toFixedNumber } from "../tools/convert";
+import { AssetsSlice } from "../slices";
 
 export type BoxProps = {
   isInput?: boolean;

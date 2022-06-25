@@ -5,8 +5,8 @@ import styled, { keyframes } from "styled-components";
 
 export const Home = memo(() => {
   const { isLoading, data } = useAssets();
-
   const { assetsList, setAssets, setAssetsList } = useStore();
+
   console.log("Render: Home", isLoading, data, assetsList);
 
   useEffect(() => {

@@ -8,6 +8,8 @@ import { correctUserAuth } from "../tools/convert";
 import { Button } from "../components/Button";
 
 export const Layout = memo(() => {
+  console.log("RENDER: Layout");
+
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
 
   const onForceLogOut = useCallback(() => {

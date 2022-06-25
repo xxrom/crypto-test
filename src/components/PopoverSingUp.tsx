@@ -5,7 +5,7 @@ import { theme } from "../theme";
 import cx from "classnames";
 import { serverIP } from "../hooks/useData";
 import { useQuery } from "react-query";
-import { UserDataType } from "../hooks/useStore";
+import { UserDataType } from "../slices";
 
 export const PopoverSingUp = memo(() => {
   const { user, setUser, isAuthorized } = useStore();
@@ -13,7 +13,7 @@ export const PopoverSingUp = memo(() => {
   const { email, password } = user;
 
   const {
-    error,
+    error: errorUser,
     isLoading: isLoadingUser,
     data: userData,
     refetch: refetchUser,
@@ -35,13 +35,13 @@ export const PopoverSingUp = memo(() => {
     if (isLoadingUser) {
       return setInfo("Loading...");
     }
-    if (error) {
-      return setInfo(`Error: ${error?.message}`);
+    if (errorUser) {
+      return setInfo(`Error: ${errorUser?.message}`);
     }
     if (userData?.err?.message) {
       return setInfo(`ServerError: ${userData?.err?.message}`);
     }
-  }, [userData, error, isLoadingUser]);
+  }, [userData, errorUser, isLoadingUser]);
 
   useEffect(() => {
     if (user?.email && user?.password) {
