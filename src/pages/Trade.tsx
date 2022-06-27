@@ -1,15 +1,15 @@
-import {theme} from '../theme';
-import cx from 'classnames';
-import {Box} from '../components';
-import {useStore, useAssets, useFetchAsset} from '../hooks';
-import {memo, useCallback, useEffect} from 'react';
-import {convertAssetsDataToAssetsType} from '../hooks/useStore';
-import {toFixedNumber} from '../tools/convert';
+import { theme } from "../theme";
+import cx from "classnames";
+import { Box } from "../components";
+import { useStore, useFetchAsset } from "../hooks";
+import { memo, useCallback, useEffect } from "react";
+import { toFixedNumber } from "../tools/convert";
 
 export const Trade = memo(() => {
+  console.info("RENDER: Trade");
+
   const {
     assets,
-    setAssets,
     tradeAssets,
     setToAsset,
     setFromAsset,
@@ -19,21 +19,12 @@ export const Trade = memo(() => {
     setFromAssetValue,
     accuracy,
   } = useStore();
-  const {data: assetsData} = useAssets();
 
-  const {fromAsset, toAsset} = tradeAssets;
-  const {data: assetData, isLoading: assetIsLoading} = useFetchAsset(
+  const { fromAsset, toAsset } = tradeAssets;
+  const { data: assetData, isLoading: assetIsLoading } = useFetchAsset(
     fromAsset,
-    toAsset,
+    toAsset
   );
-
-  useEffect(() => {
-    const assets = convertAssetsDataToAssetsType(assetsData);
-
-    if (assets) {
-      setAssets(assets);
-    }
-  }, [assetsData, setAssets]);
 
   useEffect(() => {
     if (assetIsLoading) {
@@ -62,11 +53,12 @@ export const Trade = memo(() => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col max-w-xl p-3 sm:p-5 py-4 sm:py-6 m-0 bg-sky-500 rounded-3xl">
+      <div className="flex flex-col max-w-xl p-3 sm:p-5 py-4 sm:py-6 m-0 bg-sky-900 rounded-3xl">
         <div>
           <button
             onClick={onSwapTradeAssets}
-            className={cx(theme.button.secondary, 'mb-2 text-xl rounded-3xl')}>
+            className={cx(theme.button.secondary, "mb-2 text-xl rounded-3xl")}
+          >
             swap
           </button>
         </div>
@@ -89,8 +81,9 @@ export const Trade = memo(() => {
           <button
             className={cx(
               theme.button.primary,
-              'text-2xl sx:text-3xl rounded-3xl w-full py-3 sm:py-5',
-            )}>
+              "text-2xl sx:text-3xl rounded-3xl w-full py-3 sm:py-5"
+            )}
+          >
             Connect wallet
           </button>
         </div>

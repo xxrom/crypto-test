@@ -1,23 +1,14 @@
-import { Helmet } from "react-helmet";
+import { memo } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MyRoutes } from "./containers";
 
 const queryClient = new QueryClient();
 
-//export const App = () => {
-export default function App() {
+// TODO: update tailwindcss and remove script, which solved css issue
+export const App = memo(() => {
   return (
-    <div>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Crypto-test</title>
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-      </Helmet>
-
-      <QueryClientProvider client={queryClient}>
-        <MyRoutes />
-      </QueryClientProvider>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <MyRoutes />
+    </QueryClientProvider>
   );
-}
+});

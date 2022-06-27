@@ -1,30 +1,26 @@
 import { Fragment, memo, useCallback, useEffect, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import { StoreType } from "../hooks";
 import { theme } from "../theme";
 import cx from "classnames";
+import { AssetsSlice } from "../slices";
 
 type OptionType = {
-  id: number;
+  id: string;
   value: string;
 };
+
 type OptionsType = Array<OptionType>;
 
 export type AutocompoleteProps = {
-  items: StoreType["assets"];
+  items: AssetsSlice["assets"];
   initSymbol?: string;
   setSymbol?: (val: string) => void;
   isAlwaysSearching?: boolean;
 };
 
-export const Autocompolete = memo(
-  ({
-    items,
-    initSymbol,
-    setSymbol,
-    isAlwaysSearching = false,
-  }: AutocompoleteProps) => {
+export const Autocompolete = memo<AutocompoleteProps>(
+  ({ items, initSymbol, setSymbol, isAlwaysSearching = false }) => {
     const [options, setOptions] = useState<OptionsType>([]);
     const [selected, setSelected] = useState<OptionType>();
     const [search, setSearch] = useState("");
@@ -40,7 +36,7 @@ export const Autocompolete = memo(
         return;
       }
 
-      const newOptions = items?.map((value, index) => ({ id: index, value }));
+      const newOptions = items.map((value) => ({ id: value, value }));
 
       setOptions(newOptions);
 
@@ -105,9 +101,8 @@ export const Autocompolete = memo(
             >
               <Combobox.Input
                 className={cx(
-                  "w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-2xl sm:text-3xl font-medium leading-5",
+                  "w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-sm sm:text-3xl font-medium leading-5",
                   theme.font.primary,
-                  "bg-slate-800",
                   theme.global.bgSecondary
                 )}
                 displayValue={(obj: OptionType) =>
@@ -155,7 +150,7 @@ export const Autocompolete = memo(
                     <Combobox.Option
                       key={item?.id}
                       className={({ active }) =>
-                        `cursor-default select-none relative py-2 pl-10 pr-4 
+                        `cursor-default select-none text-sm relative py-2 pl-10 pr-4 
                           ${theme.font.secondary}
                           ${active ? theme.global.bgSecondary : theme.global.bg}
                         `
@@ -165,7 +160,7 @@ export const Autocompolete = memo(
                       {({ selected, active }) => (
                         <>
                           <span
-                            className={`block truncate ${
+                            className={`block truncate text-sm ${
                               selected ? "font-medium" : "font-normal"
                             }`}
                           >

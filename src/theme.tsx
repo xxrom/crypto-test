@@ -1,37 +1,7 @@
 const buttonCommon = `inline-flex justify-center items-center px-2 py-1 sm:px-4 sm:py-2 text-lg font-medium `;
 
-const getButtonStyle = ({
-  textColor = "white",
-  bgColor = "neutral-800",
-  bgHover = "",
-  hoverRing = "",
-  custom = "",
-}: {
-  textColor: string;
-  bgColor: string;
-  bgHover: string;
-  hoverRing: string;
-  custom?: string;
-  loading?: string; // TODO: loading state
-}) => `
-${buttonCommon}
-
-text-${textColor}  
-
-bg-${bgColor} 
-hover:bg-${bgHover} 
-
-focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
-
-border-0 rounded-xl 
-focus-visible:ring-${hoverRing} 
-active:ring-2 ring-${hoverRing}
-
-${custom}
-`;
-
 export const colors = {
-  primary: "sky-800",
+  primary: "sky-400",
   secondary: "gray-500",
   bgPrimary: "slate-900",
   bgSecondary: "slate-800",
@@ -39,38 +9,91 @@ export const colors = {
   disabled: "neutral-800",
 };
 
+export const font = {
+  primary: "text-" + colors.primary,
+  secondary: "text-" + colors.secondary,
+};
+
+export const bg = {
+  bg: "bg-" + colors.bgPrimary,
+  bgSecondary: "bg-" + colors.bgSecondary,
+  bgHover: "bg-" + colors.bgHover,
+};
+
 export const theme = {
   button: {
-    primary: getButtonStyle({
-      textColor: "white",
-      bgColor: "purple-600",
-      bgHover: "purple-500",
-      hoverRing: "cyan-800",
-      loading: "text-neutral-400 bg-neutral-400 hover:bg-neutral-300",
-    }),
-    secondary: getButtonStyle({
-      textColor: "blue-900",
-      bgColor: "sky-400",
-      bgHover: "sky-300",
-      hoverRing: "cyan-800",
-      loading: "text-neutral-400 bg-neutral-400 hover:bg-neutral-300",
-    }),
-    ghost: getButtonStyle({
-      textColor: "slate-900",
-      bgColor: "slate-100",
-      bgHover: "slate-400",
-      hoverRing: "slate-800",
-      loading: "text-neutral-400 bg-neutral-400 hover:bg-neutral-300",
-      custom: `
+    primary: `
+      ${buttonCommon}
+
+      text-white  
+
+      bg-purple-600 
+      hover:bg-purple-500 
+
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
+
+      border-0 rounded-xl 
+      focus-visible:ring-cyan-800 
+
+      active:ring-2 ring-cyan-800
+    `,
+    secondary: `
+      ${buttonCommon}
+
+      text-blue-900  
+
+      bg-sky-400 
+      hover:bg-sky-300
+
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
+
+      border-0 rounded-xl 
+      focus-visible:ring-cyan-800 
+
+      active:ring-2 ring-cyan-800
+    `,
+    ghost: `
+      ${buttonCommon}
+
+      text-slate-900  
+
+      bg-slate-100
+      hover:bg-slate-400
+
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
+
+      border-0 rounded-xl 
+      focus-visible:ring-slate-800 
+
+      active:ring-2 ring-slate-800
+
       shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]
       active:outline outline-offset-0 active:outline-slate-500
-      `,
-    }),
+    `,
+    link: `
+      ${buttonCommon}
+
+      text-${colors.primary}  
+
+      bg-${colors.bgPrimary} 
+      hover:bg-cyan-300 hover:shadow-cyan-400/500 hover:shadow-lg
+
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 
+
+      border-0 rounded-xl 
+      focus-visible:ring-slate-100 
+
+      active:ring-2 ring-slate-100
+
+    hover:backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6
+  `,
   },
   table: {
-    cell: `px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm sm:text-md font-light sm:font-medium text-left text-gray-400`,
+    cell:
+      "px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm sm:text-md font-light sm:font-medium text-left text-gray-400",
 
-    bold: `px-1 py-1 sm:px-6 sm:py-4 text-sm font-medium text-left align-start text-gray-400 font-light whitespace-nowrap`,
+    bold:
+      "px-1 py-1 sm:px-6 sm:py-4 text-sm font-medium text-left align-start text-gray-400 font-light whitespace-nowrap",
   },
   font: {
     primary: " text-" + colors.primary,

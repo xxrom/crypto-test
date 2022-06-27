@@ -1,20 +1,14 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-const colors = require("tailwindcss/colors");
+//const colors = require("tailwindcss/colors");
 
 module.exports = {
-  content: ["./public/**/*.html", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["Inter var", ...defaultTheme.fontFamily.sans],
-      },
-    },
-    colors: {
-      green: colors.emerald,
-      yellow: colors.amber,
-      purple: colors.violet,
-      gray: colors.neutral,
-    },
+    extend: {},
   },
-  plugins: [],
+  plugins: [
+    //require("@tailwindcss/typography"),
+    //require("@tailwindcss/forms"),
+    //require("@tailwindcss/line-clamp"),
+    //require("@tailwindcss/aspect-ratio"),
+  ],
 };

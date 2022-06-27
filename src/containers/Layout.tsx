@@ -1,47 +1,15 @@
-import {
-  Outlet,
-  Link,
-  useMatch,
-  useResolvedPath,
-  LinkProps,
-} from "react-router-dom";
 import cx from "classnames";
-import { PopoverLogin } from "../components";
+import { MiniLink, PopoverLogin, PopoverSingUp } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
-import { correctUserAuth } from "../hooks/useStore";
-import { PopoverSingUp } from "../components/Popover";
 import { theme } from "../theme";
-
-export const MinLink = memo(
-  ({
-    children,
-    to,
-    disabled = false,
-    ...props
-  }: LinkProps & { disabled?: boolean }) => {
-    let resolved = useResolvedPath(to);
-    let match = useMatch({ path: resolved.pathname, end: true });
-
-    return (
-      <li className="flex items-center">
-        <Link
-          className={cx(
-            "text-lg hover:shadow-lg hover:shadow-cyan-400/50 backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6",
-            match && "text-cyan-700 shadow-lg shadow-cyan-300/50 bg-sky-100",
-            disabled && "text-neutral-400 hover:shadow-none cursor-default"
-          )}
-          to={disabled ? "#" : to}
-          {...props}
-        >
-          {children}
-        </Link>
-      </li>
-    );
-  }
-);
+import { Outlet } from "react-router-dom";
+import { correctUserAuth } from "../tools/convert";
+import { Button } from "../components/Button";
 
 export const Layout = memo(() => {
+  console.log("RENDER: Layout");
+
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
 
   const onForceLogOut = useCallback(() => {
@@ -58,23 +26,27 @@ export const Layout = memo(() => {
     <div className={cx("flex flex-col min-h-screen ", theme.global.bg)}>
       <nav
         className={cx(
-          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 bg- sm:py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm",
+          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 sm:py-4 ring-1 ring-gray-900 ring-opacity-5 shadow-sm",
           theme.global.bgSecondary
         )}
       >
         <ul className="flex justify-between px-4 mx-auto sm:px-6 lg:px-8 space-x-0 sm:space-x-10 lg:space-x-14">
           <div className="flex justify-around flex-1">
-            <MinLink to="/">Home</MinLink>
+            <MiniLink to="/">Home</MiniLink>
 
-            <MinLink to="/trade" disabled={!isAuthorized}>
+            <MiniLink to="/trade" disabled={!isAuthorized}>
               Trade
-            </MinLink>
+            </MiniLink>
+
+            <Button to="/trade" size="compact" variant="secondary">
+              Hello
+            </Button>
           </div>
 
           {isAuthorized ? (
             <div className="flex flex-col pl-2 overflow-x-auto justify-end items-center cursor-default">
-              <div className="font-medium text-cyan-800">User info:</div>
-              <div className="font-medium overflow-scrollX text-cyan-900">
+              <div className="font-medium text-cyan-600">User info:</div>
+              <div className="font-medium overflow-scrollX text-cyan-500">
                 {user?.email}
               </div>
             </div>
@@ -98,6 +70,7 @@ export const Layout = memo(() => {
         )}
       >
         <div>Footer</div>
+
         <div>
           {isAuthorized ? (
             <button onClick={onForceLogOut} className="mx-4 text-purple-500">

@@ -1,4 +1,7 @@
-# Getting Started 
+# Getting Started
+
+READ:
+[styled-components](https://tproger.ru/articles/styled-components-idealnaja-stilizacija-react-prilozhenija/)
 
 GITHUB-Frontend: [link](https://github.com/xxrom/crypto-test/)
 GITHUB-Backend: [link](https://github.com/xxrom/crypto-test-back/)
@@ -7,6 +10,7 @@ Public-TODO-list: [link](https://waiting-columnist-390.notion.site/CoinMena-todo
 ### Run: `yarn && yarn start`
 
 ---
+
 Auth with local server (localhost:4444):
 
 Login user email: `admin@gmail.com`
@@ -14,11 +18,13 @@ Login user email: `admin@gmail.com`
 Login user password: `adminadmin`
 
 ---
+
 Auth without local server (for testing):
 
 User can force login/logout via footer link: `ForceLogIn` or `ForceLogOut`
 
 ---
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
----
+
+## Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
 Developers mode: `yarn dev`
