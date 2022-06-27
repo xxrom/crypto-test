@@ -25,8 +25,14 @@ const ProtectedRoute = memo(
 );
 
 export const MyRoutes = memo(() => {
-  const { setIsAuthorized, isAuthorized } = useStore();
+  console.log("RENDER: MyRoutes");
+
+  const { setIsAuthorized, isAuthorized, fetchRawData } = useStore();
   const { data: dataUser } = useUserLogin();
+
+  useEffect(() => {
+    fetchRawData();
+  }, []);
 
   useEffect(() => {
     if (dataUser?.accessToken && !isAuthorized) {

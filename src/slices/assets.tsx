@@ -7,6 +7,12 @@ export type AssetItemType = {
   price: number | string;
   icon: string;
 };
+
+export type DataItemType = {
+  [key: string]: string;
+} & Pick<AssetItemType, "id" | "index" | "name" | "price" | "icon">;
+export type DataArrayType = Array<DataItemType>;
+
 export type AssetsType = Array<string>;
 export type AssetsMapType = { [key: string]: AssetItemType };
 

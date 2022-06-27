@@ -5,6 +5,7 @@ import type {
   AssetsSlice,
   TradeAssetsSlice,
   AssetsListSlice,
+  RawDataSlice,
 } from "../slices";
 import {
   createUserSlice,
@@ -12,6 +13,7 @@ import {
   createAssetsSlice,
   createTradeAssetSlice,
   createAssetsListSlice,
+  createRawDataSlice,
 } from "../slices";
 
 export interface StoreType
@@ -19,13 +21,15 @@ export interface StoreType
     AssetsListSlice,
     TradeAssetsSlice,
     ToFromAssetValueSlice,
-    UserSlice {
+    UserSlice,
+    RawDataSlice {
   accuracy: number;
 }
 
 export const useStore = create<StoreType>((...rest) => ({
   accuracy: 4,
 
+  ...createRawDataSlice(...rest),
   ...createAssetsSlice(...rest),
   ...createAssetsListSlice(...rest),
   ...createTradeAssetSlice(...rest),

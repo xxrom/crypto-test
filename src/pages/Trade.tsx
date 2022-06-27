@@ -1,14 +1,15 @@
 import { theme } from "../theme";
 import cx from "classnames";
 import { Box } from "../components";
-import { useStore, useAssets, useFetchAsset } from "../hooks";
+import { useStore, useFetchAsset } from "../hooks";
 import { memo, useCallback, useEffect } from "react";
-import { convertAssetsDataToAssetsType, toFixedNumber } from "../tools/convert";
+import { toFixedNumber } from "../tools/convert";
 
 export const Trade = memo(() => {
+  console.info("RENDER: Trade");
+
   const {
     assets,
-    setAssets,
     tradeAssets,
     setToAsset,
     setFromAsset,
@@ -18,21 +19,12 @@ export const Trade = memo(() => {
     setFromAssetValue,
     accuracy,
   } = useStore();
-  const { data: assetsData } = useAssets();
 
   const { fromAsset, toAsset } = tradeAssets;
   const { data: assetData, isLoading: assetIsLoading } = useFetchAsset(
     fromAsset,
     toAsset
   );
-
-  useEffect(() => {
-    const assets = convertAssetsDataToAssetsType(assetsData);
-
-    if (assets) {
-      setAssets(assets);
-    }
-  }, [assetsData, setAssets]);
 
   useEffect(() => {
     if (assetIsLoading) {

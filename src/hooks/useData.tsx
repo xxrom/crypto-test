@@ -1,6 +1,11 @@
 import { useQuery } from "react-query";
 import { useStore } from "./useStore";
-import { UserDataType } from "../slices";
+import {
+  AssetsListType,
+  AssetsType,
+  DataArrayType,
+  UserDataType,
+} from "../slices";
 
 const serverIP = "http://192.168.3.15:4444";
 //const serverIP = 'https://api.nomics.com/v1';
@@ -43,60 +48,32 @@ export const useUserSingup = () => {
   );
 };
 
-export const useAssets = (): {
-  isLoading?: boolean;
-  data?: { data: AllAssetsListType };
-} =>
-  useQuery("symbols", () =>
-    fetch(`${serverIP}/currencies/ticker`)
-      .then((res) => res.json())
-      .then((res) => ({ data: res }))
-  );
-
 export const useFetchAsset = (symbol: string, base: string) =>
   useQuery(
     `assest${symbol}${base}`,
     async () => await fetchSymbol(symbol, base)
   );
 
-export type AllAssetsType = {
-  id: string;
-  symbol: string;
-  price: string;
-  logo_url: string;
-};
-export type AllAssetsListType = Array<AllAssetsType>;
+export const fetchAssets = (): Promise<DataArrayType> =>
+  fetch(`${serverIP}/currencies/ticker`).then((res) => res.json());
 
-export const useAllAssets = () => {
-  const {
-    isLoading,
-    data,
-  }: { isLoading?: boolean; data?: { data: AllAssetsListType } } = useAssets();
-  const { setAssets, setAssetsList } = useStore();
+//export const useAssets = () => useQuery("symbols", fetchAssets);
+export const convertAssets = ({ data }: { data: DataArrayType }) => {
+  const assets: AssetsType = [];
+  const assetsList: AssetsListType = [];
 
-  if (isLoading) {
-    return { isLoading };
-  }
-
-  const assets = data?.data?.map(({ symbol }) => symbol) || [];
-
-  const assetsList = data?.data?.map(
-    ({ id, symbol, logo_url, price }, index) => ({
+  data?.reduce((_, { id, symbol, logo_url, price }, index) => {
+    assets.push(symbol);
+    assetsList.push({
       id,
       index,
       price,
       name: symbol,
       icon: logo_url,
-    })
-  );
+    });
 
-  if (assets) {
-    setAssets(assets);
-  }
-
-  if (assetsList) {
-    setAssetsList(assetsList);
-  }
+    return [];
+  }, []);
 
   return { assets, assetsList };
 };

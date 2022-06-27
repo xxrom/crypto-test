@@ -42,8 +42,6 @@ export const Table = memo(
 
     // Init list
     useEffect(() => {
-      //setFilteredList(list.slice(0, 10));
-
       const initFilterList = Object.keys(list[0] || {}).reduce(
         (accum, key) => ({ ...accum, [key]: [] }),
         {}
