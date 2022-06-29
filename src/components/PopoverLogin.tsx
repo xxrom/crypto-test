@@ -7,15 +7,18 @@ import { useUserLogin } from "../hooks/useData";
 
 export const PopoverLogin = memo(() => {
   const { isAuthorized, user, setUser } = useStore();
+
   const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState(user?.password || "");
+
   const {
     error: errorUser,
     isLoading: isLoadingUser,
     data: dataUser,
     refetch: refetchUser,
     remove: removeUser,
-  } = useUserLogin();
+  } = useUserLogin({ email, password });
+
   const [info, setInfo] = useState("");
 
   useEffect(() => {

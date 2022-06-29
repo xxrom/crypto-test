@@ -16,21 +16,28 @@ const fetchSymbol = async (symbol: string, base = "USDT") =>
     res.json()
   );
 
-export const useUserLogin = () => {
-  const { user } = useStore();
-  const { email = "", password = "" } = user;
-
-  return useQuery<
-    UserDataType & { accessToken: string; err?: { message: string } },
-    any
-  >(`userLogin_${email}${password}`, () =>
-    fetch(`${serverIP}/auth`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    }).then((res) => res.json())
-  );
+export type AuthUserType = {
+  accessToken: string;
+  err?: { message: string };
+  message?: string;
 };
+
+export const fetchUserLogin = ({
+  email,
+  password,
+}: UserDataType) => (): Promise<AuthUserType> =>
+  fetch(`${serverIP}/auth`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  }).then(async (res) => await res.json());
+
+export const useUserLogin = ({ email, password }: UserDataType) =>
+  useQuery<any, AuthUserType>(
+    `userLogin_${email}${password}`,
+    fetchUserLogin({ email, password }),
+    { enabled: false }
+  );
 
 export const useUserSingup = () => {
   const { user } = useStore();
@@ -44,7 +51,7 @@ export const useUserSingup = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
-    }).then((res) => res.json())
+    }).then(async (res) => await res.json())
   );
 };
 
@@ -55,7 +62,7 @@ export const useFetchAsset = (symbol: string, base: string) =>
   );
 
 export const fetchAssets = (): Promise<DataArrayType> =>
-  fetch(`${serverIP}/currencies/ticker`).then((res) => res.json());
+  fetch(`${serverIP}/currencies/ticker`).then(async (res) => await res.json());
 
 //export const useAssets = () => useQuery("symbols", fetchAssets);
 export const convertAssets = ({ data }: { data: DataArrayType }) => {
