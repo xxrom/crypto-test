@@ -2,7 +2,7 @@ import { Home, Trade } from "../pages";
 import { Layout } from "../containers";
 import { memo, useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { useStore, useUserLogin } from "../hooks";
+import { useStore } from "../hooks";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 
 export type ProtectedRouteProps = {
@@ -27,17 +27,20 @@ const ProtectedRoute = memo(
 export const MyRoutes = memo(() => {
   console.log("RENDER: MyRoutes");
 
-  const { setIsAuthorized, fetchRawData, user } = useStore();
-  const { data: dataUser } = useUserLogin({ ...user });
-
-  useEffect(() => fetchRawData(), [fetchRawData]);
+  const { fetchRawData } = useStore();
+  //const { data: dataUser } = useUserLogin(user);
 
   useEffect(() => {
-    if (dataUser?.accessToken) {
-      console.log("setIsAuthorized");
-      setIsAuthorized(true);
-    }
-  }, [dataUser?.accessToken, setIsAuthorized]);
+    console.log("FETCH ONCE !!!");
+    fetchRawData();
+  }, [fetchRawData]);
+
+  //useEffect(() => {
+  //if (dataUser?.accessToken) {
+  //console.log("setIsAuthorized");
+  //setIsAuthorized(true);
+  //}
+  //}, [dataUser?.accessToken, setIsAuthorized]);
 
   return (
     <BrowserRouter>

@@ -15,6 +15,7 @@ export interface RawDataSlice {
 
 const fetchRawData = async () => {
   const data = await fetchAssets();
+  console.log("fetchRawData: data", data);
 
   const { assets, assetsList } = convertAssets({ data });
 

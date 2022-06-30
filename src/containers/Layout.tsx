@@ -53,7 +53,7 @@ export const Layout = memo(() => {
           ) : (
             <div className="flex flex-row">
               <PopoverLogin />
-              <PopoverSingUp />
+              {/*<PopoverSingUp />*/}
             </div>
           )}
         </ul>

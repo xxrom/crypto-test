@@ -30,13 +30,21 @@ export const fetchUserLogin = ({
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
-  }).then(async (res) => await res.json());
+  }).then(async (res) => {
+    const data = await res.json();
+    console.log("fetchUserLogin", data);
+    return data;
+  });
 
 export const useUserLogin = ({ email, password }: UserDataType) =>
   useQuery<any, AuthUserType>(
     `userLogin_${email}${password}`,
     fetchUserLogin({ email, password }),
-    { enabled: false }
+    {
+      enabled: false, // !!email && !!password,
+      refetchOnMount: false,
+      retryOnMount: false,
+    }
   );
 
 export const useUserSingup = () => {
@@ -62,7 +70,7 @@ export const useFetchAsset = (symbol: string, base: string) =>
   );
 
 export const fetchAssets = (): Promise<DataArrayType> =>
-  fetch(`${serverIP}/currencies/ticker`).then(async (res) => await res.json());
+  fetch(`${serverIP}/currencies/ticker`).then((res) => res.json());
 
 //export const useAssets = () => useQuery("symbols", fetchAssets);
 export const convertAssets = ({ data }: { data: DataArrayType }) => {
