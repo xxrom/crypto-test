@@ -25,22 +25,12 @@ const ProtectedRoute = memo(
 );
 
 export const MyRoutes = memo(() => {
-  console.log("RENDER: MyRoutes");
-
   const { fetchRawData } = useStore();
-  //const { data: dataUser } = useUserLogin(user);
 
   useEffect(() => {
-    console.log("FETCH ONCE !!!");
+    // console.log("FETCH ONCE !!!");
     fetchRawData();
   }, [fetchRawData]);
-
-  //useEffect(() => {
-  //if (dataUser?.accessToken) {
-  //console.log("setIsAuthorized");
-  //setIsAuthorized(true);
-  //}
-  //}, [dataUser?.accessToken, setIsAuthorized]);
 
   return (
     <BrowserRouter>

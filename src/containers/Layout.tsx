@@ -8,13 +8,12 @@ import { correctUserAuth } from "../tools/convert";
 import { Button } from "../components/Button";
 
 export const Layout = memo(() => {
-  console.log("RENDER: Layout");
-
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
+  console.log("RENDER: Layout", isAuthorized);
 
   const onForceLogOut = useCallback(() => {
     setIsAuthorized(false);
-    setUser({ email: "none", password: "none" });
+    setUser({ email: "none", password: "none", token: "" });
   }, [setIsAuthorized, setUser]);
 
   const onForceLogIn = useCallback(() => {

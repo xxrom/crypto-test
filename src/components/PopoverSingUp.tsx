@@ -17,7 +17,7 @@ export const PopoverSingUp = memo(() => {
     isLoading: isLoadingUser,
     data: userData,
     refetch: refetchUser,
-    //remove: removeCashe,
+    //remove: removeCache,
   } = useQuery<
     UserDataType & { accessToken: string; err?: { message: string } },
     any

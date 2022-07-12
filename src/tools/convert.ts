@@ -6,4 +6,5 @@ export const toFixedNumber = (amount: number | string, accuracy = 6) =>
 export const correctUserAuth: UserDataType = {
   email: "admin@gmail.com",
   password: "adminadmin",
+  token: "faketokennumber1234123412341234",
 };

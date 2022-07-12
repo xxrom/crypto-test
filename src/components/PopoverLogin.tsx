@@ -1,27 +1,48 @@
 import { Popover as HeadlessPopove } from "@headlessui/react";
 import { memo, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useStore } from "../hooks";
 import { theme } from "../theme";
 import cx from "classnames";
 import { useUserLogin } from "../hooks/useData";
 
 export const PopoverLogin = memo(() => {
-  const { isAuthorized, user, setUser } = useStore();
+  const {
+    isAuthorized,
+    user,
+    setUser,
+    setIsAuthorized,
+    setUserToken,
+  } = useStore();
+  console.log("PopoverLogin", user);
 
-  const [email, setEmail] = useState(user?.email || "");
-  const [password, setPassword] = useState(user?.password || "");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("12341234");
+  const navigate = useNavigate();
 
-  //const {
-  //status,
-  //error: errorUser,
-  //isLoading: isLoadingUser,
-  //data: dataUser,
-  //refetch: refetchUser,
-  //remove: cleanUserCashe,
-  //}
   const queryUser = useUserLogin(user);
+  console.log("queryUser", queryUser);
+  const token = queryUser?.data?.token;
 
   const [info, setInfo] = useState("");
+
+  useEffect(() => {
+    console.log("isStatus", queryUser.isSuccess);
+    if (!queryUser.isSuccess) {
+      return;
+    }
+
+    console.log("token", token);
+
+    if (typeof token !== "string") {
+      return;
+    }
+
+    setUserToken(token);
+    setIsAuthorized(true);
+    navigate("/");
+    console.log("navigate to =>>> /");
+  }, [token, queryUser.isSuccess, setIsAuthorized, setUserToken, navigate]);
 
   useEffect(() => {
     if (queryUser.isLoading) {
@@ -32,10 +53,6 @@ export const PopoverLogin = memo(() => {
     }
     if (queryUser?.data?.err?.message) {
       return setInfo(`Error ${queryUser?.data?.err?.message}`);
-    }
-
-    if (!isAuthorized) {
-      setInfo("Something wrong... =)");
     }
   }, [
     isAuthorized,
@@ -56,12 +73,8 @@ export const PopoverLogin = memo(() => {
 
   const onLogin = useCallback(
     (_closeFn) => () => {
-      // Setting email and password to global store => refetching user
-      setUser({ email, password });
+      setUser({ email, password, token: "" });
       setInfo("");
-
-      //cleanUserCashe();
-      //new Promise((resolve: any) => resolve()).then(() => refetchUser());
     },
     [email, password, setUser]
   );
@@ -98,24 +111,21 @@ export const PopoverLogin = memo(() => {
               </span>
 
               <div className="relative inline-block align-center align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full max-w-xl">
-                <div className="bg-white mx-4 my-5 flex flex-center">
+                <div className="bg-white mx-12 my-8 flex flex-center">
                   <div className="flex flex-col w-full text-center">
                     <h3
                       className="text-lg leading-6 font-medium text-gray-900"
                       id="modal-title"
                     >
-                      {`Enter your info`}
+                      {`Enter your eMail and password`}
                     </h3>
-
-                    <div>{`Status: ${queryUser?.status}`}</div>
-                    <div>{info ? `Info: ${info}` : "..."}</div>
 
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         {`Email and password:`}
                       </p>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-8">
                       <label className="sr-only">Email address:</label>
                       <input
                         id="email-address"
@@ -128,7 +138,7 @@ export const PopoverLogin = memo(() => {
                         placeholder="admin@gmail.com"
                       />
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-3">
                       <label className="sr-only">Password:</label>
                       <input
                         id="password"
@@ -143,6 +153,14 @@ export const PopoverLogin = memo(() => {
                     </div>
                   </div>
                 </div>
+
+                <div className="flex flex-col">
+                  <div className="flex justify-center">{`Status: ${queryUser?.status}`}</div>
+                  <div className="flex justify-center">
+                    {info ? `Info: ${info}` : "..."}
+                  </div>
+                </div>
+
                 <div className="bg-gray-50 px-4 py-3 flex justify-between">
                   <button
                     onClick={onLogin(close)}
