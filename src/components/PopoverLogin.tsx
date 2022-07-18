@@ -2,9 +2,9 @@ import { Popover as HeadlessPopove } from "@headlessui/react";
 import { memo, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../hooks";
-import { theme } from "../theme";
 import cx from "classnames";
 import { useUserLogin } from "../hooks/useData";
+import { Button } from "./Button";
 
 export const PopoverLogin = memo(() => {
   const {
@@ -82,9 +82,9 @@ export const PopoverLogin = memo(() => {
   return (
     <HeadlessPopove className="relative">
       <HeadlessPopove.Button>
-        <span className={cx("font-medium !text-lg mx-1", theme.button.primary)}>
+        <Button variant="primary" size="compact">
           Log-in
-        </span>
+        </Button>
       </HeadlessPopove.Button>
 
       <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
@@ -162,13 +162,13 @@ export const PopoverLogin = memo(() => {
                 </div>
 
                 <div className="bg-gray-50 px-4 py-3 flex justify-between">
-                  <button
+                  <Button
                     onClick={onLogin(close)}
-                    type="submit"
                     disabled={queryUser.isLoading}
+                    variant="primary"
+                    size="compact"
                     className={cx(
-                      "group relative w-1/2 sm:w-1/3 flex justify-center py-2 px-4 border border-transparent text-sm font-medium",
-                      theme.button.primary,
+                      "group relative w-1/2 sm:w-1/3 flex justify-center py-2 px-4 ",
                       queryUser.isLoading &&
                         "text-neutral-400 bg-neutral-400 hover:bg-neutral-300"
                     )}
@@ -188,18 +188,18 @@ export const PopoverLogin = memo(() => {
                       </svg>
                     </span>
                     {queryUser.isLoading ? "Loading" : "Log-in"}
-                  </button>
+                  </Button>
 
-                  <button
+                  <Button
                     onClick={onClosePopover(close)}
-                    type="submit"
+                    variant="secondary"
+                    size="compact"
                     className={cx(
-                      "group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium",
-                      theme.button.secondary
+                      "group relative w-1/4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium"
                     )}
                   >
                     Close
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

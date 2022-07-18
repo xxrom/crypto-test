@@ -2,9 +2,11 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { useStore } from "../hooks";
 import { colors, theme } from "../theme";
 import { Autocompolete } from "./Autocomplete";
-import cx from "classnames";
 import { PopoverBuySell } from "./PopoverBuySell";
 import { AssetsListType } from "../slices";
+import { Button } from "./Button";
+import classnames from "classnames";
+import tw from "twin.macro";
 
 export type TableHeaderType = Array<{
   name: string;
@@ -170,12 +172,14 @@ export const Table = memo(
           </tbody>
         </table>
 
-        <div
-          className={cx(theme.button.secondary, "mt-4")}
+        <Button
+          className={tw`mt-4`}
+          variant="secondary"
+          size="compact"
           onClick={toggleExpand}
         >
           {isShortList ? "More" : "Less"}
-        </div>
+        </Button>
       </div>
     );
   }
