@@ -2,13 +2,18 @@ import cx from "classnames";
 import { MiniLink, PopoverLogin, PopoverSingUp } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
-import { theme } from "../theme";
+import { btnColors } from "../theme";
 import { Outlet } from "react-router-dom";
 import { correctUserAuth } from "../tools/convert";
+import styled, { css } from "styled-components";
+import { Button } from "../components/Button";
+import { useCookies } from "react-cookie";
 
 export const Layout = memo(() => {
   const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
+  const [cookies] = useCookies(["token"]);
   console.log("RENDER: Layout", isAuthorized);
+  console.log("cookies", cookies);
 
   const onForceLogOut = useCallback(() => {
     setIsAuthorized(false);
@@ -21,21 +26,20 @@ export const Layout = memo(() => {
   }, [setIsAuthorized, setUser]);
 
   return (
-    <div className={cx("flex flex-col min-h-screen ", theme.global.bg)}>
+    <Container minHeight="100vh" className={cx("flex flex-col min-h-screen ")}>
       <nav
         className={cx(
-          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 ring-1 ring-gray-900 ring-opacity-5 shadow-sm bg-sky-100",
-          theme.global.bgSecondary
+          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 ring-1 ring-gray-900 ring-opacity-5 shadow-sm bg-sky-100"
         )}
       >
-        <ul className="flex justify-between px-4 mx-auto space-x-0">
-          <div className="flex justify-around flex-1">
+        <Menu>
+          <Tabs className="flex justify-around flex-1">
             <MiniLink to="/">Home</MiniLink>
 
             <MiniLink to="/trade" disabled={!isAuthorized}>
               Trade
             </MiniLink>
-          </div>
+          </Tabs>
 
           {isAuthorized ? (
             <div className="flex flex-col pl-2 overflow-x-auto justify-end items-center cursor-default">
@@ -43,40 +47,71 @@ export const Layout = memo(() => {
               <div className="font-medium overflow-scrollX text-cyan-500">
                 {user?.email}
               </div>
+              <div className="font-medium overflow-scrollX text-cyan-500">
+                {user?.token}
+              </div>
+              <div className="font-medium overflow-scrollX text-cyan-500">
+                {cookies?.token}
+              </div>
             </div>
           ) : (
-            <div className="flex flex-row">
+            <div className="flex flex-row ml-4">
               <PopoverLogin />
               {/*<PopoverSingUp />*/}
             </div>
           )}
-        </ul>
+        </Menu>
       </nav>
 
       <main className="flex-1 w-full h-full p-4">
         <Outlet />
       </main>
 
-      <footer
-        className={cx(
-          "w-full py-5 mx-auto text-sm text-center text-gray-500 max-w-container sm:py-8 sm:flex sm:items-center sm:justify-center",
-          theme.global.bgSecondary
-        )}
-      >
+      <Footer>
         <div>Footer</div>
 
         <div>
           {isAuthorized ? (
-            <button onClick={onForceLogOut} className="mx-4 text-purple-500">
-              ForceLogOut
-            </button>
+            <Button onClick={onForceLogOut}>ForceLogOut</Button>
           ) : (
-            <button onClick={onForceLogIn} className="mx-4 text-purple-500">
-              ForceLogIn
-            </button>
+            <Button onClick={onForceLogIn}>ForceLogIn</Button>
           )}
         </div>
-      </footer>
-    </div>
+      </Footer>
+    </Container>
   );
 });
+
+const Container = styled.div<{ minHeight?: string }>`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  min-height: ${({ minHeight = "0" }) => minHeight};
+`;
+
+const Menu = styled(Container)`
+  padding: 0.1rem 0.5rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Tabs = styled(Container)`
+  justify-content: space-around;
+  flex-direction: row;
+
+  border-right: 1px solid ${btnColors.bgSecondary};
+`;
+
+const Footer = styled(Container)`
+  padding: 1rem 5rem;
+  font-size: 2rem;
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  color: ${btnColors.secondary};
+  background-color: ${btnColors.disabled};
+`;

@@ -1,11 +1,9 @@
 import styled, { css } from "styled-components";
 import classnames from "classnames";
-import colors from "tailwindcss/colors";
-// TODO: tw, {css } imports !!!
-import tw, { TwStyle } from "twin.macro";
 import { FC, ReactNode, useCallback } from "react";
+import { btnColors } from "../theme";
 
-export type ResultCSS = ReturnType<typeof css> | ReturnType<typeof tw>;
+export type ResultCSS = ReturnType<typeof css>;
 export type StateProp = "default" | "warning" | "danger" | "success";
 export type VariantProp = "primary" | "secondary"; // | "ghost";
 export type SizeProp = "normal" | "compact" | "small";
@@ -15,7 +13,7 @@ export interface ButtonProps {
   variant?: VariantProp;
   size?: SizeProp;
   state?: StateProp;
-  className?: string | ResultCSS | TwStyle;
+  className?: string | ResultCSS;
   disabled?: boolean;
   onClick?: (e: MouseEvent) => void;
   children?: ReactNode;
@@ -28,14 +26,6 @@ export type ColorsKeys =
   | "bgSecondary"
   | "bgHover"
   | "disabled";
-export const btnColors: { [key in ColorsKeys]: string } = {
-  primary: colors.sky["600"],
-  bgPrimary: colors.sky["100"],
-  secondary: colors.gray["500"],
-  bgSecondary: colors.slate["300"],
-  bgHover: colors.sky["700"],
-  disabled: colors.neutral["800"],
-};
 
 /**
  * Базовая кнопка, на которую накладываются модификаторы

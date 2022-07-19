@@ -5,8 +5,7 @@ import { Autocompolete } from "./Autocomplete";
 import { PopoverBuySell } from "./PopoverBuySell";
 import { AssetsListType } from "../slices";
 import { Button } from "./Button";
-import classnames from "classnames";
-import tw from "twin.macro";
+import { css } from "styled-components";
 
 export type TableHeaderType = Array<{
   name: string;
@@ -173,7 +172,7 @@ export const Table = memo(
         </table>
 
         <Button
-          className={tw`mt-4`}
+          className={marginTopCss}
           variant="secondary"
           size="compact"
           onClick={toggleExpand}
@@ -184,3 +183,7 @@ export const Table = memo(
     );
   }
 );
+
+const marginTopCss = css`
+  margin-top: 1rem;
+`;

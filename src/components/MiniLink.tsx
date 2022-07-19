@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { memo } from "react";
 import { Link, LinkProps, useMatch, useResolvedPath } from "react-router-dom";
+import styled from "styled-components";
 
 export interface MiniLinkProps extends LinkProps {
   disabled?: boolean;
@@ -12,7 +13,7 @@ export const MiniLink = memo(
     let match = useMatch({ path: resolved.pathname, end: true });
 
     return (
-      <li className="flex items-center p-1">
+      <Wrapper>
         <Link
           className={cx(
             "text-neutral-100 bg-sky-800",
@@ -28,7 +29,11 @@ export const MiniLink = memo(
         >
           {children}
         </Link>
-      </li>
+      </Wrapper>
     );
   }
 );
+
+const Wrapper = styled.span`
+  padding: 0.5rem;
+`;

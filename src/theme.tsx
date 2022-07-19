@@ -1,12 +1,24 @@
+import cl from "tailwindcss/colors";
+import { ColorsKeys } from "./components/Button";
+
 const buttonCommon = `inline-flex justify-center items-center px-2 py-1 sm:px-4 sm:py-2 text-lg font-medium `;
 
+export const btnColors: { [key in ColorsKeys]: string } = {
+  primary: cl.sky["600"],
+  bgPrimary: cl.sky["100"],
+  secondary: cl.gray["500"],
+  bgSecondary: cl.slate["300"],
+  bgHover: cl.sky["700"],
+  disabled: cl.neutral["800"],
+};
+
 export const colors = {
-  primary: "sky-400",
-  secondary: "gray-500",
-  bgPrimary: "slate-900",
-  bgSecondary: "slate-800",
-  bgHover: "slate-700",
-  disabled: "neutral-800",
+  primary: cl.sky["600"],
+  bgPrimary: cl.sky["100"],
+  secondary: cl.gray["500"],
+  bgSecondary: cl.slate["300"],
+  bgHover: cl.sky["700"],
+  disabled: cl.neutral["800"],
 };
 
 export const font = {

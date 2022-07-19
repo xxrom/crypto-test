@@ -5,6 +5,7 @@ import { useStore } from "../hooks";
 import cx from "classnames";
 import { useUserLogin } from "../hooks/useData";
 import { Button } from "./Button";
+import { useCookies } from "react-cookie";
 
 export const PopoverLogin = memo(() => {
   const {
@@ -16,9 +17,10 @@ export const PopoverLogin = memo(() => {
   } = useStore();
   console.log("PopoverLogin", user);
 
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("12341234");
+  const [email, setEmail] = useState("admin@admin.com");
+  const [password, setPassword] = useState("dmin!@#$!@#$");
   const navigate = useNavigate();
+  const [, setCookie] = useCookies(["token"]);
 
   const queryUser = useUserLogin(user);
   console.log("queryUser", queryUser);
@@ -27,8 +29,7 @@ export const PopoverLogin = memo(() => {
   const [info, setInfo] = useState("");
 
   useEffect(() => {
-    console.log("isStatus", queryUser.isSuccess);
-    if (!queryUser.isSuccess) {
+    if (!queryUser?.data?.token) {
       return;
     }
 
@@ -38,28 +39,32 @@ export const PopoverLogin = memo(() => {
       return;
     }
 
+    //document.cookie = `token=${token}`;
+    setCookie("token", token, { path: "/" });
     setUserToken(token);
     setIsAuthorized(true);
     navigate("/");
     console.log("navigate to =>>> /");
-  }, [token, queryUser.isSuccess, setIsAuthorized, setUserToken, navigate]);
+  }, [
+    token,
+    setIsAuthorized,
+    setUserToken,
+    navigate,
+    queryUser?.data?.token,
+    setCookie,
+  ]);
 
   useEffect(() => {
-    if (queryUser.isLoading) {
-      return setInfo("Loading...");
+    if (queryUser?.data?.err) {
+      return setInfo(`Error ${queryUser?.data?.err?.message}`);
     }
     if (queryUser.error) {
       return setInfo(`Error ${queryUser.error?.message}`);
     }
-    if (queryUser?.data?.err?.message) {
-      return setInfo(`Error ${queryUser?.data?.err?.message}`);
+    if (queryUser.isLoading) {
+      return setInfo("Loading...");
     }
-  }, [
-    isAuthorized,
-    queryUser?.data?.err?.message,
-    queryUser.error,
-    queryUser.isLoading,
-  ]);
+  }, [isAuthorized, queryUser.data?.err, queryUser.error, queryUser.isLoading]);
 
   const onChangeEmail = useCallback(
     (event) => setEmail(event?.target?.value),
@@ -74,7 +79,7 @@ export const PopoverLogin = memo(() => {
   const onLogin = useCallback(
     (_closeFn) => () => {
       setUser({ email, password, token: "" });
-      setInfo("");
+      //setInfo("");
     },
     [email, password, setUser]
   );

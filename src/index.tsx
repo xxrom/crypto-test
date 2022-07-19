@@ -3,10 +3,11 @@ import ReactDOM from "react-dom";
 import { App } from "./App";
 import "./index.css";
 import { Helmet } from "react-helmet";
+import { CookiesProvider } from "react-cookie";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div>
+    <CookiesProvider>
       <Helmet>
         <title>CryptoPortal</title>
 
@@ -15,7 +16,7 @@ ReactDOM.render(
       </Helmet>
 
       <App />
-    </div>
+    </CookiesProvider>
   </React.StrictMode>,
 
   document.getElementById("root")
