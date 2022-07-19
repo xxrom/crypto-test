@@ -94,9 +94,9 @@ export const Autocompolete = memo<AutocompoleteProps>(
             <div
               className={`
               relative w-full 
-              text-left bg-sky-400 rounded-lg shadow-md 
+              text-left bg-sky-400 rounded-md shadow-md 
               cursor-default focus:outline-none focus-visible:ring-2 
-              focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-2 
+              focus-visible:ring-white focus-visible:ring-offset-teal-300 focus-visible:ring-offset-8 
               sm:text-sm overflow-hidden`}
             >
               <Combobox.Input
@@ -132,7 +132,7 @@ export const Autocompolete = memo<AutocompoleteProps>(
 
                   ${theme.font.secondary}
 
-                  bg-sky-100
+                  bg-sky-400
 
                   rounded-md shadow-lg shadow-cyan-400 max-h-60 
                   ring-1 ring-cyan-800
@@ -142,7 +142,7 @@ export const Autocompolete = memo<AutocompoleteProps>(
                 {filteredList.length === 0 && search !== "" ? (
                   <div
                     className={`cursor-default rounded-md select-none
-                      ring-1 ring-black relative py-2 px-4 
+                      ring-1 ring-black relative text-center p-2 bg-gray-200 
                       ${theme.font.primary}`}
                   >
                     Nothing found.
@@ -153,8 +153,10 @@ export const Autocompolete = memo<AutocompoleteProps>(
                       key={item?.id}
                       className={({ active }) =>
                         `cursor-default select-none text-sm relative 
-                        py-2 pl-10 pr-4 ring-1 ring-black 
-                        rounded-md
+                        py-2 pl-8 pr-4 ring-1 ring-black 
+                        rounded-md bg-sky-100
+                        hover:bg-sky-200
+
                           ${theme.font.secondary}
                           ${active ? theme.global.bgSecondary : theme.global.bg}
                         `
@@ -179,7 +181,7 @@ export const Autocompolete = memo<AutocompoleteProps>(
                               }`}
                             >
                               <CheckIcon
-                                className="w-5 h-5"
+                                className="w-4 h-4"
                                 aria-hidden="true"
                               />
                             </span>
