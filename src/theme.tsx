@@ -13,12 +13,12 @@ export const btnColors: { [key in ColorsKeys]: string } = {
 };
 
 export const colors = {
-  primary: cl.sky["600"],
-  bgPrimary: cl.sky["100"],
-  secondary: cl.gray["500"],
-  bgSecondary: cl.slate["300"],
-  bgHover: cl.sky["700"],
-  disabled: cl.neutral["800"],
+  primary: "sky-600",
+  bgPrimary: "sky-100",
+  secondary: "gray-500",
+  bgSecondary: "slate-300",
+  bgHover: "sky-700",
+  disabled: "neutral-800",
 };
 
 export const font = {

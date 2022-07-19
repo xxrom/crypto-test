@@ -1,11 +1,11 @@
 import cx from "classnames";
-import { MiniLink, PopoverLogin, PopoverSingUp } from "../components";
+import { MiniLink, PopoverLogin } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback } from "react";
 import { btnColors } from "../theme";
 import { Outlet } from "react-router-dom";
 import { correctUserAuth } from "../tools/convert";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Button } from "../components/Button";
 import { useCookies } from "react-cookie";
 

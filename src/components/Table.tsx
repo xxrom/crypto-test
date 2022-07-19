@@ -20,9 +20,9 @@ export type TableProps = {
 
 export const headerDefault: TableHeaderType = [
   { name: "#" },
-  { name: "Name", filterId: "name", info: "MatchStr:" },
+  { name: "Name", filterId: "name", info: "MatchStr" },
   { name: "Icon" },
-  { name: "Price", filterId: "price", info: "MoreEqual:" },
+  { name: "Price", filterId: "price", info: "MoreEqual" },
   { name: "Actions" },
 ];
 
@@ -126,18 +126,18 @@ export const Table = memo(
               {header.map(({ name, filterId, info }) => (
                 <th key={name} scope="col" className={theme.table.bold}>
                   <div className="flex flex-col">
-                    {name}
+                    <div>
+                      {`${name}: `}
+                      <span className="font-medium mt-1">{info}</span>
+                    </div>
 
                     {filterId && (
-                      <div>
-                        <div className="font-medium mt-1">{info}</div>
-                        <Autocompolete
-                          isAlwaysSearching
-                          initSymbol={inputValues[filterId]}
-                          setSymbol={onChangeFilterValue(filterId)}
-                          items={filters[filterId]}
-                        />
-                      </div>
+                      <Autocompolete
+                        isAlwaysSearching
+                        initSymbol={inputValues[filterId]}
+                        setSymbol={onChangeFilterValue(filterId)}
+                        items={filters[filterId]}
+                      />
                     )}
                   </div>
                 </th>

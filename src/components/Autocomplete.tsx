@@ -101,7 +101,7 @@ export const Autocompolete = memo<AutocompoleteProps>(
             >
               <Combobox.Input
                 className={cx(
-                  "w-full border-none focus:ring-0 focus:outline-none py-2 pl-3 pr-10 text-sm sm:text-3xl font-medium leading-5",
+                  "w-full border-none focus:ring-0 focus:outline-none py-1 pl-2 pr-10 text-sm sm:text-sm font-medium leading-5",
                   theme.font.primary,
                   theme.global.bgSecondary
                 )}
@@ -112,7 +112,7 @@ export const Autocompolete = memo<AutocompoleteProps>(
               />
               <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <SelectorIcon
-                  className="w-8 h-8 text-sky-500"
+                  className={`w-4 h-4 ring-1 ring-sky-400 rounded-md text-sky-500`}
                   aria-hidden="true"
                 />
               </Combobox.Button>
@@ -127,12 +127,12 @@ export const Autocompolete = memo<AutocompoleteProps>(
             >
               <Combobox.Options
                 className={`absolute z-40 w-full
-                  py-1 mt-1 overflow-auto 
+                  p-1 mt-1 overflow-auto 
                   text-base 
 
                   ${theme.font.secondary}
 
-                  ${theme.global.bg}
+                  bg-sky-100
 
                   rounded-md shadow-lg shadow-cyan-400 max-h-60 
                   ring-1 ring-cyan-800
@@ -141,7 +141,9 @@ export const Autocompolete = memo<AutocompoleteProps>(
               >
                 {filteredList.length === 0 && search !== "" ? (
                   <div
-                    className={`cursor-default select-none ring-1 ring-black relative py-2 px-4 ${theme.font.primary}`}
+                    className={`cursor-default rounded-md select-none
+                      ring-1 ring-black relative py-2 px-4 
+                      ${theme.font.primary}`}
                   >
                     Nothing found.
                   </div>
@@ -150,7 +152,9 @@ export const Autocompolete = memo<AutocompoleteProps>(
                     <Combobox.Option
                       key={item?.id}
                       className={({ active }) =>
-                        `cursor-default select-none text-sm relative py-2 pl-10 pr-4 
+                        `cursor-default select-none text-sm relative 
+                        py-2 pl-10 pr-4 ring-1 ring-black 
+                        rounded-md
                           ${theme.font.secondary}
                           ${active ? theme.global.bgSecondary : theme.global.bg}
                         `
