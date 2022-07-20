@@ -5,10 +5,17 @@ import styled from "styled-components";
 
 export interface MiniLinkProps extends LinkProps {
   disabled?: boolean;
+  isSmall?: boolean;
 }
 
 export const MiniLink = memo(
-  ({ children, to, disabled = false, ...props }: MiniLinkProps) => {
+  ({
+    children,
+    to,
+    disabled = false,
+    isSmall = false,
+    ...props
+  }: MiniLinkProps) => {
     let resolved = useResolvedPath(to);
     let match = useMatch({ path: resolved.pathname, end: true });
 
@@ -16,13 +23,23 @@ export const MiniLink = memo(
       <Wrapper>
         <Link
           className={cx(
-            "text-neutral-100 bg-sky-800",
-            "hover:text-neutral-200 hover:backdrop-cyan-sm rounded-xl px-5 py-2 sm:px-6",
+            "text-sky-100 bg-sky-800",
+            `
+            hover:text-neutral-200 hover:backdrop-cyan-sm rounded-xl 
+
+            `,
+            isSmall
+              ? `
+            px-3 py-2
+            `
+              : `
+            px-3 py-2 sm:px-5 sm:py-4
+            `,
             !disabled &&
               match &&
-              "shadow-lg hover:shadow-cyan-300/50 bg-sky-800",
+              "shadow-lg hover:shadow-cyan-300/50 bg-sky-700",
             disabled &&
-              "!text-neutral-500 bg-sky-900 hover:shadow-none cursor-not-allowed"
+              "!text-neutral-200 bg-neutral-400 hover:shadow-none cursor-not-allowed"
           )}
           to={disabled ? "#" : to}
           {...props}

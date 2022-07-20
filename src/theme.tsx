@@ -102,10 +102,10 @@ export const theme = {
   },
   table: {
     cell:
-      "px-1 py-1 sm:px-6 sm:py-4 whitespace-nowrap text-sm sm:text-md font-light sm:font-medium text-left text-gray-400",
+      "px-1 py-1 sm:px-1 sm:py-1 whitespace-nowrap text-sm sm:text-md font-light sm:font-medium text-left text-gray-400",
 
     bold:
-      "px-1 py-1 sm:px-6 sm:py-4 text-sm font-medium text-left align-start text-gray-400 font-light whitespace-nowrap",
+      "px-1 py-1 sm:px-1 sm:py-4 text-sm font-medium text-left align-start text-gray-400 font-light whitespace-nowrap",
   },
   font: {
     primary: " text-" + colors.primary,

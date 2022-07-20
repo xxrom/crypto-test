@@ -158,7 +158,7 @@ export const Table = memo(
                 <td className={theme.table.cell}>
                   <picture>
                     <img
-                      className="w-5 h-5 sm:w-8 sm:h-8 rounded-2xl"
+                      className="w-5 h-5 sm:w-10 sm:h-10 rounded-2xl"
                       src={icon}
                       alt=""
                     />

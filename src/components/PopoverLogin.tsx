@@ -92,7 +92,7 @@ export const PopoverLogin = memo(() => {
         </Button>
       </HeadlessPopove.Button>
 
-      <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
+      <HeadlessPopove.Overlay className="bg-sky-400 opacity-70 fixed inset-0 z-40" />
 
       <HeadlessPopove.Panel className="absolute z-50">
         {({ close }) => (

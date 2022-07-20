@@ -31,21 +31,21 @@ export const PopoverBuySell = memo(({ symbol }: PopoverBuySellProps) => {
         />
       </HeadlessPopove.Button>
 
-      <HeadlessPopove.Overlay className="bg-black opacity-10 fixed inset-0 z-40" />
+      <HeadlessPopove.Overlay className="bg-black opacity-40 fixed inset-0 z-40" />
 
-      <HeadlessPopove.Panel className="absolute z-50 -ml-5">
+      <HeadlessPopove.Panel className="absolute z-50 -ml-2 bg-sky-400 rounded-lg">
         <div
           className={cx(
-            `relative mt-1 flex rounded-lg shadow-lg ring-1 ring-black ring-opacity-5`,
+            `relative flex rounded-lg shadow-lg ring-1 ring-black ring-opacity-5`,
             theme.global.bgSecondary
           )}
         >
-          <div className="flex flex-col p-2">
-            <MiniLink onClick={onClickBuy} to="/trade">
+          <div className="flex flex-col p-1">
+            <MiniLink isSmall onClick={onClickBuy} to="/trade">
               Buy
             </MiniLink>
 
-            <MiniLink onClick={onClickSell} to="/trade">
+            <MiniLink isSmall onClick={onClickSell} to="/trade">
               Sell
             </MiniLink>
           </div>
