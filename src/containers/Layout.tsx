@@ -1,29 +1,61 @@
 import cx from "classnames";
 import { MiniLink, PopoverLogin } from "../components";
 import { useStore } from "../hooks";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { btnColors } from "../theme";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { correctUserAuth } from "../tools/convert";
 import styled from "styled-components";
 import { Button } from "../components/Button";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
+import { useIsTokenValid } from "../api/token";
 
 export const Layout = memo(() => {
-  const { isAuthorized, setIsAuthorized, user, setUser } = useStore();
-  const [cookies] = useCookies(["token"]);
-  console.log("RENDER: Layout", isAuthorized);
-  console.log("cookies", cookies);
+  console.log("RENDER: Layout");
+
+  const navigate = useNavigate();
+  const {
+    isAuthorized,
+    setIsAuthorized,
+    user,
+    setUser,
+    setUserEmail,
+  } = useStore();
 
   const onForceLogOut = useCallback(() => {
     setIsAuthorized(false);
-    setUser({ email: "none", password: "none", token: "" });
-  }, [setIsAuthorized, setUser]);
+    setUser({ email: "none", password: "none", token: "none" });
+    navigate("/");
+  }, [navigate, setIsAuthorized, setUser]);
 
   const onForceLogIn = useCallback(() => {
     setIsAuthorized(true);
     setUser(correctUserAuth);
   }, [setIsAuthorized, setUser]);
+
+  // Validate cookies accessToken
+  const accessToken = Cookies.get("accessToken") || "";
+  const isTokenValidData = useIsTokenValid(accessToken);
+  const userEmail = isTokenValidData?.data?.email;
+  const isTokenValid = typeof userEmail === "string";
+
+  useEffect(() => {
+    if (isTokenValid !== isAuthorized && userEmail) {
+      setIsAuthorized(isTokenValid);
+      setUserEmail(userEmail);
+    } else if (!isTokenValidData) {
+      console.log("forceLogOut");
+      onForceLogOut();
+    }
+  }, [
+    isAuthorized,
+    isTokenValid,
+    isTokenValidData,
+    onForceLogOut,
+    setIsAuthorized,
+    setUserEmail,
+    userEmail,
+  ]);
 
   return (
     <Container minHeight="100vh" className={cx("flex flex-col min-h-screen ")}>
@@ -43,16 +75,8 @@ export const Layout = memo(() => {
 
           {isAuthorized ? (
             <div className="flex flex-col pl-2 overflow-x-auto justify-end items-center cursor-default">
-              <div className="font-medium text-cyan-600">User info:</div>
-              <div className="font-medium overflow-scrollX text-cyan-500">
-                {user?.email}
-              </div>
-              <div className="font-medium overflow-scrollX text-cyan-500">
-                {user?.token}
-              </div>
-              <div className="font-medium overflow-scrollX text-cyan-500">
-                {cookies?.token}
-              </div>
+              <ShrinkInfo>{user?.email}</ShrinkInfo>
+              <ShrinkInfo>{accessToken}</ShrinkInfo>
             </div>
           ) : (
             <div className="flex flex-row ml-4">
@@ -114,4 +138,14 @@ const Footer = styled(Container)`
 
   color: ${btnColors.secondary};
   background-color: ${btnColors.disabled};
+`;
+
+const ShrinkInfo = styled.span`
+  color: gray;
+  font-size: 0.7rem;
+  min-widht: 3rem;
+  max-width: 7rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; /* force to show only one line */
 `;

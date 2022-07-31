@@ -5,7 +5,7 @@ import { useStore } from "../hooks";
 import cx from "classnames";
 import { useUserLogin } from "../hooks/useData";
 import { Button } from "./Button";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 export const PopoverLogin = memo(() => {
   const {
@@ -20,39 +20,24 @@ export const PopoverLogin = memo(() => {
   const [email, setEmail] = useState("admin@admin.com");
   const [password, setPassword] = useState("dmin!@#$!@#$");
   const navigate = useNavigate();
-  const [, setCookie] = useCookies(["token"]);
 
   const queryUser = useUserLogin(user);
+  const accessToken = queryUser?.data?.accessToken;
   console.log("queryUser", queryUser);
-  const token = queryUser?.data?.token;
 
   const [info, setInfo] = useState("");
 
   useEffect(() => {
-    if (!queryUser?.data?.token) {
+    if (typeof accessToken !== "string") {
       return;
     }
 
-    console.log("token", token);
-
-    if (typeof token !== "string") {
-      return;
-    }
-
-    //document.cookie = `token=${token}`;
-    setCookie("token", token, { path: "/" });
-    setUserToken(token);
+    Cookies.set("accessToken", accessToken);
+    setUserToken(accessToken);
     setIsAuthorized(true);
     navigate("/");
     console.log("navigate to =>>> /");
-  }, [
-    token,
-    setIsAuthorized,
-    setUserToken,
-    navigate,
-    queryUser?.data?.token,
-    setCookie,
-  ]);
+  }, [accessToken, setIsAuthorized, setUserToken, navigate]);
 
   useEffect(() => {
     if (queryUser?.data?.err) {
@@ -79,7 +64,6 @@ export const PopoverLogin = memo(() => {
   const onLogin = useCallback(
     (_closeFn) => () => {
       setUser({ email, password, token: "" });
-      //setInfo("");
     },
     [email, password, setUser]
   );
