@@ -4,12 +4,14 @@ export type InputType = {
   initValue?: string | number;
   value?: string | number;
   setValue?: (val: any) => void;
+  type?: "number" | "text";
 };
 
 export const Input = ({
   initValue = "",
   value: propsValue,
   setValue: propsSetValue = () => {},
+  type = "number",
 }: InputType) => {
   const [value, setValue] = useState(initValue);
 
@@ -38,10 +40,10 @@ export const Input = ({
   return (
     <div className="relative mr-5 w-full rounded-md shadow-sm">
       <input
-        type="number"
+        type={type}
         value={value}
         onChange={onChange}
-        className="block w-full p-1 border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 text-xl sm:text-3xl rounded-md"
+        className="block w-full p-1 ring-1 ring-sky-300 focus:ring-sky-800 focus:border-indigo-500 text-xl sm:text-3xl rounded-md"
         placeholder="0.00"
       />
     </div>

@@ -1,4 +1,4 @@
-import { Home, Trade } from "../pages";
+import { Home, Trade, Control } from "../pages";
 import { Layout } from "../containers";
 import { memo, useEffect } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -44,6 +44,15 @@ export const MyRoutes = memo(() => {
               element={
                 <ProtectedRoute>
                   <Trade />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="control"
+              element={
+                <ProtectedRoute>
+                  <Control />
                 </ProtectedRoute>
               }
             />

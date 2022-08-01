@@ -71,6 +71,10 @@ export const Layout = memo(() => {
             <MiniLink to="/trade" disabled={!isAuthorized}>
               Trade
             </MiniLink>
+
+            <MiniLink to="/control" disabled={!isAuthorized}>
+              Control
+            </MiniLink>
           </Tabs>
 
           {isAuthorized ? (
