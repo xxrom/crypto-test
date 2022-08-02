@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { MiniLink, PopoverLogin } from "../components";
+import { Container, MiniLink, PopoverLogin } from "../components";
 import { useStore } from "../hooks";
 import { memo, useCallback, useEffect } from "react";
 import { btnColors } from "../theme";
@@ -58,10 +58,13 @@ export const Layout = memo(() => {
   ]);
 
   return (
-    <Container minHeight="100vh" className={cx("flex flex-col min-h-screen ")}>
+    <Container
+      minHeight="100vh"
+      className={cx("flex flex-col min-h-screen bg-slate-600")}
+    >
       <nav
         className={cx(
-          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 ring-1 ring-gray-900 ring-opacity-5 shadow-sm bg-sky-100"
+          "sticky top-0 z-40 max-w-screen py-2 text-sm font-medium text-gray-500 ring-1 ring-gray-900 ring-opacity-5 shadow-sm bg-slate-800"
         )}
       >
         <Menu>
@@ -109,14 +112,6 @@ export const Layout = memo(() => {
     </Container>
   );
 });
-
-const Container = styled.div<{ minHeight?: string }>`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  min-height: ${({ minHeight = "0" }) => minHeight};
-`;
 
 const Menu = styled(Container)`
   padding: 0.1rem 0.5rem;
