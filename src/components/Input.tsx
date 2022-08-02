@@ -3,14 +3,18 @@ import { useCallback, useEffect, useState } from "react";
 export type InputType = {
   initValue?: string | number;
   value?: string | number;
+  placeholder?: string;
   setValue?: (val: any) => void;
+  onEnter?: () => void;
   type?: "number" | "text";
 };
 
 export const Input = ({
   initValue = "",
   value: propsValue,
+  placeholder = "",
   setValue: propsSetValue = () => {},
+  onEnter = () => {},
   type = "number",
 }: InputType) => {
   const [value, setValue] = useState(initValue);
@@ -37,14 +41,24 @@ export const Input = ({
     [propsSetValue]
   );
 
+  const onKeyDown = useCallback(
+    (event) => {
+      if (event.key === "Enter") {
+        onEnter && onEnter();
+      }
+    },
+    [onEnter]
+  );
+
   return (
     <div className="relative mr-5 w-full rounded-md shadow-sm">
       <input
         type={type}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         className="block w-full p-1 ring-1 ring-sky-300 focus:ring-sky-800 focus:border-indigo-500 text-xl sm:text-3xl rounded-md"
-        placeholder="0.00"
+        placeholder={placeholder}
       />
     </div>
   );

@@ -8,3 +8,5 @@ export { Input } from "./Input";
 export { Box } from "./Box";
 export { MiniLink } from "./MiniLink";
 export { Button } from "./Button";
+export { Text } from "./Text";
+export { Row, Col, Container } from "./Grid";

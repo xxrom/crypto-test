@@ -1,13 +1,15 @@
 import { memo, useCallback, useState } from "react";
-import { useQuery } from "react-query";
-import { Input, Button } from "../components";
+import { useMutation, useQuery } from "react-query";
+import { Input, Button, Text, Row, Container } from "../components";
 import { serverIP } from "../hooks/useData";
 
 type ExecCommandType = {
   command: string;
 };
 
-export const fetchExecCommand = ({ command }: ExecCommandType) => (): Promise<{
+export const fetchExecCommand = ({
+  command,
+}: ExecCommandType): Promise<{
   command: string;
 }> =>
   fetch(`${serverIP}/exec`, {
@@ -20,36 +22,42 @@ export const fetchExecCommand = ({ command }: ExecCommandType) => (): Promise<{
     return data;
   });
 
-export const useExecCommand = ({ command }: ExecCommandType) =>
-  useQuery<any, ExecCommandType>(
-    `execCommand_${command}`,
-    fetchExecCommand({ command }),
-    {
-      enabled: command?.length >= 3,
-      cacheTime: 30 * 60 * 1000, // 30 min caching
-      retry: 1,
-    }
-  );
-
 export const Control = memo(() => {
   console.info("Render: Control /");
 
   const [command, setCommand] = useState("ls");
-  const execCommand = useExecCommand({ command });
+  const execMut = useMutation(fetchExecCommand, {
+    retry: 1,
+  });
+  const execCommand = execMut?.mutate;
 
-  console.log(execCommand);
+  console.log(execMut);
 
   const onExecute = useCallback(() => {
     console.log(`onExecute: '${command}'`);
-  }, [command]);
+    execCommand({ command });
+    setCommand("");
+  }, [command, execCommand]);
 
   return (
-    <div>
-      <h1>Control</h1>
+    <Container>
+      <Row>
+        <Input
+          value={command}
+          placeholder="command"
+          type="text"
+          setValue={setCommand}
+          onEnter={onExecute}
+        />
+        <Button onClick={onExecute}>Execute</Button>
+      </Row>
 
-      <Input value={command} type="text" setValue={setCommand} />
-
-      <Button onClick={onExecute}>Execute</Button>
-    </div>
+      <Text>{execMut?.data}</Text>
+    </Container>
   );
 });
+
+/*
+ * cpu temp: sensors | grep 'CPUTIN'
+ *
+ */

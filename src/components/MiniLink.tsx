@@ -23,7 +23,7 @@ export const MiniLink = memo(
       <Wrapper>
         <Link
           className={cx(
-            "text-sky-100 bg-sky-800",
+            "text-sky-100 bg-sky-900",
             `
             hover:text-neutral-200 hover:backdrop-cyan-sm rounded-xl 
 
@@ -37,7 +37,7 @@ export const MiniLink = memo(
             `,
             !disabled &&
               match &&
-              "shadow-lg hover:shadow-cyan-300/50 bg-sky-700",
+              "shadow-lg hover:shadow-cyan-300/50 bg-sky-600",
             disabled &&
               "!text-neutral-200 bg-neutral-400 hover:shadow-none cursor-not-allowed"
           )}
