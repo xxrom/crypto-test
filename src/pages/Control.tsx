@@ -36,8 +36,9 @@ export const Control = memo(() => {
   const onExecute = useCallback(() => {
     console.log(`onExecute: '${command}'`);
     execCommand({ command });
-    setCommand("");
   }, [command, execCommand]);
+
+  const onClearInput = useCallback(() => setCommand(""), []);
 
   return (
     <Container>
@@ -48,6 +49,7 @@ export const Control = memo(() => {
           type="text"
           setValue={setCommand}
           onEnter={onExecute}
+          onClear={onClearInput}
         />
         <Button onClick={onExecute}>Execute</Button>
       </Row>

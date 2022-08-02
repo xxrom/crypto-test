@@ -6,6 +6,7 @@ export type InputType = {
   placeholder?: string;
   setValue?: (val: any) => void;
   onEnter?: () => void;
+  onClear?: () => void;
   type?: "number" | "text";
 };
 
@@ -15,6 +16,7 @@ export const Input = ({
   placeholder = "",
   setValue: propsSetValue = () => {},
   onEnter = () => {},
+  onClear = () => {},
   type = "number",
 }: InputType) => {
   const [value, setValue] = useState(initValue);
@@ -22,6 +24,11 @@ export const Input = ({
   useEffect(() => {
     setValue(propsValue || "");
   }, [propsValue]);
+
+  const handleClear = useCallback(() => {
+    setValue("");
+    onClear();
+  }, [onClear]);
 
   const onChange = useCallback(
     (e) => {
@@ -51,7 +58,7 @@ export const Input = ({
   );
 
   return (
-    <div className="relative mr-5 w-full rounded-md shadow-sm">
+    <div className="relative mr-5 w-full flex flex-row justifiy-center items-center rounded-md shadow-sm">
       <input
         type={type}
         value={value}
@@ -60,6 +67,7 @@ export const Input = ({
         className="block w-full p-1 ring-1 ring-sky-300 focus:ring-sky-800 focus:border-indigo-500 text-xl sm:text-3xl rounded-md"
         placeholder={placeholder}
       />
+      <span onClick={handleClear}>[X]</span>
     </div>
   );
 };
