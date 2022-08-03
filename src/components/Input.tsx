@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+import { CrossIcon } from "../common";
 
 export type InputType = {
   initValue?: string | number;
@@ -58,16 +60,20 @@ export const Input = ({
   );
 
   return (
-    <div className="relative mr-5 w-full flex flex-row justifiy-center items-center rounded-md shadow-sm">
+    <Wrapper className="relative mr-5 w-full flex flex-row justifiy-center items-center rounded-md shadow-sm">
       <input
         type={type}
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
-        className="block w-full p-1 ring-1 ring-sky-300 focus:ring-sky-800 focus:border-indigo-500 text-xl sm:text-3xl rounded-md"
+        className="block w-full p-1 ring-1 ring-sky-300 bg-sky-200 focus:ring-sky-800 focus:border-indigo-500 text-xl sm:text-3xl rounded-md"
         placeholder={placeholder}
       />
-      <span onClick={handleClear}>[X]</span>
-    </div>
+      <CrossIcon onClick={handleClear} />
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  position: relative;
+`;
